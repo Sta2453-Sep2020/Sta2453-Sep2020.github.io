@@ -1,0 +1,32 @@
+Class,Date,Description,Reading,Due
+,08-Sep,No class,,
+1,15-Sep,"Introduction to course, Data Science projects, hypothesis testing in data analysis","ISLR: Chapt. 2, 3.1. CASI: Chapt 1, 2",
+,22-Sep,No class,,
+2,29-Sep,"Reproducibility, working together, Multiple linear regression",ISLR: 3.2-3.6. ,In-class lab #1
+,06-Oct,No class,,In-class lab #2
+3,13-Oct,Logistic regression and other linear models (GLM),ISLR: Chapt 4; CASI: Chapt 8,
+,20-Oct,No class,,
+4,27-Oct,"Guest Lecture: Web scraping, Introduction of Project #1 (Data Collection and Analysis)",TBD,In-class lab #3
+5,03-Nov,Data Visualization,,
+,10-Nov,Fall Reading Week - No class,,
+6,17-Nov,Office hours,,
+,24-Nov,No class,,
+7,01-Dec,Student presentations for project #1,,Project #1 presentations
+,08-Dec,Winter Break,,
+,15-Dec,Winter Break,,
+,22-Dec,Winter Break,,
+,29-Dec,Winter Break,,
+8,05-Jan,Introduction to Project #2 ,Will be posted to quercus,
+,12-Jan,No class,,
+9,19-Jan,Guest lecture: Natural Language Processing in practice,,
+,26-Jan,No class,,
+,02-Feb,Office hours,,
+10,09-Feb,Student presentations for project #2,,Project #2 presentations
+,16-Feb,Reading Week,,
+11,23-Feb,Introduction of Project #3,Will be posted to quercus,
+,02-Mar,No class,,
+12,09-Mar,Productionizing data science projects,TBD,
+,16-Mar,No class,,
+13,23-Mar,Student presentations for project #3,,Project #3 presentations
+,30-Mar,No class,,
+,06-Apr,No class,,

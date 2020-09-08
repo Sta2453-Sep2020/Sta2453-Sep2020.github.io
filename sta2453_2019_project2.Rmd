@@ -1,0 +1,147 @@
+---
+title: 'Project #2'
+output:
+  html_document:
+    theme: cosmo
+    highlight: textmate
+    toc: true
+    toc_float: true
+    toc_depth: 4
+---
+
+
+# Healthcare Theme
+
+The theme of project #2 will be problems from two different healthcare domains. 
+
+# Due Dates
+
+Presentation: Feb. 11
+
+Written Report: Feb. 24
+
+## Complications of diabetes 
+
+Mathieu Ravaut (MScAC Alumni) - Machine Learning Research Scientist at Layer 6 AI will introduce this problem on Jan. 14
+
+
+### Question {#Question-diab}
+
+Use the [Diabetes 130 US hospitals for years 1999-2008 data](https://www.kaggle.com/brandao/diabetes) to predict readmission.
+
+## Detecting fraudulant data in randomised control trials 
+
+Shuang Di (MSc - Statistics Alumni) - Data Scientist at Digital Health Innovation, Hamilton Health Sciences on Jan. 21
+
+Data for this project will be available from Hamilition Health Sciences.  To access the data for this project please follow the instructions on this [page](https://q.utoronto.ca/courses/118473/pages/project-number-2).
+
+### Question {#Question-fraud}
+
+Coming soon ...
+
+# The Assignment
+
+The assignment is to answer either the diabetes or fraud question using the data provided, but you will almost surely need to develop more focused questions. You will have to wrangle the data into a format that can be analysed using statistical methods, and draw appropriate conclusions.
+
+## Groups
+
+This is an individual assignment, where each student will pick a project to work on, although you may collaborate with your classmates.  The presentation and written report is an individual assignment.  
+
+## Written Report
+
+- The written report should be at most six pages.  This means that you will have to be selective in what you choose to report, and which plots you choose to display.
+
+- The written report is due on Feb. 24. 
+
+### Answers to Some Common Questions about the Written Report
+
+1. It's not necessary for R/Python code chunks to appear in the report (in [R Markdown](https://bookdown.org/yihui/rmarkdown/) use the chunk options `echo=FALSE`, `warning = FALSE`, `message = FALSE` and in Jupyter use the command line tool `nbconvert` [^1]) unless there is some part of the code that will contribute to describing what you have done in the data analysis. Don't submit a report with warning messages from a library you loaded in your report.  For example,
+
+__Don't do this:__
+
+The distribution of XX is shown below ...
+
+```{r, fig.height=3, fig.width=3}
+library(tidyverse)
+set.seed(1028)
+data.frame(x =  rnorm(100)) %>% ggplot(aes(x)) + geom_histogram(colour = "white", fill = "darkblue")
+```
+
+__Do this:__
+
+The distribution of XX is shown below ...
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE, fig.height=3, fig.width=3}
+library(tidyverse)
+set.seed(1028)
+data.frame(x =  rnorm(100)) %>% ggplot(aes(x)) + geom_histogram(colour = "white", fill = "darkblue")
+```
+
+
+Also, you will be submitting your R Markdown/Jupyter Notebook file so I can see all the gory details. This leads to ...
+
+[^1]: For example, to convert foo.ipynb to an html document **without code cells** the command line syntax for nbconvert is: `jupyter nbconvert --TemplateExporter.exclude_input=True foo.ipynb`.  For more information see the documentation [here](https://nbconvert.readthedocs.io/en/latest/install.html).
+
+2. What should be in the report?  A high level description of what you have done.  This leads to …
+
+3. Who is the intended audience for the report and what do you mean by a “high level description”?  The intended audience is an educated person that has taken at least one basic statistics course, but might be a bit rusty on the details.  For example, your supervisor at work completed an MBA ten years ago and took a few statistics courses, but the details are a bit hazy.
+
+
+### How will my writing be evaluated?
+
+Your writing will be evaluated for clarity and conciseness. 
+
+1. Title [1-5]
+There should be an appropriate title, adequate summary, and complete information including names and dates.
+
+2. Introduction [1-5]
+The purpose of the research should be clearly stated and the scope of what is considered in the report should be clear.
+
+3. Methods [1-5]
+The role of each method should be clearly stated. The description of the analyses should be clear and unambiguous so that another statistician or data scientist could easily re-construct it. The methods should be described accurately.
+
+4. Results [1-5]
+There should be appropriate tables and graphs. The results should be clearly stated in the context of the problem. The size and direction of significant results should be given. The results must be accurately stated. The research question should be adequately answered.
+
+5. Conclusion / Discussion [1-5]
+The results should be clearly and completely summarized. This section should also include discussion of limitations and/or concerns and/or suggestions for future consideration as appropriate.
+
+6. General Considerations [1-5]
+The ideas should be presented in logical order, with well-organized sections, no grammatical, spelling, or punctuation errors, an appropriate level of technical detail, and be clear and easy to follow.
+
+
+## Class Presentation
+
+Presentations will take place on Feb. 11.  The time allotted for each group is **10 minutes plus 5 minutes for discussion**.  This time limit will be enforced.  If your group exceeds the time limit then you will be asked to stop the presentation.  This means that you should rehearse your presentation timing before you present to the class.  
+
+### General Presentation Guidelines
+
+The goal of the presentation is to effectively communicate your findings to a non-technical, but educated, audience (e.g., physicians or health care executives). This doesn't mean that you shouldn't include technical details, but you should aim to communicate the findings to an audience without a background in statistics, math, or computer science.
+
+You will need to remind us about the project, but only tell us what we really need to know. We are curious about the results, and how your group presents the results, but they are not the only purpose of this presentation. So, what should you include?  Examples, of questions to consider as you and your partner are preparing your presentation are:
+
+- What problem did your group set out to solve?
+- How did your group define the problem?
+- What do your results mean in practice?  Do your results suggest something should change or not change?
+
+### Presentation Evaluation
+
+#### Content [40%] 
+- Is there evidence that you have thought deeply and insightfully about your project and what you have learned from it? 
+- Did you use appropriate statistical methods to answer the questions? 
+- Is the content interesting and relevant? 
+
+#### Clarity [30%]
+
+- Could the points of your presentation be easily understood by your classmates? 
+- Are you organized? 
+- By listening to your presentation, have your classmates had the opportunity to also learn what you learned? 
+
+#### Timing and Preperation [20%]
+
+- Is there evidence that your presentation was well rehearsed?
+- Did your presentation fit into the specified time limits?
+
+#### Delivery [10%]
+- Was everything that you said easy to hear? 
+- Was your presentation style engaging?

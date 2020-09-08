@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>STA2453 - Course Documents</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">STA2453</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="syllabus_2020.html">Syllabus and Schedule</a>
+</li>
+<li>
+  <a href="sta2453_2020coursedocs.html">Course documents</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Projects
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="lecture-notes-slides-2020/sta2453_20202_project1.html">Project 1 - Data Collection and Analysis</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">STA2453 - Course Documents</h1>
+
+</div>
+
+
+<div id="course-documents" class="section level1">
+<h1>Course Documents</h1>
+<div id="september-10" class="section level2">
+<h2>September 10</h2>
+<p><a href="class1_sta2453_11sept2019.html">Class 1 - Slides</a></p>
+</div>
+<div id="september-24" class="section level2">
+<h2>September 24</h2>
+<p><a href="https://nbviewer.jupyter.org/github/STA2453/STA2453.github.io/blob/master/sta2453-class-slides.ipynb">Class 2 Slides</a></p>
+<p><a href="https://nbviewer.jupyter.org/github/STA2453/STA2453.github.io/blob/master/sta2453_Sept2019_lab2-students.ipynb">Lab 2</a></p>
+</div>
+<div id="october-8" class="section level2">
+<h2>October 8</h2>
+<p><a href="sta2453_classslides_8oct2019.html">Class slides</a></p>
+<p><a href="lab3.html">Lab 3</a></p>
+</div>
+<div id="october-29" class="section level2">
+<h2>October 29</h2>
+<p>Introduction to <a href="sta2453_2019_project1.html">project #1</a>, by Dr. Ming-Chang Tsai, Canadian Sports Institute.</p>
+</div>
+<div id="november-12" class="section level2">
+<h2>November 12</h2>
+<p><a href="sta2453_class5_datavis_2019.pdf">Class slides</a></p>
+</div>
+</div>
+<div id="marking-rubrics" class="section level1">
+<h1>Marking Rubrics</h1>
+<div id="data-analysis-rubric" class="section level2">
+<h2>Data Analysis Rubric</h2>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Category</th>
+<th align="left">5</th>
+<th align="left">4</th>
+<th align="left">3</th>
+<th align="left">2</th>
+<th align="left">1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Exploratory data analysis</td>
+<td align="left">Intense exploration and evidence of many trials and failures. You have looked at the data in many different ways before coming to your final answer. You have gone beyond what was asked: additional research from other sources used to help understand/explain findings. Your explanation and presentation is creative.</td>
+<td align="left">Plenty of exploration and investigation. Some additional research helps explain findings, and some of your ideas are creatively presented and explained.</td>
+<td align="left">Some exploration, but little evidence that you have selected the best of many ideas. Little or no additional research.</td>
+<td align="left">You have done the bare minimum that was asked. There is no evidence to suggest that you tried multiple approaches (tables, graphics, or models) before coming to your final conclusion.</td>
+<td align="left">Questions are simple, and there is no evidence of exploration. You have not come up with your own questions of the data, but relied on those we discussed in class</td>
+</tr>
+<tr class="even">
+<td align="left">Reasoning about data</td>
+<td align="left">You suggest multiple explanations for a given finding, and use multiple tools to explore surprising results. You present one or two as the most plausible, but have allowed for the possibility that you are wrong. You are self-critical: What did I do well? What did I do poorly? What have I missed? How could I do better next time? You identify flaws in methodology and provide suggestions as to how they could be remedied. You don’t blindly accept perceived wisdom, but challenge preconceived notions and come up with interesting new ways of testing them.</td>
+<td align="left">You are sceptical and self-critical, but not consistently. There is some critical analysis, and some use of multiple techniques to answer the same question.</td>
+<td align="left">You haven’t blinded accepted findings, but you haven’t come up with many ways to check your results either. There is little self-criticism and little evidence to suggest you have thought about how to do better in the future.</td>
+<td align="left">Some findings accepted without question. Self- criticism weak.</td>
+<td align="left">Findings accepted uncritically. Leaps of logic without justification. You have not thought about how to do better next time.</td>
+</tr>
+<tr class="odd">
+<td align="left">Report organization</td>
+<td align="left">Findings very well organised. Clear headings demarcate separate sections. Excellent flow from one section to the next. The paper is easy to scan. An abstract or summary at the start of the paper briefly summarises your approach and findings. Conclusions at the end present further questions and ways to investigate more. Tables and graphics carefully tuned and placed for desired purpose.</td>
+<td align="left">Findings well organised and sections clearly separated, but flow is lacking. Each section has clear purpose. Tables and graphics clear and well chosen</td>
+<td align="left">Generally well organised, but some sections muddled. Tables or graphics appropriate, but some are poorly presented - too many decimal places, poorly chosen aspect ratio etc.</td>
+<td align="left">Sections unclear and no attempt to flow from one topic to the next. Graphics and tables poorly chosen to support questions. Some have fundamental flaws.</td>
+<td align="left">It is hard to read your paper. There are no headings, figures are far away from where they are referenced in the text. There is no summary or conclusion.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="programming-rubric" class="section level2">
+<h2>Programming Rubric</h2>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Category</th>
+<th align="left">5</th>
+<th align="left">4</th>
+<th align="left">3</th>
+<th align="left">2</th>
+<th align="left">1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Planning of code and statistical analysis</td>
+<td align="left">Introductory comment describes overall strategy and gives evidence of preliminary planning. Thoughtful problem decomposition breaks the problem into independent pieces that can be solved easily.</td>
+<td align="left">Evidence of planning before coding, but some flaws in overall strategy.</td>
+<td align="left">More planning needed: overall strategy ok, but have missed some obvious ways of making the code simpler.</td>
+<td align="left">It all hangs together, but planning was absent or rushed.</td>
+<td align="left">No evidence of planning. Strategy deeply flawed.</td>
+</tr>
+<tr class="even">
+<td align="left">Programming execution and reproducibility of results</td>
+<td align="left">Mastery of Python/R vocabulary means that the absolute minimum amount of code is used to get the job done. Code free from duplication. Each function encapsulates a single task, and repeated tasks are performed by functions, not copy and paste</td>
+<td align="left">Workable, but not elegant. Common programming idioms used to reduce code.</td>
+<td align="left">The code works, but copy-paste used often.</td>
+<td align="left">Most of the code works, but some parts do not work. Copy-paste used very often</td>
+<td align="left">Functions used inapproriately, or existing functions reinvented. Extensive use of copy and paste.</td>
+</tr>
+<tr class="odd">
+<td align="left">Programming Clarity</td>
+<td align="left">Code is a pleasure to read, and easy to understand. Code and comments form part of a seamless whole.</td>
+<td align="left">Comments used to discuss the why, and not how of code; to provide insight into complicated algorithms; and to indicate purpose of function (if not obvious from its name). Comment headings used to separate important sections of the code.</td>
+<td align="left">Generally easy to read, but some comments used inappropriately: either too many, or too few. Some variable names confusing.</td>
+<td align="left">Hard to understand. Poor choice of names and comments do not generally aid understanding.</td>
+<td align="left">Cannot understand code. The reader cannot understand why the code works.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

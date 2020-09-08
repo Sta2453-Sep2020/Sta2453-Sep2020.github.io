@@ -1,0 +1,33 @@
+---
+title: "STA2453 - Course Documents"
+output: html_document
+---
+
+# Course Documents
+
+## September 8
+
+- [Class 1 - Slides](lecture-notes-slides-2020/slides/sta2453-2020-lecture1.html)
+- Class 1 - workbook
+
+
+# Marking Rubrics
+
+## Data Analysis Rubric
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+datanal <- read_csv("dataanal_rubric.csv")
+knitr::kable(datanal)
+```
+
+## Programming Rubric
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+prog <- read_csv("coding_rubric.csv")
+knitr::kable(prog)
+```
+
+
+

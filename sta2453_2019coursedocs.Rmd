@@ -1,0 +1,52 @@
+---
+title: "STA2453 - Course Documents"
+output: html_document
+---
+
+# Course Documents
+
+## September 10
+
+[Class 1 - Slides](class1_sta2453_11sept2019.html)
+
+
+## September 24
+
+[Class 2 Slides](https://nbviewer.jupyter.org/github/STA2453/STA2453.github.io/blob/master/sta2453-class-slides.ipynb)
+
+[Lab 2](https://nbviewer.jupyter.org/github/STA2453/STA2453.github.io/blob/master/sta2453_Sept2019_lab2-students.ipynb)
+
+## October 8
+
+[Class slides](sta2453_classslides_8oct2019.html)
+
+[Lab 3](lab3.html)
+
+## October 29
+
+Introduction to [project #1](sta2453_2019_project1.html), by Dr. Ming-Chang Tsai, Canadian Sports Institute. 
+
+## November 12
+
+[Class slides](sta2453_class5_datavis_2019.pdf)
+
+# Marking Rubrics
+
+## Data Analysis Rubric
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+datanal <- read_csv("dataanal_rubric.csv")
+knitr::kable(datanal)
+```
+
+## Programming Rubric
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+prog <- read_csv("coding_rubric.csv")
+knitr::kable(prog)
+```
+
+
+

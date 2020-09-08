@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Project #2</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">STA2453</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="syllabus_2020.html">Syllabus and Schedule</a>
+</li>
+<li>
+  <a href="sta2453_2020coursedocs.html">Course documents</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Projects
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="lecture-notes-slides-2020/sta2453_20202_project1.html">Project 1 - Data Collection and Analysis</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Project #2</h1>
+
+</div>
+
+
+<div id="healthcare-theme" class="section level1">
+<h1>Healthcare Theme</h1>
+<p>The theme of project #2 will be problems from two different healthcare domains.</p>
+</div>
+<div id="due-dates" class="section level1">
+<h1>Due Dates</h1>
+<p>Presentation: Feb. 11</p>
+<p>Written Report: Feb. 24</p>
+<div id="complications-of-diabetes" class="section level2">
+<h2>Complications of diabetes</h2>
+<p>Mathieu Ravaut (MScAC Alumni) - Machine Learning Research Scientist at Layer 6 AI will introduce this problem on Jan. 14</p>
+<div id="Question-diab" class="section level3">
+<h3>Question</h3>
+<p>Use the <a href="https://www.kaggle.com/brandao/diabetes">Diabetes 130 US hospitals for years 1999-2008 data</a> to predict readmission.</p>
+</div>
+</div>
+<div id="detecting-fraudulant-data-in-randomised-control-trials" class="section level2">
+<h2>Detecting fraudulant data in randomised control trials</h2>
+<p>Shuang Di (MSc - Statistics Alumni) - Data Scientist at Digital Health Innovation, Hamilton Health Sciences on Jan. 21</p>
+<p>Data for this project will be available from Hamilition Health Sciences. To access the data for this project please follow the instructions on this <a href="https://q.utoronto.ca/courses/118473/pages/project-number-2">page</a>.</p>
+<div id="Question-fraud" class="section level3">
+<h3>Question</h3>
+<p>Coming soon …</p>
+</div>
+</div>
+</div>
+<div id="the-assignment" class="section level1">
+<h1>The Assignment</h1>
+<p>The assignment is to answer either the diabetes or fraud question using the data provided, but you will almost surely need to develop more focused questions. You will have to wrangle the data into a format that can be analysed using statistical methods, and draw appropriate conclusions.</p>
+<div id="groups" class="section level2">
+<h2>Groups</h2>
+<p>This is an individual assignment, where each student will pick a project to work on, although you may collaborate with your classmates. The presentation and written report is an individual assignment.</p>
+</div>
+<div id="written-report" class="section level2">
+<h2>Written Report</h2>
+<ul>
+<li><p>The written report should be at most six pages. This means that you will have to be selective in what you choose to report, and which plots you choose to display.</p></li>
+<li><p>The written report is due on Feb. 24.</p></li>
+</ul>
+<div id="answers-to-some-common-questions-about-the-written-report" class="section level3">
+<h3>Answers to Some Common Questions about the Written Report</h3>
+<ol style="list-style-type: decimal">
+<li>It’s not necessary for R/Python code chunks to appear in the report (in <a href="https://bookdown.org/yihui/rmarkdown/">R Markdown</a> use the chunk options <code>echo=FALSE</code>, <code>warning = FALSE</code>, <code>message = FALSE</code> and in Jupyter use the command line tool <code>nbconvert</code> <a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>) unless there is some part of the code that will contribute to describing what you have done in the data analysis. Don’t submit a report with warning messages from a library you loaded in your report. For example,</li>
+</ol>
+<p><strong>Don’t do this:</strong></p>
+<p>The distribution of XX is shown below …</p>
+<pre class="r"><code>library(tidyverse)
+set.seed(1028)
+data.frame(x =  rnorm(100)) %&gt;% ggplot(aes(x)) + geom_histogram(colour = &quot;white&quot;, fill = &quot;darkblue&quot;)</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="sta2453_2019_project2_files/figure-html/unnamed-chunk-1-1.png" width="288" /></p>
+<p><strong>Do this:</strong></p>
+<p>The distribution of XX is shown below …</p>
+<p><img src="sta2453_2019_project2_files/figure-html/unnamed-chunk-2-1.png" width="288" /></p>
+<p>Also, you will be submitting your R Markdown/Jupyter Notebook file so I can see all the gory details. This leads to …</p>
+<ol start="2" style="list-style-type: decimal">
+<li><p>What should be in the report? A high level description of what you have done. This leads to …</p></li>
+<li><p>Who is the intended audience for the report and what do you mean by a “high level description”? The intended audience is an educated person that has taken at least one basic statistics course, but might be a bit rusty on the details. For example, your supervisor at work completed an MBA ten years ago and took a few statistics courses, but the details are a bit hazy.</p></li>
+</ol>
+</div>
+<div id="how-will-my-writing-be-evaluated" class="section level3">
+<h3>How will my writing be evaluated?</h3>
+<p>Your writing will be evaluated for clarity and conciseness.</p>
+<ol style="list-style-type: decimal">
+<li><p>Title [1-5] There should be an appropriate title, adequate summary, and complete information including names and dates.</p></li>
+<li><p>Introduction [1-5] The purpose of the research should be clearly stated and the scope of what is considered in the report should be clear.</p></li>
+<li><p>Methods [1-5] The role of each method should be clearly stated. The description of the analyses should be clear and unambiguous so that another statistician or data scientist could easily re-construct it. The methods should be described accurately.</p></li>
+<li><p>Results [1-5] There should be appropriate tables and graphs. The results should be clearly stated in the context of the problem. The size and direction of significant results should be given. The results must be accurately stated. The research question should be adequately answered.</p></li>
+<li><p>Conclusion / Discussion [1-5] The results should be clearly and completely summarized. This section should also include discussion of limitations and/or concerns and/or suggestions for future consideration as appropriate.</p></li>
+<li><p>General Considerations [1-5] The ideas should be presented in logical order, with well-organized sections, no grammatical, spelling, or punctuation errors, an appropriate level of technical detail, and be clear and easy to follow.</p></li>
+</ol>
+</div>
+</div>
+<div id="class-presentation" class="section level2">
+<h2>Class Presentation</h2>
+<p>Presentations will take place on Feb. 11. The time allotted for each group is <strong>10 minutes plus 5 minutes for discussion</strong>. This time limit will be enforced. If your group exceeds the time limit then you will be asked to stop the presentation. This means that you should rehearse your presentation timing before you present to the class.</p>
+<div id="general-presentation-guidelines" class="section level3">
+<h3>General Presentation Guidelines</h3>
+<p>The goal of the presentation is to effectively communicate your findings to a non-technical, but educated, audience (e.g., physicians or health care executives). This doesn’t mean that you shouldn’t include technical details, but you should aim to communicate the findings to an audience without a background in statistics, math, or computer science.</p>
+<p>You will need to remind us about the project, but only tell us what we really need to know. We are curious about the results, and how your group presents the results, but they are not the only purpose of this presentation. So, what should you include? Examples, of questions to consider as you and your partner are preparing your presentation are:</p>
+<ul>
+<li>What problem did your group set out to solve?</li>
+<li>How did your group define the problem?</li>
+<li>What do your results mean in practice? Do your results suggest something should change or not change?</li>
+</ul>
+</div>
+<div id="presentation-evaluation" class="section level3">
+<h3>Presentation Evaluation</h3>
+<div id="content-40" class="section level4">
+<h4>Content [40%]</h4>
+<ul>
+<li>Is there evidence that you have thought deeply and insightfully about your project and what you have learned from it?</li>
+<li>Did you use appropriate statistical methods to answer the questions?</li>
+<li>Is the content interesting and relevant?</li>
+</ul>
+</div>
+<div id="clarity-30" class="section level4">
+<h4>Clarity [30%]</h4>
+<ul>
+<li>Could the points of your presentation be easily understood by your classmates?</li>
+<li>Are you organized?</li>
+<li>By listening to your presentation, have your classmates had the opportunity to also learn what you learned?</li>
+</ul>
+</div>
+<div id="timing-and-preperation-20" class="section level4">
+<h4>Timing and Preperation [20%]</h4>
+<ul>
+<li>Is there evidence that your presentation was well rehearsed?</li>
+<li>Did your presentation fit into the specified time limits?</li>
+</ul>
+</div>
+<div id="delivery-10" class="section level4">
+<h4>Delivery [10%]</h4>
+<ul>
+<li>Was everything that you said easy to hear?</li>
+<li>Was your presentation style engaging?</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>For example, to convert foo.ipynb to an html document <strong>without code cells</strong> the command line syntax for nbconvert is: <code>jupyter nbconvert --TemplateExporter.exclude_input=True foo.ipynb</code>. For more information see the documentation <a href="https://nbconvert.readthedocs.io/en/latest/install.html">here</a>.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

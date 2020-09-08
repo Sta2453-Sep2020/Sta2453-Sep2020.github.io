@@ -1,0 +1,15 @@
+---
+title: 'Project #3'
+output:
+  html_document:
+    theme: cosmo
+    highlight: textmate
+    toc: false
+    toc_float: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+A description of project 3 is available [here](https://github.com/STA2453/project3-2020).

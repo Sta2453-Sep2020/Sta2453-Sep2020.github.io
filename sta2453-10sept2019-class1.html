@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>STA2453 - Data Science, Collaboration, and Communication</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">STA2453</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="syllabus_2019.html">Syllabus</a>
+</li>
+<li>
+  <a href="sta2453_2019coursedocs.html">Course documents</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">STA2453 - Data Science, Collaboration, and Communication</h1>
+
+</div>
+
+
+<div id="course-overview" class="section level1">
+<h1>Course Overview</h1>
+<p>The <strong>primary learning objectives</strong> are:</p>
+<ol style="list-style-type: decimal">
+<li>to gain experience using data analysis to extract information.</li>
+<li>to gain experience communicating information that arise from a data analysis.</li>
+</ol>
+</div>
+<div id="computational-notebooks" class="section level1">
+<h1>Computational Notebooks</h1>
+<p>Lots of users love them …</p>
+<p><img src="githubipynbcount.png" /></p>
+<p>But, not everyone …</p>
+<p><img src="hptweet.png" /></p>
+<p>Ref: <a href="https://github.com/parente/nbestimate" class="uri">https://github.com/parente/nbestimate</a></p>
+</div>
+<div id="what-is-data-analysis" class="section level1">
+<h1>What is data analysis?</h1>
+<p>These quotes are from Tukey’s 1962 paper, The Future of Data Analysis.</p>
+<blockquote>
+<p>… data analysis, which I take to include, among other things: procedures for analyzing data, techniques for interpreting the results of such procedures, ways of planning the gathering of data to make its analysis easier, more precise or more accurate, and all the machinery and results of (mathematical) statistics which apply to analyzing data.</p>
+</blockquote>
+<blockquote>
+<p>Data analysis … take on the chracteristics of a science rather than those of mathematics …</p>
+</blockquote>
+<blockquote>
+<p>… give general advice about the use of techniques as soon as there is reasonable ground to think the advice is sound; be prepared for a reasonable fraction (not too large) of cases of such advice to be generally wrong.</p>
+</blockquote>
+<blockquote>
+<p>Pure mathematics differs from most human endevor in that assumptions are not criticized because of thier relation to something outside, though they are …often critized as unasthetic or as as unnecessarily strong …</p>
+</blockquote>
+<blockquote>
+<p>In data analysis we must look to a very heavy emphasis on judgement …</p>
+</blockquote>
+<blockquote>
+<p>(a1) judgement based upon the experience of the particular field of subject matter from which the data come,</p>
+</blockquote>
+<blockquote>
+<p>(a2) judgement based upon a broad experience with how particular techniques of data analysis have worked in a variety of fields of application,</p>
+</blockquote>
+<blockquote>
+<p>(a3) judgement based upon abstract results about the properties of particular techniques, whether obtained by mathematical proofs or empirical sampling.</p>
+</blockquote>
+<p><img src="Data_Science_VD.png" /></p>
+<ul>
+<li><a href="https://leanpub.com/reportwriting">Roger Peng</a> states that</li>
+</ul>
+<blockquote>
+<p>If one were to write down the steps in a data analysis, you might come up with something along these lines of the following list</p>
+</blockquote>
+<blockquote>
+<ul>
+<li>Defining the question</li>
+<li>Defining the ideal dataset</li>
+<li>Determining what data you can access<br />
+</li>
+<li>Obtaining the data</li>
+<li>Cleaning the data</li>
+<li>Exploratory data analysis</li>
+<li>Statistical prediction/modeling</li>
+<li>Interpretation of results</li>
+<li>Challenging of results</li>
+<li>Synthesis and write up</li>
+<li>Creating reproducible code</li>
+</ul>
+</blockquote>
+</div>
+<div id="computing" class="section level1">
+<h1>Computing</h1>
+<ul>
+<li><p>I use R and Python. RStudio and Jupyter notebooks are excellent tools.</p></li>
+<li><p>I expect that all work will be done in a <strong>“reproducible”</strong> manner.</p></li>
+</ul>
+</div>
+<div id="data-aquisition" class="section level1">
+<h1>Data aquisition</h1>
+<ul>
+<li>Experiment</li>
+<li>Observational study</li>
+</ul>
+</div>
+<div id="data-cleaning-and-wrangling" class="section level1">
+<h1>Data cleaning and wrangling</h1>
+<ul>
+<li>Data cleaning example</li>
+</ul>
+<pre class="r"><code>agedat &lt;- tibble(age = c(25, 20, 21, 120, 19, 31, 90, 17), sex = c(rep(&quot;Male&quot;, 4), rep(&quot;Female&quot;, 4)))
+ggplot(agedat, aes(sex, age)) + geom_boxplot()</code></pre>
+<p><img src="sta2453-10sept2019-class1_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<pre class="r"><code>agedat_clean &lt;- filter(agedat, age &lt;= 100) # remove age &gt; 100
+ggplot(agedat_clean, aes(sex, age)) + geom_boxplot()</code></pre>
+<p><img src="sta2453-10sept2019-class1_files/figure-html/unnamed-chunk-1-2.png" width="672" /></p>
+<pre class="python"><code>import pandas as pd
+import numpy as np
+import seaborn as sns
+
+data = {&#39;age&#39;:[25, 20, 21, 120, 19, 31, 90, 17],
+        &#39;sex&#39;: np.concatenate((np.repeat(&quot;Male&quot;,4), np.repeat(&quot;Female&quot;,4)))}
+agedat = pd.DataFrame(data)
+#agedat.boxplot()
+sns.boxplot(x=&quot;sex&quot;, y=&quot;age&quot;, data=agedat)</code></pre>
+<p><img src="sta2453-10sept2019-class1_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<ul>
+<li>Data wrangling (transformation, etc.)</li>
+</ul>
+<pre class="r"><code>agedat_std &lt;- agedat_clean %&gt;% 
+  group_by(sex) %&gt;% 
+  summarise(mean=mean(age),sd = sd(age)) %&gt;% 
+  full_join(agedat_clean) %&gt;% 
+  mutate(std_age = (age-mean)/sd)
+
+ggplot(agedat_std,aes(sex,std_age)) + geom_boxplot()</code></pre>
+<p><img src="sta2453-10sept2019-class1_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+</div>
+<div id="methods" class="section level1">
+<h1>Methods</h1>
+<ul>
+<li><p>We will cover basic statistical (and some machine learning) methods at a very basic level.</p></li>
+<li><p>But,I expect that you are open to learning new statistical methods with minimal guidance.</p></li>
+</ul>
+</div>
+<div id="data-analysis---case-study" class="section level1">
+<h1>Data analysis - Case study</h1>
+<div id="genetic-activity-for-leukemia-patients" class="section level2">
+<h2>Genetic Activity for Leukemia Patients</h2>
+<p>(Ref: CASI, pg. 8 - 10)</p>
+<p>72 leukemia patients, 47 with ALL (acute lymphoblastic leukemia) and 25 with AML (acute myeloid leuk- emia, a worse prognosis) have each had genetic activity measured for a panel of 7,128 genes.</p>
+<p>The data are shown below</p>
+<pre class="r"><code>leuk_dat &lt;- read_csv(&quot;https://web.stanford.edu/~hastie/CASI_files/DATA/leukemia_big.csv&quot;)
+leuk_dat %&gt;% glimpse()</code></pre>
+<pre><code>## Observations: 7,128
+## Variables: 72
+## $ ALL    &lt;dbl&gt; -1.53362174, -1.23567293, -0.33398288, 0.48870212, -1.300…
+## $ ALL_1  &lt;dbl&gt; -0.8676096, -1.2755005, 0.3759265, 0.4440110, -1.2296598,…
+## $ ALL_2  &lt;dbl&gt; -0.4331719, -1.1844922, -0.4591960, 0.4362635, -1.3258824…
+## $ ALL_3  &lt;dbl&gt; -1.67190319, -1.59642398, -1.42257144, 0.19335294, -1.818…
+## $ ALL_4  &lt;dbl&gt; -1.187689367, -1.335255683, -0.797492909, 0.235631518, -1…
+## $ ALL_5  &lt;dbl&gt; -1.1272336, -1.1137304, -1.3627683, -0.3603116, -1.513974…
+## $ ALL_6  &lt;dbl&gt; -1.0454091, -0.8008802, -0.6719538, 0.1849409, -1.6516236…
+## $ ALL_7  &lt;dbl&gt; -0.10691701, -0.74517661, -1.17567426, 0.42565329, -1.339…
+## $ ALL_8  &lt;dbl&gt; -1.19879574, -0.84931206, 0.32081340, 0.33398288, -0.5931…
+## $ ALL_9  &lt;dbl&gt; -1.1908987, -1.1908987, 0.6466095, 0.2352700, 0.1333023, …
+## $ ALL_10 &lt;dbl&gt; -1.10591942, -1.01345467, -0.30769934, 0.31600478, -1.433…
+## $ ALL_11 &lt;dbl&gt; -0.94309850, -0.87506197, -0.45139580, 0.24667208, -1.199…
+## $ ALL_12 &lt;dbl&gt; -1.0055535, -1.2421112, -0.4705563, 0.1455515, -1.4461777…
+## $ ALL_13 &lt;dbl&gt; -1.19915648, -1.18166049, -0.86786579, 0.25265732, -1.423…
+## $ ALL_14 &lt;dbl&gt; -1.31245289, -1.25475818, -0.38102570, 0.10939272, -1.551…
+## $ ALL_15 &lt;dbl&gt; -1.122599757, -1.276294052, -0.884641309, -0.315819983, -…
+## $ ALL_16 &lt;dbl&gt; -1.0924102, -1.1859117, -1.4182326, 0.4137498, -1.6033782…
+## $ ALL_17 &lt;dbl&gt; -0.77616929, -1.27907772, -0.66799305, 0.20195807, -1.390…
+## $ ALL_18 &lt;dbl&gt; -0.98079512, -1.06318484, -0.28492074, 0.38121475, -1.376…
+## $ ALL_19 &lt;dbl&gt; -0.613801763, -1.365442859, -0.460368434, 0.305672364, -1…
+## $ AML    &lt;dbl&gt; -0.63130056, -0.56362166, -0.38992584, -0.16459041, -1.23…
+## $ AML_1  &lt;dbl&gt; -1.23793940, -1.39042805, -0.35263077, 0.28547004, -1.678…
+## $ AML_2  &lt;dbl&gt; -1.012573649, -1.220722645, -0.402857739, 0.186014078, -1…
+## $ AML_3  &lt;dbl&gt; -1.03905398, -1.09753298, 0.23671618, 0.44245937, -1.6027…
+## $ AML_4  &lt;dbl&gt; -1.05425535, -1.04056330, -0.17386415, 0.43916574, -1.638…
+## $ AML_5  &lt;dbl&gt; -1.27233445, -0.83527496, -1.02379204, 0.37460611, -1.262…
+## $ AML_6  &lt;dbl&gt; -1.0234952, -1.5079190, -0.7859481, 0.5198471, -1.6014739…
+## $ AML_7  &lt;dbl&gt; -1.3561243, -1.1977145, -0.3113880, -0.3505736, -1.448683…
+## $ AML_8  &lt;dbl&gt; -0.72148204, -1.62934367, -0.61401402, 0.63645871, -1.499…
+## $ AML_9  &lt;dbl&gt; -0.815012375, -1.313701855, -0.532972724, 0.157644432, -1…
+## $ AML_10 &lt;dbl&gt; -0.996847482, -1.681944490, -0.075492007, 0.106563391, -1…
+## $ AML_11 &lt;dbl&gt; -1.13322730, -1.25052028, -0.77926182, -0.03569600, -1.16…
+## $ AML_12 &lt;dbl&gt; -0.670192151, -1.489009829, -0.876868103, 0.385187923, -1…
+## $ AML_13 &lt;dbl&gt; -1.24975216, -1.48741364, -0.94255011, -0.53054268, -1.50…
+## $ ALL_20 &lt;dbl&gt; -1.28027377, -1.12856207, -0.81746542, -0.22083498, -1.45…
+## $ ALL_21 &lt;dbl&gt; -1.16106247, -0.95274162, -0.60808111, 0.35806138, -1.470…
+## $ ALL_22 &lt;dbl&gt; -0.81256423, -0.72994645, -1.31955766, 0.27523032, -1.420…
+## $ ALL_23 &lt;dbl&gt; -1.03064516, -0.95829196, 0.29316947, -0.46780863, -1.582…
+## $ ALL_24 &lt;dbl&gt; -1.31871835, -1.38536160, -1.18591169, 0.07937133, -1.692…
+## $ ALL_25 &lt;dbl&gt; -1.14094563, -0.94887379, 0.33008174, -0.14732846, -1.447…
+## $ ALL_26 &lt;dbl&gt; -0.82633743, -1.05701755, 0.26192514, -0.26829841, -1.531…
+## $ ALL_27 &lt;dbl&gt; -1.3789644, -1.1490727, -0.4564628, -0.4944552, -1.531914…
+## $ ALL_28 &lt;dbl&gt; -0.58185004, -1.06040457, -0.17350720, 0.22570151, -1.271…
+## $ ALL_29 &lt;dbl&gt; -1.0505849, -1.1140573, -0.3134186, 0.3531921, -1.3762399…
+## $ ALL_30 &lt;dbl&gt; -1.303766853, -1.269181072, -0.953849340, -0.132947608, -…
+## $ ALL_31 &lt;dbl&gt; -0.93817317, -1.05794008, 0.07549201, -0.28785137, -1.355…
+## $ ALL_32 &lt;dbl&gt; -1.15419084, -1.26330227, -0.83552418, 0.13117416, -1.599…
+## $ ALL_33 &lt;dbl&gt; -1.10916577, -1.22853730, -1.12657018, 0.27249248, -1.155…
+## $ ALL_34 &lt;dbl&gt; -1.25321452, -1.11242385, -1.31662411, 0.05030145, -1.541…
+## $ ALL_35 &lt;dbl&gt; -1.148392509, -1.460328738, -0.873258688, 0.316744092, -1…
+## $ ALL_36 &lt;dbl&gt; -1.48212019, -1.11897569, -0.62210060, 0.18154410, -1.415…
+## $ ALL_37 &lt;dbl&gt; -1.07470223, -1.35656540, -1.24211119, -0.14643990, -1.36…
+## $ ALL_38 &lt;dbl&gt; -0.870944345, -0.914413961, 0.008966177, 0.335470354, -1.…
+## $ ALL_39 &lt;dbl&gt; -0.58601974, -1.38766012, -0.32359098, 0.03639968, -1.470…
+## $ ALL_40 &lt;dbl&gt; -1.34822970, -1.56814763, -1.39879643, 0.17190118, -1.373…
+## $ ALL_41 &lt;dbl&gt; -1.47113714, -0.97145296, -1.25167384, -0.64077013, -1.58…
+## $ ALL_42 &lt;dbl&gt; -0.86966061, -1.53191442, -0.56115055, -0.69796147, -1.52…
+## $ ALL_43 &lt;dbl&gt; -1.10819064, -1.50682391, -1.09113402, 0.24250579, -1.659…
+## $ ALL_44 &lt;dbl&gt; -1.0457128, -1.2806729, -1.0610217, 0.5494591, -1.8379609…
+## $ ALL_45 &lt;dbl&gt; -1.16037284, -1.52400539, -1.01374852, -0.28089511, -1.55…
+## $ ALL_46 &lt;dbl&gt; -1.1541908, -1.2459226, -0.7148837, -0.1448408, -1.403017…
+## $ AML_14 &lt;dbl&gt; -0.58289151, -1.25863046, -0.71943094, -0.09755049, -1.57…
+## $ AML_15 &lt;dbl&gt; -0.43665029, -0.91548270, -0.73615632, 0.08378111, -1.547…
+## $ AML_16 &lt;dbl&gt; -1.27470781, -1.35436266, -0.02215325, 0.35656224, -1.264…
+## $ AML_17 &lt;dbl&gt; -0.68145848, -0.65355897, -0.03745523, 0.41624076, -1.512…
+## $ AML_18 &lt;dbl&gt; -0.8766099, -1.0962496, -0.5673348, 0.5339862, -1.4695825…
+## $ AML_19 &lt;dbl&gt; -0.624021798, -1.066594155, -1.100749374, 0.227505285, -1…
+## $ AML_20 &lt;dbl&gt; -0.4316276, -1.3352557, -0.5529381, 0.4168160, -0.9776716…
+## $ AML_21 &lt;dbl&gt; -1.43525883, -1.20458636, -0.94887379, 0.40820216, -1.090…
+## $ AML_22 &lt;dbl&gt; -0.67195377, -0.75145710, -0.23165678, 0.32655648, -1.545…
+## $ AML_23 &lt;dbl&gt; -1.01316091, -0.88959210, -0.74216314, 0.36181279, -1.174…
+## $ AML_24 &lt;dbl&gt; -0.96948217, -1.08098761, -0.77950001, 0.29886352, -1.443…</code></pre>
+<pre class="python"><code>import pandas as pd
+leuk_dat1 = pd.read_csv(&#39;https://web.stanford.edu/~hastie/CASI_files/DATA/leukemia_big.csv&#39;)
+leuk_dat48 = leuk_dat1[47:48]
+leuk_dat48_s = leuk_dat48.stack()
+df = pd.DataFrame(leuk_dat48_s).reset_index()
+df[&#39;group&#39;] = df[&#39;level_1&#39;].str.contains(&#39;ALL&#39;, regex=False).apply(lambda x: &#39;ALL&#39; if x == True else &#39;AML&#39;)
+df[&#39;value&#39;] = df[0]
+df.drop(df.columns[[0,1,2]], axis=1, inplace = True)
+df.head()</code></pre>
+<pre><code>##   group     value
+## 0   ALL  0.076903
+## 1   ALL  0.282358
+## 2   ALL  0.780453
+## 3   ALL  0.401523
+## 4   ALL  0.141466</code></pre>
+<p>The histograms below show the distributions for gene 48 in the ALL and AML groups.</p>
+<p><img src="sta2453-10sept2019-class1_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>Is there a difference in gene 48 between patients with <code>ALL</code> (acute lymphoblastic leukemia) compared to <code>AML</code>(acute myeloid leukemia, a worse prognosis)?</p>
+<pre class="r"><code>library(broom)
+
+t &lt;- tidy(t.test(gene_48$value[gene_48$group == &quot;ALL&quot;],
+       gene_48$value[gene_48$group == &quot;AML&quot;], var.equal = T))
+
+knitr::kable(t %&gt;% 
+               select(1:7) %&gt;% 
+               rename(&quot;Mean ALL&quot; = &quot;estimate1&quot;, &quot;Mean AML&quot; = &quot;estimate2&quot;, &quot;df&quot; = &quot;parameter&quot;))</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">Mean ALL</th>
+<th align="right">Mean AML</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+<th align="right">df</th>
+<th align="right">conf.low</th>
+<th align="right">conf.high</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">0.3038753</td>
+<td align="right">0.5307917</td>
+<td align="right">-3.304723</td>
+<td align="right">0.0015011</td>
+<td align="right">70</td>
+<td align="right">-0.363863</td>
+<td align="right">-0.0899698</td>
+</tr>
+</tbody>
+</table>
+<p>This is one candidate gene out of 7,128 genes. Is <span class="math inline">\(t=-3.30\)</span> unusual?</p>
+<pre class="r"><code>f1 &lt;- function(x)
+  {
+ dat &lt;- leuk_dat %&gt;% 
+   mutate(pt = row_number()) %&gt;%
+   slice(x) %&gt;%
+   gather(key = &quot;gene&quot;, value = &quot;value&quot;, 1:72) %&gt;%
+   mutate(group1 = ifelse(str_detect(gene, regex(&quot;ALL&quot;)), &quot;ALL&quot;, &quot;AML&quot;)) %&gt;%
+   do(tidy(t.test(value ~ group1, data = ., var.equal = T)))
+ return(dat$statistic)
+}
+
+tstat_dat &lt;- tibble(t_stat = 1:7128 %&gt;% map(f1) %&gt;% unlist())</code></pre>
+<p>A histogram of 7,128 t-tests with the <span class="math inline">\(t_{70}\)</span> distribution, and the number and percentage of genes with <span class="math inline">\(t &lt;= -3.30\)</span> is shown below.</p>
+<pre class="r"><code>tstat_dat %&gt;% 
+  ggplot(aes(t_stat)) + geom_histogram(colour = &quot;black&quot;, fill = &quot;grey&quot;, binwidth = 1) + 
+  theme_bw() + geom_vline(xintercept = -3.01, colour = &quot;red&quot;, size = 1) +
+  geom_text(aes(-3.01, 0, label = &quot;-3.30&quot;, hjust = 1.2, vjust = 1.2), size = 3) +
+  stat_function(fun = function(x, df) {dt(x, df)*7128}, args = list(df = 70), colour = &quot;blue&quot;)</code></pre>
+<p><img src="sta2453-10sept2019-class1_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<pre class="r"><code>tstat_dat %&gt;% summarise(n = n(), count = sum(t_stat &lt;= -3.30), percent = round(100*count/n,2))</code></pre>
+<pre><code>## # A tibble: 1 x 3
+##       n count percent
+##   &lt;int&gt; &lt;int&gt;   &lt;dbl&gt;
+## 1  7128   346    4.85</code></pre>
+</div>
+</div>
+<div id="statistical-thinking-and-hypothesis-testing" class="section level1">
+<h1>Statistical Thinking and Hypothesis Testing</h1>
+<ul>
+<li>The general ideas behind testing hypotheses permeate “statistical thinking”.<br />
+</li>
+<li>The core of statistical thinking includes the appreciation of uncertaintity and variability.</li>
+<li>Hospital A has 20 births per day and Hospital B has 50 births per day. During a period one year which hospital is more likely to have more than 60% boys born?</li>
+</ul>
+<p><img src="sta2453-10sept2019-class1_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<pre class="python"><code>import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+np.random.seed(112)
+
+boys_small = np.random.binomial(20,0.5,365)/20
+_ = plt.hist(boys_small, color = &#39;grey&#39;, edgecolor = &#39;black&#39;, bins = 14)
+plt.title(&quot;Small Hospital&quot;)</code></pre>
+<pre><code>## Text(0.5, 1.0, &#39;Small Hospital&#39;)</code></pre>
+<pre class="python"><code>plt.show()</code></pre>
+<p><img src="sta2453-10sept2019-class1_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<div id="hypothesis-testing" class="section level2">
+<h2>Hypothesis Testing</h2>
+<ul>
+<li>Let’s look at the expression of gene 48 between the two groups, ALL and AML.</li>
+<li>Assume that there is <strong>no difference</strong> in gene expression between the two groups. This means that the same gene expression value for a patient would occur if that patient is in the ALL or AML groups.</li>
+</ul>
+<pre class="r"><code>set.seed(100)
+gene_48 %&gt;% select(value, group) %&gt;% sample_n(5)</code></pre>
+<pre><code>## # A tibble: 5 x 2
+##    value group
+##    &lt;dbl&gt; &lt;chr&gt;
+## 1  0.743 AML  
+## 2  0.523 AML  
+## 3  0.402 ALL  
+## 4 -0.106 ALL  
+## 5  0.242 ALL</code></pre>
+<pre class="r"><code>gene_48 %&gt;% group_by(group) %&gt;% 
+  summarise(n = n(), mean = mean(value), sd = sd(value))  %&gt;%
+  mutate(diff = mean - lag(mean))</code></pre>
+<pre><code>## # A tibble: 2 x 5
+##   group     n  mean    sd   diff
+##   &lt;chr&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+## 1 ALL      47 0.304 0.257 NA    
+## 2 AML      25 0.531 0.312  0.227</code></pre>
+<ul>
+<li>Under the assumption of <strong>no difference</strong> how likely is it that we would observe a difference of -3.30 (the observed difference)?</li>
+<li>Under the assumption of <strong>no difference</strong> the group labels <code>AML</code> and <code>ALL</code> are interchangeable. The number of permutations of the lables is the number of ways that the observed data could have been generated under the assumption of <strong>no difference</strong>?</li>
+</ul>
+<pre class="r"><code>library(modelr)
+set.seed(10)
+
+gen_rs &lt;- function() 
+  {
+rs &lt;- resample_permutation(gene_48, &quot;group&quot;)
+rs_df &lt;- as.data.frame(rs)
+rs_diff &lt;- mean(rs_df$value[rs_df$group == &quot;ALL&quot;]) - mean(rs_df$value[rs_df$group == &quot;AML&quot;])
+return(rs_diff)
+}
+
+Numsim &lt;- 10000
+
+rs_dist &lt;- 1:Numsim %&gt;% map(~gen_rs()) %&gt;% flatten_dbl()
+
+tibble(rs_dist) %&gt;% 
+  ggplot(aes(rs_dist)) + geom_histogram(colour = &quot;black&quot;, fill = &quot;grey&quot;) +
+  geom_vline(xintercept = -0.2269164, colour = &quot;red&quot;) +
+  ggtitle(&quot;Permutation Null Distribution of Mean Difference&quot;) + xlab(&quot;Mean Difference&quot;) +
+  geom_text(aes(-0.2269164, 0, label = &quot;-0.23&quot;, hjust = 1, vjust = 1.2), size = 3)</code></pre>
+<p><img src="sta2453-10sept2019-class1_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<pre class="r"><code>tibble(rs_dist) %&gt;% summarise(pvalu = sum(rs_dist &lt;= -0.2269164)/Numsim)</code></pre>
+<pre><code>## # A tibble: 1 x 1
+##    pvalu
+##    &lt;dbl&gt;
+## 1 0.0005</code></pre>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

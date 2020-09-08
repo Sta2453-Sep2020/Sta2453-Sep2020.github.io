@@ -1,0 +1,172 @@
+---
+title: "STA2453 Lecture 1"
+output:
+  revealjs::revealjs_presentation:
+    theme: night
+    highlight: pygments
+    transition: fade
+---
+
+<style type="text/css">
+  .reveal p {
+    text-align: left;
+  }
+  .reveal ul {
+    display: block;
+  }
+  .reveal ol {
+    display: block;
+  }
+</style>
+
+## STA2453: Data Science Methods, Collaboration, and Communication
+
+
+
+The heart of this class is in understanding the workflow of data analysis from start to finish is . Primary class Objectives are:
+
+- To introduce students to the skills required to work as a data scientist in industry or academia
+- To gain experience using data analysis to extract information.
+- to gain experience communicating information that arise from a data analysis.
+
+## Learning outcomes
+
+- Problem Formulation
+- Data collection and understanding
+- Data wrangling
+- Programming ([R](https://cran.r-project.org)/[Python](https://www.python.org))
+- Data exploration
+- Data vizualization
+- Modelling
+- Communication
+- Reproducibility
+
+
+## Me!
+
+- Currently the Director of Advanced Analytics at Data Science and Advanced Analytics (DSAA) for Unity
+Health Toronto
+- Work with a team of data scientists and engineers to solve problems that either:
+  1. Improve Patient Outcomes
+  2. Improve Hospital Efficiency
+- We work with both R and python for analytical work with an emphasis on R:
+  - Each project is an R package
+  - We have Rstudio Pro for serving apps and dashboards
+  - We use Rstudio Server pro for our IDE and for creating Jupyter notebooks
+
+
+## Examples of work at DSAA
+
+Live Tool Demos:
+
+- Emergency Department volume forecast
+- Nursing Resource Team (NRT) size optimization
+- General Internal Medicine patient deterioration predictions
+- COVID dashboard
+
+
+## What is a Data Science Project?
+
+> ... data analysis, which I take to include, among other things: procedures for analyzing data, techniques for interpreting the results of such procedures, ways of planning the gathering of data to make its analysis easier, more precise or more accurate, and all the machinery and results of (mathematical) statistics which apply to analyzing data.
+>
+> Data analysis ... take on the chracteristics of a science rather than those of mathematics ...
+> `r tufte::quote_footer('--- Tukey, The Future of Data Analysis')`
+
+
+
+## Steps in Data Analysis
+
+If one were to write down the steps in a data analysis, you might come up with something along these lines of the following list
+
+> - Defining the question
+> - Defining the ideal dataset
+> - Determining what data you can access
+> - Obtaining the data
+> - Cleaning the data
+> - Exploratory data analysis
+> - Statistical prediction/modeling
+> - Interpretation of results
+> - Challenging of results
+> - Synthesis and write up
+> - Creating reproducible code
+
+
+
+## CRISP-DM
+
+The steps from the previous slide can be organized into a very flexible methodology for designing data science projects known as the Cross-industry Process For Data Mining (CRISP DM). 
+
+<img src="crisp-dm.PNG"  height="500" width="600">
+
+## Step 1: Business Understanding
+
+THe project planning phase
+
+> - Usually presenting with a problem. Can it be solved with data?
+> - Is a data solution really necessary? Perhaps it's a process issue. 
+> - Has anything else ever been attempted before?
+> - What kind of solution does the problem require?
+>  - Some data analysis with interpretations?
+>  - A dashboard?
+>  - An application embedded into a workflow?
+> - How does our proposed solution affect other areas of the business?
+> - How will we determine if our solution is successful? Evaluation metrics, cost benefit etc...
+
+## Step 2: Data Understanding
+
+The data extraction and understanding phase
+
+- What data is available?
+  - experimental vs observational data
+- General description of the data (amount, frequency, access)
+- Data exploration (counts, distributions, etc...)
+- Data validation
+
+## Step 3: Data wrangling/cleaning
+
+This is where the data is prepared for analysis
+
+- Splitting the data into training and testing sets
+- Data pre-processing steps
+  - applying transformations, merging tables
+- Feature creation
+
+## Step 4: Modelling
+
+- Select modelling techniques
+- Fit model and tune hyperparameters
+- Assess model fit
+
+## Step 5: Evaluation
+
+This is where you critically evaluate the model performance
+
+- Do the results make sense?
+- Do the performance metrics meet or exceed expectations set up during the business understanding step?
+- Have we evaluated the model on production data? Often data used for training can look different than the 
+data available during production
+
+
+## Step 6: Production and Deployment
+
+- Building a deployment application: dashboard, shiny app, report, etc...
+- Develop monitoring plan
+- Often includes building a monitoring dashboard as well
+  - Can monitor changes in inputs and outputs over time
+- Develop training materials
+
+
+## The process is cyclical 
+
+At any stage in the process you may be required to go back a step or 2, or 3...
+
+<iframe src="https://giphy.com/embed/3oFzlY0DO131GoCFva" width="480" height="270" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/hells-kitchen-fox-foxtv-3oFzlY0DO131GoCFva">via GIPHY</a></p>
+
+
+
+
+## Data wrangling tutorial
+
+DEMO TIME
+
+

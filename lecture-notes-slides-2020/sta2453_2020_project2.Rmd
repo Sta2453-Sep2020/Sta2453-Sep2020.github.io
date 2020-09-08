@@ -1,0 +1,130 @@
+---
+title: 'Project #1 Data Collection and Analysis'
+output:
+  html_document:
+    theme: cosmo
+    highlight: textmate
+    toc: true
+    toc_float: true
+    toc_depth: 4
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Background
+
+TBD
+
+# Question
+
+TBD
+
+# Assignment
+
+TBD
+
+## Groups
+
+Students will be randomly divided into groups of three/two.  Each group will hand in a written report and present to the class. Groups are available on Quercus.
+
+## Written Report
+
+The written report is due on December 8th. 
+
+### Answers to Some Common Questions about the Submitted Report
+
+1. It's not necessary for R/Python code chunks to appear in the report (in [R Markdown](https://bookdown.org/yihui/rmarkdown/) use the chunk options `echo=FALSE`, `warning = FALSE`, `message = FALSE` and in Jupyter use the command line tool `nbconvert` [^1]) unless there is some part of the code that will contribute to describing what you have done in the data analysis. Don't submit a report with warning messages from a library you loaded in your report.  For example,
+
+__Don't do this:__
+
+The distribution of XX is shown below ...
+
+```{r, fig.height=3, fig.width=3}
+library(tidyverse)
+set.seed(1028)
+data.frame(x =  rnorm(100)) %>% ggplot(aes(x)) + geom_histogram(colour = "white", fill = "darkblue")
+```
+
+__Do this:__
+
+The distribution of XX is shown below ...
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE, fig.height=3, fig.width=3}
+library(tidyverse)
+set.seed(1028)
+data.frame(x =  rnorm(100)) %>% ggplot(aes(x)) + geom_histogram(colour = "white", fill = "darkblue")
+```
+
+
+Also, you will be submitting your R Markdown/Jupyter Notebook file so I can see all the gory details. This leads to ...
+
+[^1]: For example, to convert foo.ipynb to an html document **without code cells** the command line syntax for nbconvert is: `jupyter nbconvert --TemplateExporter.exclude_input=True foo.ipynb`.  For more information see the documentation [here](https://nbconvert.readthedocs.io/en/latest/install.html).
+
+2. What should be in the report?  A high level description of what you have done.  This leads to …
+
+3. Who is the intended audience for the report and what do you mean by a “high level description”?  The intended audience is an educated person that has taken at least one basic statistics course, but might be a bit rusty on the details.  For example, your supervisor at work completed an MBA ten years ago and took a few statistics courses, but the details are a bit hazy.
+
+
+### How will my writing be evaluated?
+
+Your writing will be evaluated for clarity and conciseness. 
+
+1. Title [1-5]
+There should be an appropriate title, adequate summary, and complete information including names and dates.
+
+2. Introduction [1-5]
+The purpose of the research should be clearly stated and the scope of what is considered in the report should be clear.
+
+3. Methods [1-5]
+The role of each method should be clearly stated. The description of the analyses should be clear and unambiguous so that another statistician or data scientist could easily re-construct it. The methods should be described accurately.
+
+4. Results [1-5]
+There should be appropriate tables and graphs. The results should be clearly stated in the context of the problem. The size and direction of significant results should be given. The results must be accurately stated. The research question should be adequately answered.
+
+5. Conclusion / Discussion [1-5]
+The results should be clearly and completely summarized. This section should also include discussion of limitations and/or concerns and/or suggestions for future consideration as appropriate.
+
+6. General Considerations [1-5]
+The ideas should be presented in logical order, with well-organized sections, no grammatical, spelling, or punctuation errors, an appropriate level of technical detail, and be clear and easy to follow.
+
+
+## Class Presentation
+
+Presentations will take place on December 1st.  The time allotted for each group is 10 minutes plus 5 minutes for discussion. 
+
+### General Presentation Guidelines
+
+You will need to remind us about the project, but only tell us what we really need to know. We are curious about the results, and how your group presents the results, but they are not the only purpose of this presentation. So, what should you include?  We’re interested in what you learned in the context of your project that has made you a better applied statistician/data scientist. 
+
+You may want to address some of the following: 
+
+- What made the project difficult/easy? 
+- What did you learn about data collection? 
+- What did you learn about statistical communication? 
+- What did you learn about statistical methods? 
+- What useful rules-of-thumb did you learn? 
+- What kind of creative thinking was needed to turn the data or research questions into something that you could analyze? 
+- From the beginning of the course until now, what has changed in how you view statistical work? 
+
+### How your presentations will be evaluated?
+
+#### Content [60%] 
+- Is there evidence that you have thought deeply and insightfully about your project and what you have learned from it? 
+- Did you use appropriate statistical methods to answer the questions? 
+- Is the content interesting and relevant? 
+
+#### Clarity [30%]
+- Could the points of your presentation be easily understood by your classmates? 
+- Are you organized? 
+- By listening to your presentation, have your classmates had the opportunity to also learn what you learned? 
+
+#### Delivery [10%]
+- Was everything that you said easy to hear? 
+- Was your presentation style engaging?
+
+
+
+
+

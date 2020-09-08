@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Project #1</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">STA2453</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="syllabus_2020.html">Syllabus and Schedule</a>
+</li>
+<li>
+  <a href="sta2453_2020coursedocs.html">Course documents</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Projects
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="lecture-notes-slides-2020/sta2453_20202_project1.html">Project 1 - Data Collection and Analysis</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Project #1</h1>
+
+</div>
+
+
+<div id="background" class="section level1">
+<h1>Background</h1>
+<p>The <a href="https://rugby.ca/en/rugby-7s/senior-women">Canadian National Women’s Rugby Team</a> is intrested in the relationship between training load, performance and wellness in Rugby 7s. <a href="https://en.wikipedia.org/wiki/Rugby_sevens">Rugby 7s</a> is a fast-paced, physically demanding sport that pushes the limits of athlete speed, endurance and toughness. Rugby 7s players may play in up to three games in a day, resulting in a tremendous amount of athletic exertion. Substantial exertion results in fatigue, which may lead to physiological deficits (e.g., dehydration), reduced athletic performance, and greater risk of injury.</p>
+<p>Despite the importance of managing training load in professional athletics, very little is known about its effects, and many training decisions are based on “gut feel.” Currently, training load is measured through a combination of subjective measurements (asking players how hard they worked) and objective measurements from wearable technology. Wellness is typically estimated by asking players how they feel in wellness surveys. However, there is no agreed-upon standard of defining wellness so the relationship between training load, performance and wellness is unclear.</p>
+</div>
+<div id="question" class="section level1">
+<h1>Question</h1>
+<p>Quantify wellness into summary measures, and explore it’s relationship to performance, and training load.</p>
+</div>
+<div id="assignment" class="section level1">
+<h1>Assignment</h1>
+<p>The assignment is to answer the <a href="#question">question</a> using the <a href="#data">data</a>, but you will almost surely need to develop more focused questions. You will have to wrangle into a format that can be analysed using statistical methods, and draw appropriate conclusions.</p>
+<div id="groups" class="section level2">
+<h2>Groups</h2>
+<p>Students will be randomly divided into groups of two. Each group will hand in a written report and present to the class. Groups are available on Quercus.</p>
+</div>
+<div id="written-report" class="section level2">
+<h2>Written Report</h2>
+<p>The written report is due on Dec. 10.</p>
+<div id="answers-to-some-common-questions-about-the-submitted-report" class="section level3">
+<h3>Answers to Some Common Questions about the Submitted Report</h3>
+<ol style="list-style-type: decimal">
+<li>It’s not necessary for R/Python code chunks to appear in the report (in <a href="https://bookdown.org/yihui/rmarkdown/">R Markdown</a> use the chunk options <code>echo=FALSE</code>, <code>warning = FALSE</code>, <code>message = FALSE</code> and in Jupyter use the command line tool <code>nbconvert</code> <a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>) unless there is some part of the code that will contribute to describing what you have done in the data analysis. Don’t submit a report with warning messages from a library you loaded in your report. For example,</li>
+</ol>
+<p><strong>Don’t do this:</strong></p>
+<p>The distribution of XX is shown below …</p>
+<pre class="r"><code>library(tidyverse)
+set.seed(1028)
+data.frame(x =  rnorm(100)) %&gt;% ggplot(aes(x)) + geom_histogram(colour = &quot;white&quot;, fill = &quot;darkblue&quot;)</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="sta2453_2020_project1_files/figure-html/unnamed-chunk-1-1.png" width="288" /></p>
+<p><strong>Do this:</strong></p>
+<p>The distribution of XX is shown below …</p>
+<p><img src="sta2453_2020_project1_files/figure-html/unnamed-chunk-2-1.png" width="288" /></p>
+<p>Also, you will be submitting your R Markdown/Jupyter Notebook file so I can see all the gory details. This leads to …</p>
+<ol start="2" style="list-style-type: decimal">
+<li><p>What should be in the report? A high level description of what you have done. This leads to …</p></li>
+<li><p>Who is the intended audience for the report and what do you mean by a “high level description”? The intended audience is an educated person that has taken at least one basic statistics course, but might be a bit rusty on the details. For example, your supervisor at work completed an MBA ten years ago and took a few statistics courses, but the details are a bit hazy.</p></li>
+</ol>
+</div>
+<div id="how-will-my-writing-be-evaluated" class="section level3">
+<h3>How will my writing be evaluated?</h3>
+<p>Your writing will be evaluated for clarity and conciseness.</p>
+<ol style="list-style-type: decimal">
+<li><p>Title [1-5] There should be an appropriate title, adequate summary, and complete information including names and dates.</p></li>
+<li><p>Introduction [1-5] The purpose of the research should be clearly stated and the scope of what is considered in the report should be clear.</p></li>
+<li><p>Methods [1-5] The role of each method should be clearly stated. The description of the analyses should be clear and unambiguous so that another statistician or data scientist could easily re-construct it. The methods should be described accurately.</p></li>
+<li><p>Results [1-5] There should be appropriate tables and graphs. The results should be clearly stated in the context of the problem. The size and direction of significant results should be given. The results must be accurately stated. The research question should be adequately answered.</p></li>
+<li><p>Conclusion / Discussion [1-5] The results should be clearly and completely summarized. This section should also include discussion of limitations and/or concerns and/or suggestions for future consideration as appropriate.</p></li>
+<li><p>General Considerations [1-5] The ideas should be presented in logical order, with well-organized sections, no grammatical, spelling, or punctuation errors, an appropriate level of technical detail, and be clear and easy to follow.</p></li>
+</ol>
+</div>
+</div>
+<div id="class-presentation" class="section level2">
+<h2>Class Presentation</h2>
+<p>Presentations will take place on Nov. 26. The time allotted for each group is 10 minutes plus 5 minutes for discussion.</p>
+<div id="general-presentation-guidelines" class="section level3">
+<h3>General Presentation Guidelines</h3>
+<p>You will need to remind us about the project, but only tell us what we really need to know. We are curious about the results, and how your group presents the results, but they are not the only purpose of this presentation. So, what should you include? We’re interested in what you learned in the context of your project that has made you a better applied statistician/data scientist.</p>
+<p>You may want to address some of the following:</p>
+<ul>
+<li>What made the project difficult/easy?</li>
+<li>What did you learn about data collection?</li>
+<li>What did you learn about statistical communication?</li>
+<li>What did you learn about statistical methods?</li>
+<li>What useful rules-of-thumb did you learn?</li>
+<li>What kind of creative thinking was needed to turn the data or research questions into something that you could analyze?</li>
+<li>From the beginning of the course until now, what has changed in how you view statistical work?</li>
+</ul>
+</div>
+<div id="how-your-presentations-will-be-evaluated" class="section level3">
+<h3>How your presentations will be evaluated?</h3>
+<div id="content-60" class="section level4">
+<h4>Content [60%]</h4>
+<ul>
+<li>Is there evidence that you have thought deeply and insightfully about your project and what you have learned from it?</li>
+<li>Did you use appropriate statistical methods to answer the questions?</li>
+<li>Is the content interesting and relevant?</li>
+</ul>
+</div>
+<div id="clarity-30" class="section level4">
+<h4>Clarity [30%]</h4>
+<ul>
+<li>Could the points of your presentation be easily understood by your classmates?</li>
+<li>Are you organized?</li>
+<li>By listening to your presentation, have your classmates had the opportunity to also learn what you learned?</li>
+</ul>
+</div>
+<div id="delivery-10" class="section level4">
+<h4>Delivery [10%]</h4>
+<ul>
+<li>Was everything that you said easy to hear?</li>
+<li>Was your presentation style engaging?</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="data" class="section level1">
+<h1>Data</h1>
+<p>The datasets provide a number of observations that we believe will be useful to measure wellness, training load, and fatigue in players of the Canadian National Women’s Rugby Team in the 2017-2018 season.</p>
+<p>This data was used in ASA DataFest@UofT in May 2019. A video introducing a related challenge is available below.</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ie32B8MldyE" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+</iframe>
+<div id="overview" class="section level2">
+<h2>Overview</h2>
+<p>The data were collected during the 2017-2018 season. There are five files that give different aspects of the games. The data themselves were collected through a variety of means.</p>
+<ul>
+<li><p>Player level data are provided by the individual athletes themselves and by IMU/GPS devices worn on their vests during games. GPS data may not be available if players are out of range of the satellites. Players are uniquely identified by the PLayerID variable in all data files. Note that players numbered 18-21 did not play in any of the games in this dataset, and so they can be removed from the analysis.</p></li>
+<li><p>Data are available on each game played during the season. Games are often organized in tournaments, which consist of up to 6 games. Each game consists of two 7-minute halves (except the final game of a tournament (game 6), which consists of two 10-minute halves). Games can have extra time at the referee’s discretion, if play is stopped for some reason during the game. There can be up to three games played on a single day. The order and time of the games is provided.</p></li>
+<li><p>There were a total of 43 games, and they are identified by the GameID, which indicates the order in which the games were played throughout the season. (GameID=1 is the first game played in the season.)</p></li>
+</ul>
+</div>
+<div id="data-files" class="section level2">
+<h2>Data Files</h2>
+<p>A codebook for the four data files below is available <a href="https://www.dropbox.com/s/c5v4hig2afq881h/3.%20DataFest%202019%20-%20Codebook.xlsx?dl=0">here</a></p>
+<div id="games.csv" class="section level3">
+<h3>Games.csv</h3>
+<p><a href="https://www.dropbox.com/s/tk13ad7sca5nkwy/games.csv?dl=0">Games.csv</a></p>
+<p>This data contains information on when, where, opponent, and high-level outcomes and events in the game (“box scores”).</p>
+<div id="how-were-the-data-collected" class="section level4">
+<h4>How were the data collected?</h4>
+<ul>
+<li>Information is available <a href="https://en.wikipedia.org/wiki/2017%E2%80%9318_World_Rugby_Sevens_Series">here</a></li>
+</ul>
+</div>
+<div id="possible-links" class="section level4">
+<h4>Possible links</h4>
+<ul>
+<li>GameID links to gps.<br />
+</li>
+<li>Date links to: wellness, GPS, Rate of Perceived Effort (RPE)</li>
+</ul>
+</div>
+</div>
+<div id="wellness.csv" class="section level3">
+<h3>Wellness.csv</h3>
+<p><a href="https://www.dropbox.com/s/170bc3dimgn8ru8/wellness.csv?dl=0">Wellness.csv</a> Self-reported health and wellness for each player. This data provides subjective sense of energy levels. Urine Specific Gravity (USG) can provide evidence of dehydration.</p>
+<div id="how-were-the-data-collected-1" class="section level4">
+<h4>How were the data collected?</h4>
+<ul>
+<li>Self-reported by each athlete.<br />
+</li>
+<li>In principle, reported every morning before 8:30am.<br />
+</li>
+<li>All values are subjective, but Urine Specific Gravity (USG) is recorded through a sensor.<br />
+</li>
+<li>Each athlete may have a different sense of what “typical” means for them, so consider standardizing per athlete.</li>
+</ul>
+</div>
+<div id="possible-links-1" class="section level4">
+<h4>Possible links</h4>
+<p>Date links to games, wellness, RPE, GPS. PlayerID links to RPE, GPS.</p>
+</div>
+</div>
+<div id="rpe.csv" class="section level3">
+<h3>RPE.csv</h3>
+<p><a href="https://www.dropbox.com/s/2kgsd9x1fv1b7fl/rpe.csv?dl=0">RPE.csv</a></p>
+<p>Rate of Perceived Effort (RPE). Self-reported workloads for each “session”. A session can be a workout (focusing on a particular objective) or a game. Note that what one player rates “4” for RPE another might rate “7” or any other number, so consider standardizing per player. For many sports analysts, a ratio of acute/chronic training load &gt; 1.2 indicates that the athlete is currently in “high” training load and at an increased risk for injury. A ratio &lt; 0.8 indicates that they are “de-training” or recovering. These are cut-off values based on Australian Football League players.</p>
+<div id="how-were-the-data-collected-2" class="section level4">
+<h4>How were the data collected?</h4>
+<ul>
+<li><p>In theory, each player rates herself after each session and/or game. It is easy, however, for players to neglect this when playing back-to-back games. Note that each day there can be multiple “sessions”, and that a “session” can be a recovery period, a game, strength &amp; conditioning, etc.</p></li>
+<li><p>There is no way to associate a particular rating with a particular game on days in which multiple games were played.</p></li>
+</ul>
+</div>
+<div id="possible-links-2" class="section level4">
+<h4>Possible links</h4>
+<p>Date links to wellness, games, GPS . PlayerID links to wellness and GPS,</p>
+</div>
+</div>
+<div id="gps.csv" class="section level3">
+<h3>gps.csv</h3>
+<p><a href="https://www.dropbox.com/s/n7pvlxy60qwyy91/gps.csv?dl=0">gps.csv</a></p>
+<p>Position data for each player during a game. Note that we do not know the location of the ball, or the orientation of the playing field. The “z” acceleration is in the up-down direction, x is back-front, y is side-to-side. Note that making plots of location is unlikely to help you understand the role of fatigue unless you first think carefully about aspects of location that might be affected by fatigue. Some large-scale things to consider: can you infer tackles? Coaches usually encourage players to keep space between them.</p>
+<div id="how-were-the-data-collected-3" class="section level4">
+<h4>How were the data collected?</h4>
+<ul>
+<li>Data were collected from sensors worn by players.<br />
+</li>
+<li>Originally, the data were collected at 100 Hz (100 times per second), but have been collapsed to 10 Hz. Thus, each second, there are 10 “frames” that provide information on player location and acceleration.</li>
+</ul>
+</div>
+<div id="possible-links-3" class="section level4">
+<h4>Possible links</h4>
+<p>Date links to games, substitutions, wellness, RPE. PlayerID links to wellness, RPE. GameID links to games.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>For example, to convert foo.ipynb to an html document <strong>without code cells</strong> the command line syntax for nbconvert is: <code>jupyter nbconvert --TemplateExporter.exclude_input=True foo.ipynb</code>. For more information see the documentation <a href="https://nbconvert.readthedocs.io/en/latest/install.html">here</a>.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

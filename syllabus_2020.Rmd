@@ -1,0 +1,117 @@
+---
+title: "STA2453H1Y - Data Science Methods, Collaboration, and Communication"
+subtitle: "Syllabus"
+output:
+  html_document:
+    theme: cosmo
+    highlight: textmate
+    toc: true
+    toc_float: true
+bibliography: syllab.bib
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+library(tidyverse)
+```
+
+# Instructor
+
+[Josh Murray](https://www.chartdatascience.ca/josh-murray)
+
+# Course Description
+
+Data Science Methods, Collaboration, and Communication represents broadly, the skills required to work as a data scientist in industry or academia. This course will introduce students to these topics with an emphasis on collaboration and communication. Specifically, students will gain experience with the entire process of analyzing data: 
+
+- Problem Formulation (defining and understanding the problem)
+- Data understanding and collection
+- Data wrangling
+- Programming ([R](https://cran.r-project.org)/[Python](https://www.python.org))
+- Data exploration
+- Data vizualization
+- Statistical modelling and prediction
+- Understanding the results
+- Communication
+- Reproducibility
+
+Students will learn about these topics by working on case studies based on problems that data scientists face in industry and academic research. Many of the cases will involve data collected by an organization (e.g., organization or scientist), using published data, or scraping web pages. 
+
+All projects will involve some type of collaboration or communication. Students are expected to be familiar with the application of basic statistical methods used for inference (e.g., general linear models), prediction (e.g., linear and logistic regression), and are comfortable with basic data analysis using a programming language such as R or Python. In class demonstrations will be conducted using the [R](https://cran.r-project.org) programming languages. Students have the option of submitting work with Python, however, they will have more limited support from me. 
+
+
+# Class Format
+
+Class lectures will take place online through Quercus on Tuesdays from 10am-12pm. Lectures will typically be made up of a discussion related to some data science method/workflow along with some live coded examples and take home labs. Students will also be expected to participate in discussions through Quercus. Students will be assessed via:
+
+- Three take home labs
+- Three group projects (1 in the fall, 2 in the winter session)
+
+For each project students will be randomly assigned to groups of 2/3 (depending on class size). Students will work to solve a problem, present their solution in class along with a short write-up and a github repository. 
+
+Students will be expected to adopt a reproducible research workflow using tools such as [Github](https://github.com), and [RMarkdown](https://rmarkdown.rstudio.com), or [Jupyter](https://jupyter.org). 
+
+# Evaluation
+
+All work will be graded on a scale from 1 to 4 (sometimes with pluses and minuses) where:
+
+
+------------------------------------------------------------------------
+Grade value   Description
+-----------   ---------------------------------------------------------
+1             Work does not meet expectations.
+
+2             Work meets expectations minimally, possibly missing some.
+
+3             Good work; meets all or most expectations.
+
+4             Excellent work; exceeds expectations.
+------------------------------------------------------------------------
+
+
+Grades will almost always be 2 or 3 (1’s and 4’s are rare). Generally speaking, a 2 is a B, a 3 is an A, and a 4 is an A+.
+
+```{r, echo=FALSE}
+sched <- read_csv(file = "sta2453grading.csv", 
+                  na = character(), 
+                  col_types = cols(Item = col_character(), 
+                                   Description = col_character(), 
+                                   Value = col_character()))
+knitr::kable(sched)
+```
+
+
+
+# Course Schedule
+
+This is a half-credit that meets in both the fall and winter terms.  Class meeting will occur approximately bi-weekly.
+
+```{r, echo=FALSE}
+library(kableExtra)
+library(tidyverse)
+
+sched <- read_csv(file = "sta2453_2020schedule.csv", 
+                  na = character(), 
+                  col_types = cols(Class = col_character(), 
+                                   Date = col_character(), 
+                                   Description = col_character(), 
+                                   Reading = col_character(), 
+                                   Due = col_character()))
+knitr::kable(sched) %>%
+  kable_styling("striped", full_width = F) %>%
+  column_spec(3, bold = T) %>%
+  row_spec(c(2, 4, 6, 8,
+             9, 11, 13, 18,
+             20, 23, 25, 27,
+             29), bold = T, color = "white", background = "#3bd432")
+```
+
+## Required Readings
+
+[ISLR](http://faculty.marshall.usc.edu/gareth-james/ISL/) (@james2013introduction) and [CASI](https://web.stanford.edu/~hastie/CASI/) (@efron2016computer) are both are freely available.
+
+Other readings may be assigned during the course.
+
+# Course Books
+
+

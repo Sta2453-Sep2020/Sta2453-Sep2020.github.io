@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>STA2453H1Y - Data Science Methods, Collaboration, and Communication</title>
+
+<script src="site_libs/jquery/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui/jquery-ui.min.js"></script>
+<link href="site_libs/tocify/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify/jquery.tocify.js"></script>
+<script src="site_libs/navigation/tabsets.js"></script>
+<link href="site_libs/highlightjs/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs/highlight.js"></script>
+<script src="site_libs/kePrint/kePrint.js"></script>
+<link href="site_libs/lightable/lightable.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">STA2453</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="syllabus_2020.html">Syllabus and Schedule</a>
+</li>
+<li>
+  <a href="sta2453_2020coursedocs.html">Course documents</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Projects
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="lecture-notes-slides-2020/sta2453_20202_project1.html">Project 1 - Data Collection and Analysis</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">STA2453H1Y - Data Science Methods, Collaboration, and Communication</h1>
+<h3 class="subtitle">Syllabus</h3>
+
+</div>
+
+
+<div id="instructor" class="section level1">
+<h1>Instructor</h1>
+<p><a href="https://www.chartdatascience.ca/josh-murray">Prof. Josh Murray</a></p>
+</div>
+<div id="course-description" class="section level1">
+<h1>Course Description</h1>
+<p>Data Science Methods, Collaboration, and Communication represents broadly, the skills required to work as a data scientist in industry or academia. This course will introduce students to these topics with an emphasis on collaboration and communication. Specifically, students will gain experience with the data science process including:</p>
+<ul>
+<li>Problem Formulation</li>
+<li>Data collection and understanding</li>
+<li>Data wrangling</li>
+<li>Programming (<a href="https://cran.r-project.org">R</a>/<a href="https://www.python.org">Python</a>)</li>
+<li>Data exploration</li>
+<li>Data vizualization</li>
+<li>Modelling</li>
+<li>Communication</li>
+<li>Reproducibility</li>
+</ul>
+<p>Students will learn about these topics by working on case studies based on problems that data scientists face in industry and academic research. Many of the cases will involve data collected by an organization (e.g., organization or scientist), using published data, or scraping web pages.</p>
+<p>All projects will involve some type of collaboration or communication. Students are expected to be familiar with the application of basic statistical methods used for inference (e.g., general linear models), prediction (e.g., linear and logistic regression), and are comfortable with basic data analysis using a programming language such as R or Python. In class demonstrations will be conducted using the <a href="https://cran.r-project.org">R</a> programming languages. Students have the option of submitting work with Python, however, they will have more limited support from me.</p>
+<p>Students will be expected to adopt a reproducible research workflow using tools such as <a href="https://github.com">Github</a>, and <a href="https://rmarkdown.rstudio.com">RMarkdown</a>, or <a href="https://jupyter.org">Jupyter</a>.</p>
+<p>Class time will be a mixture of informal lectures, class discussions, and student presentations.</p>
+</div>
+<div id="evaluation" class="section level1">
+<h1>Evaluation</h1>
+<p>All work will be graded on a scale from 1 to 4 (sometimes with pluses and minuses) where:</p>
+<table>
+<colgroup>
+<col width="19%" />
+<col width="80%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Grade value</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td align="left">Work does not meet expectations.</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td align="left">Work meets expectations minimally, possibly missing some.</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td align="left">Good work; meets all or most expectations.</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td align="left">Excellent work; exceeds expectations.</td>
+</tr>
+</tbody>
+</table>
+<p>Grades will almost always be 2 or 3 (1’s and 4’s are rare). Generally speaking, a 2 is a B, a 3 is an A, and a 4 is an A+.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+Item
+</th>
+<th style="text-align:left;">
+Description
+</th>
+<th style="text-align:left;">
+Value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+In-class Labs
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+Lab #1
+</td>
+<td style="text-align:left;">
+5.00%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+Lab #2
+</td>
+<td style="text-align:left;">
+5.00%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+Lab #3
+</td>
+<td style="text-align:left;">
+5.00%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Projects
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+Project #1
+</td>
+<td style="text-align:left;">
+25.00%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+Project #2
+</td>
+<td style="text-align:left;">
+25.00%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+Project #3
+</td>
+<td style="text-align:left;">
+25.00%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Reflection on projects
+</td>
+<td style="text-align:left;">
+Written reflection
+</td>
+<td style="text-align:left;">
+5.00%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Participation
+</td>
+<td style="text-align:left;">
+active participation in online discussions, and prepared for class
+</td>
+<td style="text-align:left;">
+5.00%
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="course-schedule" class="section level1">
+<h1>Course Schedule</h1>
+<p>This is a half-credit that meets in both the fall and winter terms. Class meeting will occur approximately bi-weekly.</p>
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Class
+</th>
+<th style="text-align:left;">
+Date
+</th>
+<th style="text-align:left;">
+Description
+</th>
+<th style="text-align:left;">
+Reading
+</th>
+<th style="text-align:left;">
+Due
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+</td>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+08-Sep
+</td>
+<td style="text-align:left;font-weight: bold;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+No class
+</td>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+</td>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+15-Sep
+</td>
+<td style="text-align:left;font-weight: bold;">
+Introduction to course, Data Science projects, hypothesis testing in data analysis
+</td>
+<td style="text-align:left;">
+ISLR: Chapt. 2, 3.1. CASI: Chapt 1, 2
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+</td>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+22-Sep
+</td>
+<td style="text-align:left;font-weight: bold;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+No class
+</td>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+</td>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:left;">
+29-Sep
+</td>
+<td style="text-align:left;font-weight: bold;">
+Reproducibility, working together, Multiple linear regression
+</td>
+<td style="text-align:left;">
+ISLR: 3.2-3.6.
+</td>
+<td style="text-align:left;">
+In-class lab #1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+</td>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+06-Oct
+</td>
+<td style="text-align:left;font-weight: bold;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+No class
+</td>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+</td>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+In-class lab #2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:left;">
+13-Oct
+</td>
+<td style="text-align:left;font-weight: bold;">
+Logistic regression and other linear models (GLM)
+</td>
+<td style="text-align:left;">
+ISLR: Chapt 4; CASI: Chapt 8
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+20-Oct
+</td>
+<td style="text-align:left;font-weight: bold;">
+No class
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+4
+</td>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+27-Oct
+</td>
+<td style="text-align:left;font-weight: bold;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+Guest Lecture: Web scraping, Introduction of Project #1 (Data Collection and Analysis)
+</td>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+TBD
+</td>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+In-class lab #3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:left;">
+03-Nov
+</td>
+<td style="text-align:left;font-weight: bold;">
+Data Visualization
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+</td>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+10-Nov
+</td>
+<td style="text-align:left;font-weight: bold;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+Fall Reading Week - No class
+</td>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+</td>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+6
+</td>
+<td style="text-align:left;">
+17-Nov
+</td>
+<td style="text-align:left;font-weight: bold;">
+Office hours
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+</td>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+24-Nov
+</td>
+<td style="text-align:left;font-weight: bold;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+No class
+</td>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+</td>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+7
+</td>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+01-Dec
+</td>
+<td style="text-align:left;font-weight: bold;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+Student presentations for project #1
+</td>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+</td>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+Project #1 presentations
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+08-Dec
+</td>
+<td style="text-align:left;font-weight: bold;">
+Winter Break
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+15-Dec
+</td>
+<td style="text-align:left;font-weight: bold;">
+Winter Break
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+22-Dec
+</td>
+<td style="text-align:left;font-weight: bold;">
+Winter Break
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+29-Dec
+</td>
+<td style="text-align:left;font-weight: bold;">
+Winter Break
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+8
+</td>
+<td style="text-align:left;">
+05-Jan
+</td>
+<td style="text-align:left;font-weight: bold;">
+Introduction to Project #2
+</td>
+<td style="text-align:left;">
+Will be posted to quercus
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+</td>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+12-Jan
+</td>
+<td style="text-align:left;font-weight: bold;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+No class
+</td>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+</td>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+9
+</td>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+19-Jan
+</td>
+<td style="text-align:left;font-weight: bold;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+Guest lecture: Natural Language Processing in practice
+</td>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+</td>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+26-Jan
+</td>
+<td style="text-align:left;font-weight: bold;">
+No class
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+</td>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+02-Feb
+</td>
+<td style="text-align:left;font-weight: bold;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+Office hours
+</td>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+</td>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+10
+</td>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+09-Feb
+</td>
+<td style="text-align:left;font-weight: bold;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+Student presentations for project #2
+</td>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+</td>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+Project #2 presentations
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+16-Feb
+</td>
+<td style="text-align:left;font-weight: bold;">
+Reading Week
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+11
+</td>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+23-Feb
+</td>
+<td style="text-align:left;font-weight: bold;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+Introduction of Project #3
+</td>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+Will be posted to quercus
+</td>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+02-Mar
+</td>
+<td style="text-align:left;font-weight: bold;">
+No class
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+12
+</td>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+09-Mar
+</td>
+<td style="text-align:left;font-weight: bold;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+Productionizing data science projects
+</td>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+TBD
+</td>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+16-Mar
+</td>
+<td style="text-align:left;font-weight: bold;">
+No class
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+13
+</td>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+23-Mar
+</td>
+<td style="text-align:left;font-weight: bold;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+Student presentations for project #3
+</td>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+</td>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #3bd432 !important;">
+Project #3 presentations
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+30-Mar
+</td>
+<td style="text-align:left;font-weight: bold;">
+No class
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+06-Apr
+</td>
+<td style="text-align:left;font-weight: bold;">
+No class
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+</tbody>
+</table>
+<div id="required-readings" class="section level2">
+<h2>Required Readings</h2>
+<p><a href="http://faculty.marshall.usc.edu/gareth-james/ISL/">ISLR</a> (<span class="citation">James et al. (2013)</span>) and <a href="https://web.stanford.edu/~hastie/CASI/">CASI</a> (<span class="citation">Efron and Hastie (2016)</span>) are both are freely available.</p>
+<p>Other readings may be assigned during the course.</p>
+</div>
+</div>
+<div id="course-books" class="section level1 unnumbered">
+<h1>Course Books</h1>
+<div id="refs" class="references">
+<div id="ref-efron2016computer">
+<p>Efron, Bradley, and Trevor Hastie. 2016. <em>Computer Age Statistical Inference</em>. Vol. 5. Cambridge University Press.</p>
+</div>
+<div id="ref-james2013introduction">
+<p>James, Gareth, Daniela Witten, Trevor Hastie, and Robert Tibshirani. 2013. <em>An Introduction to Statistical Learning</em>. Vol. 112. Springer.</p>
+</div>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
