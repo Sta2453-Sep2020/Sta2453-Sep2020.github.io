@@ -2835,8 +2835,21 @@ summary {
 </ul>
 <p>All data is manually input into the system by clinician caring for the patient. The LOS and admitted variables are automatically calculated by the system.</p>
 <p>The first step in exploring data is to get a basic understanding of its contents; the number of observations, the number of columns, the type of data in each column. Here we read in the data and do just that.</p>
+<pre class="r"><code># Load the required libraries
+library(tidyverse)
+library(lubridate)
+
+# Read in the data
+ed_data &lt;- read_csv(&#39;raw_ed_data.csv&#39;)
+
+# Look at the number of rows
+nrow(ed_data)</code></pre>
 <pre><code>## [1] 80464</code></pre>
+<pre class="r"><code># look at the number of columns
+ncol(ed_data)</code></pre>
 <pre><code>## [1] 10</code></pre>
+<pre class="r"><code># look at the type of data in each column
+glimpse(ed_data)</code></pre>
 <pre><code>## Observations: 80,464
 ## Variables: 10
 ## $ ENCOUNTER_NUM        &lt;dbl&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,...
@@ -2849,8 +2862,22 @@ summary {
 ## $ admitted             &lt;dbl&gt; 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0...
 ## $ los                  &lt;dbl&gt; 3.8333333, 0.5333333, 5.1000000, 5.2000000, 1....
 ## $ presenting_complaint &lt;chr&gt; &quot;Sore Throat&quot;, &quot;Lower extremity injury&quot;, &quot;Back...</code></pre>
-<div id="htmlwidget-3f45688cce96e2e70e4d" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-3f45688cce96e2e70e4d">{"x":{"filter":"none","data":[["1"],[0],[0],[0],[793],[396],[0],[68849],[0],[1186],[0]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>ENCOUNTER_NUM<\/th>\n      <th>CTAS_CD<\/th>\n      <th>CTAS_DESCR<\/th>\n      <th>ed_start_time<\/th>\n      <th>ed_end_time<\/th>\n      <th>ed_pia_time<\/th>\n      <th>adm_start_time<\/th>\n      <th>admitted<\/th>\n      <th>los<\/th>\n      <th>presenting_complaint<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6,7,8,9,10]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<pre class="r"><code># count the number of missing observations in each variable
+
+## Function to sum up missing values
+
+count_missing &lt;- function(x) {
+  
+  number_missing &lt;- sum(is.na(x))
+  
+  return(number_missing)
+}
+
+
+# Count missing values for each variable and put it in a table
+DT::datatable(summarize_all(ed_data, count_missing), options = list(scrollX = T))</code></pre>
+<div id="htmlwidget-21a3e77cd3f3ae2060de" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-21a3e77cd3f3ae2060de">{"x":{"filter":"none","data":[["1"],[0],[0],[0],[793],[396],[0],[68849],[0],[1186],[0]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>ENCOUNTER_NUM<\/th>\n      <th>CTAS_CD<\/th>\n      <th>CTAS_DESCR<\/th>\n      <th>ed_start_time<\/th>\n      <th>ed_end_time<\/th>\n      <th>ed_pia_time<\/th>\n      <th>adm_start_time<\/th>\n      <th>admitted<\/th>\n      <th>los<\/th>\n      <th>presenting_complaint<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6,7,8,9,10]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 <div id="the-pipe-operator" class="section level4">
 <h4>The pipe (<code>%&gt;%</code>) operator</h4>
 <p>The code above in its current format is a little confusing to read. You have to read it from the inside out to get a sense of what is happening. To make your R code a little easier to organize and read, we have the pipe operator, <code>%&gt;%</code> from the magrittr package (loads as part of the tidyverse/dplyr). The pipe operator takes the result of any operation on the left side of it and makes places it as the first argument of what is on the right side of it. For example the above could be written as:</p>
@@ -2860,8 +2887,8 @@ ed_data %&gt;%
   summarize_all(count_missing) %&gt;% 
   # the result of the summarize all function is passed into the datatable function
   DT::datatable(options = list(scrollX = T))</code></pre>
-<div id="htmlwidget-ea3ced1201283377c8fb" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-ea3ced1201283377c8fb">{"x":{"filter":"none","data":[["1"],[0],[0],[0],[793],[396],[0],[68849],[0],[1186],[0]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>ENCOUNTER_NUM<\/th>\n      <th>CTAS_CD<\/th>\n      <th>CTAS_DESCR<\/th>\n      <th>ed_start_time<\/th>\n      <th>ed_end_time<\/th>\n      <th>ed_pia_time<\/th>\n      <th>adm_start_time<\/th>\n      <th>admitted<\/th>\n      <th>los<\/th>\n      <th>presenting_complaint<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6,7,8,9,10]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-fd530dfb772d44e7066b" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-fd530dfb772d44e7066b">{"x":{"filter":"none","data":[["1"],[0],[0],[0],[793],[396],[0],[68849],[0],[1186],[0]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>ENCOUNTER_NUM<\/th>\n      <th>CTAS_CD<\/th>\n      <th>CTAS_DESCR<\/th>\n      <th>ed_start_time<\/th>\n      <th>ed_end_time<\/th>\n      <th>ed_pia_time<\/th>\n      <th>adm_start_time<\/th>\n      <th>admitted<\/th>\n      <th>los<\/th>\n      <th>presenting_complaint<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6,7,8,9,10]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 <p>This data has many quality issues, for example, here are the values available for the <code>presenting_complaint</code> variable</p>
 <pre class="r"><code>ed_data %&gt;% 
   count(presenting_complaint) %&gt;% 
@@ -3150,8 +3177,8 @@ ed_data %&gt;%
 <div id="exercise-4" class="section level2">
 <h2>Exercise 4</h2>
 <p>The classic way to determine if the difference you calculated above is “real” is to conduct a hypothesis test. Conduct a two-sample t-test as below. Interpret the result.</p>
-<div id="htmlwidget-2b26ef44d686ef0676a0" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-2b26ef44d686ef0676a0">{"x":{"filter":"none","data":[["1"],[-9.6855],[213.1827],[222.8682],[-3.8242],[0.0002],[271.2746],[-14.6718],[-4.6993],["Welch Two Sample t-test"],["two.sided"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>estimate<\/th>\n      <th>estimate1<\/th>\n      <th>estimate2<\/th>\n      <th>statistic<\/th>\n      <th>p.value<\/th>\n      <th>parameter<\/th>\n      <th>conf.low<\/th>\n      <th>conf.high<\/th>\n      <th>method<\/th>\n      <th>alternative<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6,7,8]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-8971a0c8a1cfb659dd66" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-8971a0c8a1cfb659dd66">{"x":{"filter":"none","data":[["1"],[-9.6855],[213.1827],[222.8682],[-3.8242],[0.0002],[271.2746],[-14.6718],[-4.6993],["Welch Two Sample t-test"],["two.sided"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>estimate<\/th>\n      <th>estimate1<\/th>\n      <th>estimate2<\/th>\n      <th>statistic<\/th>\n      <th>p.value<\/th>\n      <th>parameter<\/th>\n      <th>conf.low<\/th>\n      <th>conf.high<\/th>\n      <th>method<\/th>\n      <th>alternative<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6,7,8]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 <div id="permutation-distribution" class="section level3">
 <h3>Permutation distribution</h3>
 <ul>

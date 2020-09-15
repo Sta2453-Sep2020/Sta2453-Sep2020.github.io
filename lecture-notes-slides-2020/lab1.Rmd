@@ -82,7 +82,7 @@ All data is manually input into the system by clinician caring for the patient. 
 The first step in exploring data is to get a basic understanding of its contents; the number of observations, the number of columns, the type of data in each column. Here we read in the data and do just that.
 
 
-```{r load_data, echo=F, warning=F, message=F}
+```{r load_data, echo=T, warning=F, message=F}
 
 # Load the required libraries
 library(tidyverse)
