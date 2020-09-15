@@ -57,13 +57,85 @@ Health Toronto
 
 ## Examples of work at DSAA
 
-Live Tool Demos:
+Example projects:
 
 - Emergency Department volume forecast
 - Nursing Resource Team (NRT) size optimization
-- General Internal Medicine patient deterioration predictions
+- Capacity Optimization Bed Relief Analysis (COBRA)
 - COVID dashboard
+- GIM early warning systems
 
+
+## ED forecasting Dashboard
+
+- *Problem*: We experience surges in volumes throughout the year. Due to staffing
+this has impacts on our ability to treat patients efficiently. 
+- *Solution*: We will forecast ED arrivals days to weeks in advanced so proper staff
+planning can take place. 
+- *Data*: 
+  - Emergency Department arrivals for 4 years
+  - Holiday and event indicators
+  - Weather forecasts
+- *End Product*: We developed forecasting models for arrivals in 6 hour intervals for 3 days and daily
+arrivals for a week in advanced. We provide a dashboard in the ED to display these forecasts
+
+## Nursing Resource Team (NRT) Size Optimization
+
+- *Problem*: Nurses call in sick or go on leave. The hospital has to call agencies or use overtime to replace
+these nurses. This is expensive and leads to bad care. We developed a Nursing Resource Team (NRT), like an 
+in house agency. They work regular shifts but only replace sick calls. How many do we hire?
+- *Solution*: We can determine demand from past sick calls. We can then optimize the required staffing levels
+- *Data*: 5 years of historical HR data giving us information on each shift missed
+- *End Product*: We provided an application so that end users can play around with assumptions
+
+## COBRA
+
+- *Problem*: The hospital experiences what is known as a bed escalation; a shortage of beds to meet
+incoming demand, a *THIRD* of the time. This results in delays in care and stress on the system.
+- *Solution*: We can attempt to forecast when a bed escalation will occur, along with information
+to help determine the main culprits. 
+- *Data*: 
+  - 3 years of historical volumes
+  - 3 years of surgical schedules
+  - 3 years of labeled outcomes (bed escalation/no bed escalation)
+- *End Product*: An email to hospital executives and bed managers every night forecasting the next 3 days
+
+## COVID Dashboard
+
+- *Problem*: The hospital is hit with a new reality during a global pandemic. Hospital resources 
+are shifted like they never have been before. We need to closely monitor COVID cases and patient volumes
+throughout our 3 hospitals. 
+- *Solution*: To build a near real time dashboard displaying volumes throughout all 3 hospitals
+- *Data*: This was a complex data pipeline involving:
+  - real time volumes at each hospital
+  - COVID lab results
+  - patient outcomes
+  - bed cleaning information
+- *End Product*: A dashboard displayed throughout the hospital updating as lab information comes in
+
+## GIM risk prediction
+
+- *Problem*: Up to 10% of patients in the General Internal Medicine (GIM) ward go to the ICU 
+or die. If clinicians had advanced warning as to which patients were deteriorating, they could intervene.
+- *Solution*: Develop an early warning system to forecast which patients are deteriorating
+- *Data*: 7 years of historical
+  - labs
+  - vitals
+  - medications
+  - notes
+- *End Product*: A complex intervention involving alerts generated from the model 3 times a day. 
+
+## What the projects have in common
+
+- In each case the analytical solution and output was very different.
+  - Descritive: COVID dashboard
+  - Predictive: GIM risk prediction, ED forecasting, COBRA
+  - Prescriptive: NRT optimization
+- The two things each project had in common
+  - Very heavy data understanding, cleaning, and analysis
+  - Communication with business leads and clinicians to understand the data and
+  communicate results
+  
 
 ## What is a Data Science Project?
 
@@ -167,6 +239,6 @@ At any stage in the process you may be required to go back a step or 2, or 3...
 
 ## Data wrangling tutorial
 
-DEMO TIME
+LAB TIME
 
 

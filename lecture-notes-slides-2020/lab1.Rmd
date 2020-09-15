@@ -1,0 +1,330 @@
+---
+title: "Lab #1"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Introduction
+
+In our first lab we will explore a dataset representing patient encounters at an emergency department. Students will get practice with cleaning the data, exploring potential data validity issues and answering some basic analytical questions posed by a clinician. Students are expected to answer the questions in either R or Python. R users should submit an Rmarkdown report (both the .Rmd file as well as the knitted output). Python users can submit a Jupyter notebook. 
+
+Some answers and or plots I should expect appear here in the document. The purpose of the lab is for you to write your own code to generate the requested results. I should be able to execute your code to obtain the answers.
+
+
+
+
+## Data Cleaning and Wrangling
+
+The purpose of the following lab is to get some experience cleaning up data for the purpose of a fairly simple analysis. The example data for this lab is simulated/toy data of all emergency Department patient encounters from a downtown toronto hospital from January 1st 2019 to January 1st 2020. The data was simulated to look exactly like data would appear coming from a raw source system (warts and all).
+
+## Business understaning
+
+The hospital has come to us with a few straight forward questions that may result in more detailed analyses/predictive models down the road. The Emergency Department began collecting a few key pieces of data electronically in 2019. The chief of the ED would like to know the following:
+
+- Descriptive Statistics. i.e. What are the distributions of:
+  - Length of stay (time from patient arrival to patient leaving the ED)
+  - Time to seeing a physician (time from patient arrival to physician initial assessment)
+  - counts and proportions of presenting complaints
+  - counts and proportions of Triage scores (CTAS)
+  - distribution of number of encounters seen per day
+  
+The two key questions that the chief would like to have answered are:
+
+1. Are more encounters seen on weekdays than on weekends
+2. At which hour of the day do we see the most encounters
+
+## The Data
+
+We are given a dataset containing all emergency department encounters between January 1st 2019 and January 1st 2020. The chief of the ED explains that very few people have looked at the data so far, but the following variables are contained in the data
+
+- `ENCOUNTER_NUM`: a unique ID given to a patient arriving at the ED
+- `CTAS_CD`: The triage code. The [Canadian Triage and Acuity Score](https://ctas-phctas.ca/) measures the severity of a patient's condition. It ranges from 1-5 with 1 being most severe and 5 being least severe.
+- `CTAS_DESCR`: The description of the CTAS score value:
+  1. RESUSCITATION
+  2. EMERGENCY
+  3. URGENT
+  4. SEMI-URGENT
+  5. NON URGENT
+- `ed_start_time`: The date and time of the patient arrival to the ED
+- `ed_end_time`: The date and time that a patient leaves the ED
+- `ed_pia_time`: The date and time that a patient first sees a physician (pia = physician initial assessment)
+- `adm_start_time`: The date and time that a patient is admitted to the hospital
+- `admitted`: an indicator for whether or not a patient is admitted to the hospital. 
+- `los`: A calculated variable measuring the time of a patient arrival to departure in hours
+- `presenting_complaint`: The reason for the admission. The following are valid reasons for a presenting complaint:
+  - Burn
+  - Abdominal pain
+  - Back pain
+  - Bizarre Behaviour
+  - Chest pain
+  - Confusion
+  - General weakness
+  - Hallucinations
+  - Headache
+  - Loss of Hearing
+  - Lower extremity injury
+  - Rash
+  - Sore Throat
+  - Traumatic injury
+  - Trouble Breathing
+  - Upper extremity injury
+  - Unknown
+  
+All data is manually input into the system by clinician caring for the patient. The LOS and admitted variables are automatically calculated by the system. 
+
+
+
+
+The first step in exploring data is to get a basic understanding of its contents; the number of observations, the number of columns, the type of data in each column. Here we read in the data and do just that.
+
+
+```{r load_data, echo=F, warning=F, message=F}
+
+# Load the required libraries
+library(tidyverse)
+library(lubridate)
+
+# Read in the data
+ed_data <- read_csv('raw_ed_data.csv')
+
+# Look at the number of rows
+nrow(ed_data)
+
+# look at the number of columns
+ncol(ed_data)
+
+# look at the type of data in each column
+glimpse(ed_data)
+
+# count the number of missing observations in each variable
+
+## Function to sum up missing values
+
+count_missing <- function(x) {
+  
+  number_missing <- sum(is.na(x))
+  
+  return(number_missing)
+}
+
+
+# Count missing values for each variable and put it in a table
+DT::datatable(summarize_all(ed_data, count_missing), options = list(scrollX = T))
+
+
+```
+
+
+#### The pipe (`%>%`) operator
+
+The code above in its current format is a little confusing to read. You have to read it from the inside out to get a sense of what is happening. To make your R code a little easier to organize and read, we have the pipe operator, `%>%` from the magrittr package (loads as part of the tidyverse/dplyr). The pipe operator takes the result of any operation on the left side of it and makes places it as the first argument of what is on the right side of it. For example the above could be written as:
+
+```{r, echo = T}
+
+# the data
+ed_data %>% 
+  # becomes the first argument passed to the summarize_all function
+  summarize_all(count_missing) %>% 
+  # the result of the summarize all function is passed into the datatable function
+  DT::datatable(options = list(scrollX = T))
+
+```
+
+
+This data has many quality issues, for example, here are the values available for the `presenting_complaint` variable 
+
+```{r, echo=T}
+ed_data %>% 
+  count(presenting_complaint) %>% 
+  knitr::kable()
+
+# number of unique values
+length(unique(ed_data$presenting_complaint))
+
+```
+
+  
+From the above we see that there are a bunch of extra values created by spelling mistakes and spacing issues. Let's take a look at the available values.
+  
+```{r, echo=T}
+
+unique(ed_data$presenting_complaint)
+
+```
+
+We can write a function that will clear up most of the issues:
+
+```{r, echo=T}
+
+# function to clean presenting complaints text
+clean_complaints <- function(x) {
+  
+  x_clean <- x %>% 
+    # remove any leading and trailing spaces
+    trimws() %>% 
+    # collapse > 1 blank space into 1 blank space
+    gsub(' +',' ',.) %>% 
+    # set text to lower case
+    tolower() 
+  
+  return(x_clean)
+  
+}
+
+
+ed_data <- ed_data %>% 
+  mutate(presenting_complaint = clean_complaints(presenting_complaint))
+```
+
+
+The remaining issue (spelling mistakes) can be fixed with a `case_when` statement
+
+```{r}
+ed_data <- ed_data %>% 
+  mutate(presenting_complaint = case_when(
+    presenting_complaint == "chest pian" ~ "chest pain",
+    presenting_complaint == "burns" ~ "burn",
+    presenting_complaint == "traumatic injuries" ~ "traumatic injury",
+    presenting_complaint %in% c("unk", "missing") ~ "unknown",
+    presenting_complaint == "headach" ~ "headache",
+    TRUE ~ presenting_complaint))
+
+ed_data %>% 
+  count(presenting_complaint, sort = T) %>% 
+  mutate(proportion = round(n/sum(n), 3)) %>% 
+  knitr::kable()
+```
+
+
+## Exercise 1
+
+Explore the rest of the variables and determine any remaining issues. Imagine being handed this data with a follow up meeting a week later. You are going to what to bring a series of questions back to the chief of the ED. The issues might being with:
+
+1. There are 80,464 observations in the data. Is this what you would expect in a year? (never assume it's correct)
+2. The presenting complaint variables manually typed. Do the corrections we made above seem reasonable.
+3. Add at least 5 more quality issues found in this data
+
+
+## Exercise 2
+
+The main analysis requires us to look at the number of encounters per day. Create a dataset with the number of encounters per day and make a timeseries plot (see plot below). What is the average number of arrivals to the emergency department per day? Are there any data quality issues you are concerned with? Write a few short sentences describing any concerns you have with the data.
+
+
+```{r, echo=F}
+
+daily <- ed_data %>% 
+  mutate(date = as_date(ed_start_time)) %>% 
+  filter(!is.na(date)) %>% 
+  count(date) %>% 
+  mutate(weekday = ifelse(wday(date) %in% 2:6, 1, 0))
+
+daily %>% 
+  ggplot(aes(date, n)) + 
+  geom_line() +
+  xlab("Date") +
+  ylab("ED Arrivals per day") +
+  ggtitle("ED Arrivals per day",
+          subtitle = "2019") +
+  coord_cartesian(ylim = c(0, 500))
+
+```
+
+
+## Exercise 3
+
+Calculate the average and standard deviation of volumes on weekends and weekdays. Make two side by side histograms displaying the distribution of arrivals on weekends and weekdays.  Make a boxplot of encounters per day by weekday vs weekend (if using R, the `lubridate` function `wday()` might be helpful). Is there a difference in the arrivals? Which plot do you like best for showing the difference? 
+
+
+## Exercise 4
+
+The classic way to determine if the difference you calculated above is "real" is to conduct a hypothesis test. Conduct a two-sample t-test as below. Interpret the result.
+
+
+```{r, warning=F, message=F, echo = F}
+ library(broom)
+est <-   daily  %>% do(tidy(t.test(n ~ weekday, data = .)))
+rnd <- function(x) {
+  round(x, 4)
+}
+est <- est %>% 
+  mutate_if(is.numeric, rnd)
+DT::datatable(est, options = list(scrollX = T))
+```
+
+
+### Permutation distribution
+
+
+- Under the assumption of no difference the group labels weekday and weekend are interchangeable. The number of permutations of the labels is the number of ways that the observed data could have been generated under the assumption of no difference?
+In this case there are  ${104 +258 \choose 104}$.
+Instead of evaluating all the above cases we can create a resampled permutation of the data set where we permute the group label. Then repeat this, say, 10000 times. (see pages 49-51, CASI)
+
+```{r, echo =F}
+  set.seed(101) ## for reproducibility
+  nsim <- 10000
+  rs_dist <- numeric(nsim) ## set aside space for results
+  
+  for(i in 1:nsim) {
+    tmp <- daily[sample(nrow(daily)),]
+    tmp <- tmp %>% 
+      select(weekday) %>% 
+      bind_cols(daily %>% select(n)) %>% 
+      group_by(weekday) %>% 
+      summarize(d = mean(n)) %>% 
+      mutate(diff = d - lag(d))
+    rs_dist[i] <- tmp$diff[2]
+  }
+  
+  tibble(rs_dist) %>% 
+  ggplot(aes(rs_dist)) + geom_histogram(colour = "black", fill = "grey", bins = 25) +
+  geom_vline(xintercept = -9.6855, colour = "red") +
+  ggtitle("Permutation Null Distribution of Mean Difference") + xlab("Mean Difference") +
+  geom_text(aes(-9.6855, 0, label = "-9.6855", hjust = 1, vjust = 1.2), size = 3)
+
+  tibble(rs_dist) %>% summarise(pvalu = sum(rs_dist <= -9.6855)/nsim)
+  
+```
+
+## Exercise 5
+
+Use R or Python to create the permutation distribution. Calculate the two-sided P-value? Briefly interpret the two-sided P-value.
+
+
+## Exercise 6
+
+Our good doctor wants to design an intelligent schedule for his clinicians to align their working hours to the times when we have the highest number of patients in the ED. The census, defined as the number of patients in the ED at any given time, is usually a more important metric than arrivals since new arrivals simply add on to patients already in ED. The chief of the ED would like to know which hour has the highest average census. 
+
+
+### Data transformations
+
+This brings us to the topic of data transformations. The raw data that we are dealing with cannot answer the above question in the form that it is in. We need to transform this data into an hourly census dataset. 
+
+A simple calculation of census can be done as follows. Let's say we want to know how many patients are in the ED at 10:00am on Setpember 15th 2019, we count the number of patients with arrivals at or before 10:00am with departures at or after 10:00am. 
+
+
+```{r, echo=T}
+
+ed_data %>% 
+  filter(ed_start_time <= ymd_hms('2019-09-15 10:00:00'),
+         ed_end_time >= ymd_hms('2019-09-15 10:00:00')) %>% 
+  nrow()
+```
+
+
+This shows us that we had 67 patients in the ED at that time. All we need is to figure out an algorithm to apply this approach over all the data. There is a tutorial on this over at the [LKS-CHART website](https://science.data.blog/2018/10/10/calculating-volumes-from-timestamps-using-r/)
+
+Apply this algorithm to our data and determine which hour of the day has the highest average census. 
+
+
+
+
+
+
+
+
+
+

@@ -5,10 +5,11 @@ output: html_document
 
 # Course Documents
 
-## September 8
+## September 15
 
 - [Class 1 - Slides](lecture-notes-slides-2020/slides/sta2453-2020-lecture1.html)
-- Class 1 - workbook
+- [Class 1 - lab](lecture-notes-slides-2020/lab1.html)
+- [Class 1 - data](lecture-notes-slides-2020/raw_ed_data.csv)
 
 
 # Marking Rubrics

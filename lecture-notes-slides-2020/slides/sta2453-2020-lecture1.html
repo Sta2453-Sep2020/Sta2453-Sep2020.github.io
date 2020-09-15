@@ -1824,12 +1824,79 @@ document.getElementsByTagName('head')[0].appendChild(style);
 </section>
 <section id="examples-of-work-at-dsaa" class="slide level2">
 <h2>Examples of work at DSAA</h2>
-<p>Live Tool Demos:</p>
+<p>Example projects:</p>
 <ul>
 <li>Emergency Department volume forecast</li>
 <li>Nursing Resource Team (NRT) size optimization</li>
-<li>General Internal Medicine patient deterioration predictions</li>
+<li>Capacity Optimization Bed Relief Analysis (COBRA)</li>
 <li>COVID dashboard</li>
+</ul>
+</section>
+<section id="ed-forecasting-dashboard" class="slide level2">
+<h2>ED forecasting Dashboard</h2>
+<ul>
+<li><em>Problem</em>: We experience surges in volumes throughout the year. Due to staffing this has impacts on our ability to treat patients efficiently.</li>
+<li><em>Solution</em>: We will forecast ED arrivals days to weeks in advanced so proper staff planning can take place.</li>
+<li><em>Data</em>:
+<ul>
+<li>Emergency Department arrivals for 4 years</li>
+<li>Holiday and event indicators</li>
+<li>Weather forecasts</li>
+</ul></li>
+<li><em>End Product</em>: We developed forecasting models for arrivals in 6 hour intervals for 3 days and daily arrivals for a week in advanced. We provide a dashboard in the ED to display these forecasts</li>
+</ul>
+</section>
+<section id="nursing-resource-team-nrt-size-optimization" class="slide level2">
+<h2>Nursing Resource Team (NRT) Size Optimization</h2>
+<ul>
+<li><em>Problem</em>: Nurses call in sick or go on leave. The hospital has to call agencies or use overtime to replace these nurses. This is expensive and leads to bad care. We developed a Nursing Resource Team (NRT), like an in house agency. They work regular shifts but only replace sick calls. How many do we hire?</li>
+<li><em>Solution</em>: We can determine demand from past sick calls. We can then optimize the required staffing levels</li>
+<li><em>Data</em>: 5 years of historical HR data giving us information on each shift missed</li>
+<li><em>End Product</em>: We provided an application so that end users can play around with assumptions</li>
+</ul>
+</section>
+<section id="cobra" class="slide level2">
+<h2>COBRA</h2>
+<ul>
+<li><em>Problem</em>: The hospital experiences what is known as a bed escalation; a shortage of beds to meet incoming demand, a <em>THIRD</em> of the time. This results in delays in care and stress on the system.</li>
+<li><em>Solution</em>: We can attempt to forecast when a bed escalation will occur, along with information to help determine the main culprits.</li>
+<li><em>Data</em>:
+<ul>
+<li>3 years of historical volumes</li>
+<li>3 years of surgical schedules</li>
+<li>3 years of labeled outcomes (bed escalation/no bed escalation)</li>
+</ul></li>
+<li><em>End Product</em>: An email to hospital executives and bed managers every night forecasting the next 3 days</li>
+</ul>
+</section>
+<section id="covid-dashboard" class="slide level2">
+<h2>COVID Dashboard</h2>
+<ul>
+<li><em>Problem</em>: The hospital is hit with a new reality during a global pandemic. Hospital resources are shifted like they never have been before. We need to closely monitor COVID cases and patient volumes throughout our 3 hospitals.</li>
+<li><em>Solution</em>: To build a near real time dashboard displaying volumes throughout all 3 hospitals</li>
+<li><em>Data</em>: This was a complex data pipeline involving:
+<ul>
+<li>real time volumes at each hospital</li>
+<li>COVID lab results</li>
+<li>patient outcomes</li>
+<li>bed cleaning information</li>
+</ul></li>
+<li><em>End Product</em>: A dashboard displayed throughout the hospital updating as lab information comes in</li>
+</ul>
+</section>
+<section id="gim-risk-prediction" class="slide level2">
+<h2>GIM risk prediction</h2>
+<ul>
+<li><em>Problem</em>: Up to 10% of patients in the General Internal Medicine (GIM) ward go to the ICU or die. If clinicians had advanced warning as to which patients were deteriorating, they could intervene.</li>
+<li><em>Solution</em>: Develop an early warning system to forecast which patients are deteriorating</li>
+<li><em>Data</em>: 7 years of historical
+<ul>
+<li>labs</li>
+<li>vitals</li>
+<li>medications</li>
+<li>notes</li>
+</ul></li>
+<li><em>End Product</em>: A complex intervention involving alerts generated from the model 3 times a day.</li>
 </ul>
 </section>
 <section id="what-is-a-data-science-project" class="slide level2">
@@ -1944,7 +2011,7 @@ Data analysis … take on the chracteristics of a science rather than those of m
 </section>
 <section id="data-wrangling-tutorial" class="slide level2">
 <h2>Data wrangling tutorial</h2>
-<p>DEMO TIME</p>
+<p>LAB TIME</p>
 </section>
     </div>
   </div>
