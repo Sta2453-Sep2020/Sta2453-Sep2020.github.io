@@ -33,6 +33,17 @@ if (output=="docx") {
 ```
 
 
+## Resources
+
+Here are some resources mentioned during the lecture:
+
+- [Open data Toronto](https://open.toronto.ca/catalogue/?sort=last_refreshed%20desc)
+- The free [R for Data science](https://r4ds.had.co.nz/) book
+- [rvest](https://blog.rstudio.com/2014/11/24/rvest-easy-web-scraping-with-r/) package for web scraping
+- [Environment Canada historical weather](https://climate.weather.gc.ca/historical_data/search_historic_data_e.html) page
+- [tidyverse](https://www.tidyverse.org/) official page
+- [tidymodels book](https://www.tmwr.org/)!
+
 ![](bikeshare1.png)   
 
 # Open Toronto Data
@@ -237,26 +248,31 @@ clean_var_names <- function(x) {
 
 
 
+
 scrape_weather <- function(station = "51459", 
                            year = 2017, 
                            month = 3) {
   
+  # the url to query
   query_url <- glue::glue('http://climate.weather.gc.ca/climate_data/daily_data_e.html?StationID={station}&timeframe=2&Year={year}&Month={month}#')
-  
+
+  # read in the table
   weather_data <- query_url %>% 
     read_html() %>% 
     html_table() %>% 
-    .[[1]] %>% 
-    as_tibble()
+    .[[1]]
   
-  
+  # clean up the names of the weather variables
   names(weather_data) <- clean_var_names(names(weather_data))
   
+  # create dates and remove summary stats rows (i.e. where date is missing)
   weather_data <- weather_data %>% 
     mutate(date = ymd(paste(year, month, day, '-'))) %>% 
     select(date, mean_temp_definitionc, total_precip_definitionmm) %>% 
     filter(!is.na(date))
   
+  # transform weather variables to numeric
+  # replace LegendTT with some small value
   weather_data <- weather_data %>% 
     mutate(total_precip = as.numeric(ifelse(total_precip_definitionmm == "LegendTT", 
                                             "0.01",total_precip_definitionmm)),
@@ -265,7 +281,9 @@ scrape_weather <- function(station = "51459",
     select(date, mean_temp, total_precip)
   
   return(weather_data)
+  
 }
+
 
 
 ```
@@ -547,7 +565,6 @@ x_i =
 \begin{cases}
 1,& \text{ if the } i^\text{th}\text{ person is a member} \\
 0,& \text{ if the } i^\text{th}\text{ person is casual} 
-
 \end{cases}
 $$
 
@@ -557,7 +574,6 @@ y_i = \beta_0 + \beta_1 x + \epsilon_i =
 \begin{cases}
 \beta_0 + \beta_1 x_i + \epsilon_i  &\text{ if the } i^\text{th}\text{ person is a member} \\
 \beta_0 + \epsilon_i  &\text{ if the } i^\text{th}\text{ person is casual} 
-
 \end{cases}
 $$
 
@@ -584,7 +600,6 @@ Do temperature and user type predict trip duration?
 For $p$ potential covariates we have
 
 $$ 
-
 y_i = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \dots + \beta_p x_{ip} + \epsilon_i, i = 1\dots n
 $$
 
@@ -594,7 +609,7 @@ $$
  Y = X\beta + \epsilon
 $$
 
-$Y$ is an $n\times1$ column vector, $X$ is an $n\timesp$ matrix of rank $p$, and $\epsilon$ is an $n\times1$ column vector that has a multivariate normal distribution.
+$Y$ is an $n\times1$ column vector, $X$ is an $n\times p$ matrix of rank $p$, and $\epsilon$ is an $n\times1$ column vector that has a multivariate normal distribution.
 
 
 
@@ -606,13 +621,13 @@ pander( summary(model) )
 
 ```{r}
 
-a %>% 
+bike_daily %>% 
   ggplot(aes(mean_temp, trip_duration_seconds, color = user_type))+
   geom_point() +
   geom_smooth(method = "lm")
   
   
-model <- lm(trip_duration_seconds~ mean_temp + user_type + mean_temp*user_type, data = a)
+model <- lm(trip_duration_seconds~ mean_temp + user_type + mean_temp*user_type, data = bike_daily)
 pander( summary(model) ) 
 
 ```

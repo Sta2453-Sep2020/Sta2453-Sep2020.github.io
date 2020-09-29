@@ -10,6 +10,7 @@ output: html_document
 - [Class 1 - Slides](lecture-notes-slides-2020/slides/sta2453-2020-lecture1.html)
 - [Class 1 - lab](lecture-notes-slides-2020/lab1.html)
 - [Class 1 - data](lecture-notes-slides-2020/raw_ed_data.csv)
+- [Class 1 - partial lab solutions](lecture-notes-slides-2020/lab1-solution.html)
 
 ## September 29
 

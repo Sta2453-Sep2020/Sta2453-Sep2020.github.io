@@ -240,7 +240,7 @@ sum(is.na(ed_data$ed_start_time))
 sum(is.na(ed_data$ed_end_time))
 
 # missing both
-sum(is.na(ed_data$ed_end_time) &is.na(ed_data$ed_start_time))
+sum(is.na(ed_data$ed_end_time) & is.na(ed_data$ed_start_time))
 
 # What could we do with this data?
 ```
@@ -265,15 +265,13 @@ ed_data %>% select(ed_pia_time) %>%
 ed_data %>% 
   ggplot(aes(los)) + 
   geom_density()
-ed_data %>% 
-  ggplot(aes(los)) + 
-  geom_density()
+
 
 # minimum value
-min(ed_data$los)
+min(ed_data$los, na.rm = T)
 
 # maximum value
-max(ed_data$los)
+max(ed_data$los, na.rm = T)
 
 summary(ed_data$los)
 
@@ -382,7 +380,8 @@ The classic way to determine if the difference you calculated above is "real" is
 
 ```{r, warning=F, message=F, echo = T}
  library(broom)
-est <-   daily  %>% do(tidy(t.test(n ~ weekday, data = .)))
+est <-   daily  %>% 
+  do(tidy(t.test(n ~ weekday, data = .)))
 rnd <- function(x) {
   round(x, 4)
 }
