@@ -1,0 +1,38 @@
+---
+title: "Lab #2"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+## Toronto Bike Share
+
+### Questions
+
+
+Use the 2016 Q3, 2016 Q4, and 2017 Toronto Bikeshare ridership data available [here]( https://open.toronto.ca/dataset/bike-share-toronto-ridership-data/) the questions below.
+
+Station information, including real time data, is available [here](https://open.toronto.ca/dataset/bike-share-toronto/).
+
+A [blog post](https://towardsdatascience.com/exploring-toronto-bike-share-ridership-using-python-3dc87d35cb62) was written on the 2017 data set.
+
+Create either an Rmarkdown or Jupyter notebook to answer the questions below. In all of the questions below interpret your results, and identify limitations.
+
+1. Read through the questions below.
+   i. Create a brief plan of the variables that you plan to use to answer these questions
+   ii.explore the variables using quantitative and visual methods
+   iii. rectify any inconsistencies you find through exploration.
+
+2. Do casual users take shorter trips compared to members? Is it possible to identify if bikes are being used by tourists or residents?
+
+3. Does season or weather affect trip duration or distance?
+
+4. Define trip length in two ways, and create feature variables in the data set. What factors affect trip length? Do these factors differ depending on your definition?
+
+5. Use linear regression to build a prediction model of trip length.
+
+
+
+
+

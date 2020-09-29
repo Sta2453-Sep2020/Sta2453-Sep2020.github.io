@@ -11,6 +11,11 @@ output: html_document
 - [Class 1 - lab](lecture-notes-slides-2020/lab1.html)
 - [Class 1 - data](lecture-notes-slides-2020/raw_ed_data.csv)
 
+## September 29
+
+- [Class 2 - Slides](lecture-notes-slides-2020/slides/sta2453-2020-lecture2.html)
+- [Class 2 - lab](lecture-notes-slides-2020/lab2.html)
+
 
 # Marking Rubrics
 
