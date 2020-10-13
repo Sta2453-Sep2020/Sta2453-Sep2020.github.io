@@ -16,7 +16,7 @@ output: html_document
 
 - [Class 2 - Slides](lecture-notes-slides-2020/slides/sta2453-2020-lecture2.html)
 - [Class 2 - lab](lecture-notes-slides-2020/lab2.html)
-- [Class 2 - partial lab solutions](lecture-notes-slides-2020/lab1-solution.html)
+- [Class 2 - partial lab solutions](lecture-notes-slides-2020/lab2-solution.html)
 
 ## October 13th
 
