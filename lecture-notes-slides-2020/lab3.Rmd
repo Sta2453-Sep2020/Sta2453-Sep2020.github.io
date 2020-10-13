@@ -1,0 +1,35 @@
+---
+title: "Lab #3"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+## Logistic regression
+
+Please submit your answers to the following questions in a R markdown or Jupyter notebook file by 27th. 
+### Questions
+
+
+1. You are interested in how well the combined earnings of the parents in a child’s
+family predicts high school graduation. You are told that the probability a child
+graduates from high school is 27% for children whose parents earn no income and
+is 88% for children whose parents earn $60,000. Determine the logistic regression
+model that is consistent with this information. (For simplicity you may want to
+assume that income is measured in units of $10,000).
+
+2. The data used for the class discussion contains the survey data of presidential preference and income for
+all years from 1948 to 2002  along with other variables including
+sex, ethnicity, education, party identification, and political ideology.
+   (a) Fit a separate logistic regression model for each year in the data of the form
+  $Pr(democract =1) = \alpha + \beta\times income$. Does the effect of income change over time?
+  
+   (b) Fit a logistic regression predicting support for democrats given all these inputs.
+Consider how to include these as regression predictors and also consider possible
+interactions.
+
+   (c) Evaluate and compare the different models you have fit. Plot the ROC for various models and make comparisons 
+  using the AUC.
+
+   (d) For your chosen model, interpret the coefficients, both on the logistic scale and as odds ratios. 

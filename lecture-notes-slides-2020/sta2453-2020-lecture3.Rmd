@@ -1,0 +1,820 @@
+---
+title: 'Lecture 2: Linear Regression'
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r global_options, include=FALSE, cache=FALSE}
+library(knitr)
+
+opts_chunk$set(echo=TRUE, 
+               warning=FALSE, 
+               message=FALSE,
+               cache = FALSE,
+               include = TRUE,
+               error = TRUE)
+               
+               
+# setup changes according to html or docx
+output <- opts_knit$get("rmarkdown.pandoc.to")
+if (output=="html") {
+  
+  opts_chunk$set(fig.width=11, 
+                 fig.height=11)
+  
+  } # # end html `if` statement
+## setting up the figure parameters for docx
+if (output=="docx") {
+    opts_chunk$set(dev = 'pdf',
+                   fig.width = 6, 
+                   fig.height = 6)
+                     } # end docx `if` statement
+```
+
+
+## Logistic Regression
+
+Logistic Regression is the technique of choice when modeling a binary outcome. Similar to linear regression, logistic regression often used as inferential technique in addition to being a good first choice to many machine learning classification tasks. In this session we are going to explore some applications of logistic regression to real world data. 
+
+### Data
+
+We are going to look at data from the National Election study, a pre-election (USA) poll measuring voter preferences along with information on age, gender, race, income, religion, marital status, education level, and occupation. The data contains polling information on every presidential election from 1948 to 2002. 
+
+```{r data, message=F, warning=F, echo=T}
+# Load the required libraries
+library(tidyverse)
+
+
+# load the data
+
+nes <- readr::read_csv(paste0(here::here(),"/nes_data.csv"))
+
+
+nes %>% head %>% 
+  DT::datatable(caption = "First 6 observations",
+                options = list(scrollX = T))
+
+```
+
+
+## Introduction to Logistic regression
+
+Given a binary variable $y$, we want to model the probability that $y=1$ as:
+
+$$
+Pr(y_i=1) = logit^{-1}(X_i\beta)
+$$
+we assume that the $y_i$ are independent of one another. 
+
+
+### The $logit^{-1}$ function
+
+The $logit^{-1}$ function is defined as:
+
+$$
+logit^{-1}(x) = \frac{1}{1+e^{-x}}
+$$
+
+
+This function takes as input any continuous x value between $(-\infty, \infty)$     and transforms it to the scale $(0,1)$. 
+
+```{r invlogit, echo=T}
+continuous_data <- tibble(x = seq(-5, 5, length.out = 10000))
+
+inv_logit_function <- function(x) {
+  
+  inv_logit <- 1/(1 + exp(-x))
+  
+  return(inv_logit)
+}
+
+continuous_data <- continuous_data %>% 
+  mutate(inv_logit_x = inv_logit_function(x))
+
+continuous_data %>% 
+  ggplot(aes(x, inv_logit_x)) +
+  geom_point() +
+  geom_smooth() +
+  ylab("inverse logit(x)")
+
+```
+
+
+The logit function is given by:
+
+$$
+logit = \log\left(\frac{x}{1-x}\right)
+$$
+
+
+The $logit$ function maps inputs from $(0,1)$ to $(-\infty, \infty)$. If $Pr(y_i = 1) = logit^{-1}(X_i\beta) = p_i$, then $logit(p_i) = X_i\beta$
+
+
+
+```{r logit, echo=T}
+continuous_data <- tibble(x = seq(0.0001, 0.9999, length.out = 10000))
+
+logit_function <- function(x) {
+  
+  logit_x <- log(x/(1 - x))
+  
+  return(logit_x)
+}
+
+continuous_data <- continuous_data %>% 
+  mutate(logit_x = logit_function(x))
+
+continuous_data %>% 
+  ggplot(aes(x, logit_x)) +
+  geom_point() +
+  geom_smooth() +
+  ylab("logit(x)")
+
+```
+
+The inverse logit function is natural to work with since it maps linear predictions ($X\beta$) to probabilities.
+
+Let's fit a simple model to our data with income as the input feature and voting preference as the output feature. We will look specifically at the year 1992 (Bush vs. Clinton) 
+
+
+```{r simple_model}
+
+# filter the data for 1992
+nes_1992 <- nes %>% 
+  filter(year == 1992)
+
+# simple count of the voting preference variables
+nes_1992 %>% 
+  count(presvote, presvote_2party) %>% 
+  knitr::kable()
+
+# Bar plot of the voting preference variable
+nes_1992 %>% 
+  count(presvote) %>% 
+  ggplot(aes(presvote, n)) +
+  geom_bar(stat = 'identity') + 
+  coord_flip() +
+  ggtitle("Voting preference for 1992 election")
+ 
+
+# Convert the 2 vote character variable to a binary variable 
+nes_1992 <- nes_1992 %>% 
+  mutate(presvote_binary = ifelse(presvote_2party == '2. republican', 1, 0)) %>% 
+  filter(!is.na(presvote_binary))
+
+# A quick check to make sure the variable we created is
+# doing what we intended it to do
+nes_1992 %>%
+  count(presvote_binary, presvote_2party )
+
+# Fitting a simple logistic regression model
+simple_model <- glm(presvote_binary ~ income_num, data = nes_1992,
+                    family = binomial(link = "logit"))
+
+# Display a summary of the model fit
+summary(simple_model)
+
+# A plot of the fitted logistic regression line
+ggplot(nes_1992, aes(x=income_num, y=presvote_binary)) + 
+  geom_jitter(alpha = .5,width = .2, height = .05) + 
+  stat_smooth(method="glm", 
+              method.args=list(family="binomial"), se=FALSE)
+
+# Load the applied regression modeling package
+library(arm)
+
+# random draws from the slope and intercept
+sim1 <- sim(simple_model)
+
+
+# From Applied Regression modeling
+
+curve (invlogit(simple_model$coef[1] + simple_model$coef[2]*x), .5, 5.5, ylim=c(-.01,1.01),
+         xlim=c(.5,5.5), xaxt="n", xaxs="i", mgp=c(2,.5,0),
+         ylab="Pr (Republican vote)", xlab="Income", lwd=1)
+  for (j in 1:20){
+    curve (invlogit(sim1@coef[j,1] + sim1@coef[j,2]*x), col="gray", lwd=.5, add=T)
+  }
+  curve (invlogit(simple_model$coef[1] + simple_model$coef[2]*x), add=T)
+  axis (1, 1:5, mgp=c(2,.5,0))
+  mtext ("(poor)", 1, 1.5, at=1, adj=.5)
+  mtext ("(rich)", 1, 1.5, at=5, adj=.5)
+  points (jitter (nes_1992$income, .5), jitter (nes_1992$presvote_binary, .08), pch=20, cex=.1)
+  
+```
+
+
+## Coefficient interpretation
+
+It's natural to want to interpret regression coefficients. For example, if our fitted model was a linear regression model we could interpret the coefficient as the average change in the output for a 1 unit change in income. So a change in income from 1 to 2 would increase the outcome by `r round(coef(simple_model)[2], 3)`, and a change in income from 4 to 5 would increase the outcome by `r round(coef(simple_model)[2], 3)`. However, the inverse logistic function is not a straight line. 
+
+
+For example
+
+```{r }
+
+# logit of .5
+logit_function(.5)
+
+# logit of .6
+logit_function(.6)
+
+```
+
+So, going from a probability of 50% to 60% is equivalent to going from 0 to .4 on the logistic scale. 
+
+
+```{r }
+
+# logit of .90
+logit_function(.90)
+
+# logit of .93
+logit_function(.93)
+
+```
+
+Going from a probability of 90% to 93% is equivalent to going from 2.2 to 2.6 on the logistic scale. Any particular change on the logit scale is compressed at the ends of the probability scale, which is needed to keep probabilities bounded between 0
+and 1.
+
+
+
+The curve in the logistic function means we need to choose where to evaluate changes in the input. 
+
+
+- For interpreting the *intercept*, we usually want to evaluate the model when the input is equal to zero. That doesn't really make sense here since the range of our input goes from 1-5. A better starting point is either in the most common category or the mean of the input.
+
+
+```{r}
+mean_income <- mean(nes_1992$income_num, na.rm = TRUE)
+
+intercept <- coef(simple_model)[1]
+slope <- coef(simple_model)[2]
+
+inv_logit_function(intercept + mean_income*slope)
+
+```
+
+
+So the probability of supporting Bush in 1992 for someone with an average income is 41%. 
+
+- The slope coefficient is `r round(coef(simple_model)[2], 3)`, meaning a difference of 1 in the income scale corresponds to a difference of 0.303 in the logit probability scale. 
+  - We can evaluate how the probability changes with a one unit difference in x near
+the mean value we examined above.
+
+```{r}
+
+inv_logit_function(intercept + 3*slope) - inv_logit_function(intercept + 2*slope)
+
+
+```
+
+Going from an income of 2 to an income of 3 increases the probability of support for Bush by 7%. 
+
+`
+
+
+### The "divide by 4 rule"
+
+The logistic curve is steepest at its center, at which point:
+
+$$
+\alpha + \beta x = 0
+$$
+
+so 
+
+$$
+logit^{-1}(\alpha + \beta x ) = .5
+$$
+
+The slope of the curve—the derivative of the logistic function is maximized at this point and attains the value
+
+$$
+\frac{\beta e^{\alpha + \beta x}}{(1 + \beta e^{\alpha + \beta x})^2}
+$$
+
+$$
+\frac{\beta e^{0}}{(1 + \beta e^{0})^2} = \beta/4
+$$
+
+Therefore, $\beta/4$ is the maximum difference in $Pr(y = 1)$ corresponding to a 1 unit difference in x.
+
+So in our example,$0.303/4$ = `r round(coef(simple_model)[2]/4, 3)`. 
+
+We can take logistic regression coefficients (other than
+the constant term) and divide them by 4 to get an upper bound of the predictive
+difference corresponding to a unit difference in x. This upper bound is a reasonable
+approximation near the midpoint of the logistic curve, where probabilities are close
+to 0.5.
+
+
+
+## Odds ratios
+
+A common method of interpreting logistic regression coefficients is in terms of odds ratios (especially in medicine!)
+
+If two outcomes have probability of occuring $p$ and $p-1$, then we call
+
+$$
+\frac{p}{1-p}
+$$
+
+the odds. For example of odds of 1 is equivalent to $p= 1$, meaning no difference in the likelihood of either outcome. Similarly, odds of 0.5 or 2.0 represent probabilities of $(1/3, 2/3)$
+
+We can define the ratio of two odds as 
+
+$$
+OR = (p_1/(1-p_1))/(p_2/(1-p_2))
+$$
+ is called the Odds Ratio. For example, a change in odds from $p_1 = 1/3 = .33$ to $p_2 = 1/2 = .5$ is
+ 
+```{r}
+
+calc_or <- function(p1, p2) {
+  
+  or <- (p1/(1-p1)) / (p2/(1-p2))
+  
+  return(or)
+  
+}
+
+p1 <- 1/3
+p2 <- 1/2
+calc_or(p1, p2)
+```
+
+An advantage of working with odds ratios instead of probabilities is that it is possible to keep scaling up odds ratios indefinitely without running into the boundary points of 0 and 1
+
+
+
+We can exponentiate the  logistic regression coefficients and interpret them as odds ratios. Let’s illustrate this with an example model with only one predictor
+
+
+$$
+log\left(\frac{Pr(y=1|x)}{Pr(y=0|x)} \right) = \alpha + \beta x
+$$
+
+If we add 1 to $x$ in both sides of the equation above, this has the effect of add $\beta$. Exponentiating both sides, the odds are then multiplied by $e^\beta$. So in our example $\beta =$ `r round(coef(simple_model)[2], 3)`, so a 1 unit change in x is equivalent to a multiplicative change of $e^{.303}$ = 1.35 in the odds.
+
+
+### Simple example of odds ratios
+
+Odds ratios are a weird concept to understand, but they show up a lot in literature and in industry so they are important to understand. Let's say that a public health organization implemented an intervention to encourage people to get the flu shot. They randomly divided 200 people into 2 groups of 100. One group received an targeted intervention and the other did not. They followed the two groups for a month and then counted the number in each group that got the flu shot. The result was the following data
+
+```{r}
+
+intervention <- matrix(c(55, 45, 35, 65), ncol = 2)
+
+colnames(intervention) <- c("No Intervention", "Intervention")
+rownames(intervention) <- c("No Flu shot", "Flu shot")
+intervention
+```
+
+
+The odds of a flu shot in the intervention group is 
+
+$$
+65/(65 + 35)/35/(35+65) = 1.86
+$$
+
+while the odds of a flu shot in the non intervention group is 
+
+
+$$
+45/(45 + 55)/55/(55+45) = 0.82
+$$
+
+This gives an odds ratio of 1.86/0.82 = 2.27. This is an interpretted as the intervention group has 2.27 times the odds of getting the flu shot compared to the non-intervention group. In general
+
+- An OR > 1 means an increase in the odds
+- An OR < 1 means a decrease in the odds
+- An OR of 1 means no difference in the odds.
+
+When doing a statistical hypothesis test, the null hypothesis is typically that $OR = 1$ and the alternative hypothesis is $OR \neq 1$.
+
+
+### One more example with our data
+
+
+Let's look at differences in gender for supporting either Bush or Clinton in 1992.
+
+```{r}
+nes_1992 %>% 
+  count(gender, presvote_2party ) %>% 
+  ggplot(aes(presvote_2party, n, fill =gender )) + 
+  geom_bar(stat = "identity", position='dodge') + 
+  ggtitle("Presidential Candidate support by gender") 
+  
+table(nes_1992$gender, nes_1992$presvote_2party)
+
+
+ 
+```
+
+
+It seems that females tend to support the republican candidate less often. Let's calculate the odds ratio
+
+
+```{r}
+
+
+tab <- table(nes_1992$gender, nes_1992$presvote_2party)
+knitr::kable(tab)
+
+
+female_republican_oods <- (tab[2,2]/(tab[2,2] + tab[2,1]))/(tab[2,1]/(tab[2,2] + tab[2,1]) )
+
+male_republican_oods <- (tab[1,2]/(tab[1,2] + tab[1,1]))/(tab[1,1]/(tab[1,1] + tab[1,2]) )
+
+
+or <- female_republican_oods/male_republican_oods
+
+
+gender_model <-  glm(presvote_binary ~ gender, data = nes_1992,
+                   family = binomial(link = "logit"))
+ 
+
+
+print(female_republican_oods)
+print(male_republican_oods)
+print(or)
+
+
+summary(gender_model)
+
+coef(gender_model)[2]
+
+exp(coef(gender_model)[2])
+
+
+```
+
+
+Using the $2\times 2$ contingency table to calculate the odds ratio gives us the same result as using logistic regression to calculate the OR. 
+
+
+
+
+## Evaluating the performance of a logistic regression
+
+So far we have looked at the output of a logistic regression model as a probability. In a predictive setting, we often want to use these probabilities to make some kind of decision. That is, we want to use the probabilities classify the output into 1 of 2 labels. In our running example, we may want to build a model to predict which candidate a potential voter will vote for and use that information to target people for donations. 
+
+If we use our model so far, we could make one of two potential errors:
+
+- Predict that a voter will vote for Bush when they voted for Clinton
+- Predict that a voter will vote for Clinton when they voted for Bush
+
+
+Let's continue on with our example, by adding a few more predictor variables and try to use it to determine who a potential voter will vote for (in 1992).
+
+
+```{r}
+
+nes_1992 <- nes_1992%>% mutate(age_group = case_when (
+  age < 35 ~ "18-35",
+  age <55 ~ "35-55",
+  age < 75 ~ "55-75",
+  TRUE ~ "76+"
+),age_group = factor(age_group, levels = c("35-55",
+                                    "18-35",
+                                    "55-75",
+                                    "76+")))
+nes_1992 <- nes_1992 %>% 
+  mutate(education_num = as.numeric(stringr::str_sub(educ1, 1, 1)))
+
+# select the variables we wish to examine
+nes_1992 <- nes_1992 %>% 
+  dplyr::select(presvote_binary , race, gender, age, age_group, marital_status, income, religion, occup1,
+                education_num)
+
+# remove missing values
+nes_1992 <- nes_1992 %>% 
+  filter(complete.cases(nes_1992))
+
+# split data into training and testing sets
+
+set.seed(13453)
+n <- nrow(nes_1992)
+training_size <- .8
+split <- sample(1:nrow(nes_1992), floor(n*training_size), replace = F)
+
+train_df <- nes_1992 %>% 
+  slice(split)
+
+test_df <- nes_1992 %>% 
+  slice(-split)
+
+
+
+```
+
+
+### Starting with a basic model
+
+We start with a basic model only including income
+
+```{r}
+
+basic_model <- glm(presvote_binary ~ income, data = train_df, family = binomial)
+
+summary(basic_model)
+
+
+```
+
+We can look at different reference levels of income if easy interpretation is important
+
+
+```{r}
+
+train_df <- train_df %>% 
+  mutate(income_refact = factor(income,
+                         levels = c("3. 34 to 67 percentile",
+                                    "1. 0 to 16 percentile",
+                                    "2. 17 to 33 percentile",
+                                    "4. 68 to 95 percentile",
+                                    "5. 96 to 100 percentile")))
+basic_model2 <- glm(presvote_binary ~ income_refact, data = train_df, family = binomial)
+
+summary(basic_model2)
+
+# remove the refactored variable
+
+train_df <- train_df %>% 
+  select(-income_refact)
+```
+
+### Adding in a second feature
+
+
+
+
+```{r}
+
+basic_model3 <- glm(presvote_binary ~ income + education_num, data = train_df, family = binomial)
+
+summary(basic_model3)
+
+```
+
+Adding in age
+
+```{r}
+
+basic_model4 <- glm(presvote_binary ~ income + education_num + 
+                      age, data = train_df, family = binomial)
+
+summary(basic_model4)
+
+```
+
+age doesn't seem important. Let's try looking at it a different way
+
+```{r}
+
+train_df <- train_df%>% mutate(age_group = case_when (
+  age < 35 ~ "18-35",
+  age <55 ~ "35-55",
+  age < 75 ~ "55-75",
+  TRUE ~ "76+"
+),age_group = factor(age_group, levels = c("35-55",
+                                    "18-35",
+                                    "55-75",
+                                    "76+")))
+
+basic_model5 <- glm(presvote_binary ~ income + education_num + 
+                      age_group, data = train_df, family = binomial)
+
+summary(basic_model5)
+
+```
+
+```{r}
+# remove age
+train_df <- train_df %>% 
+  dplyr::select(-age)
+
+full_model <- glm(presvote_binary ~ ., data = train_df, family = binomial)
+
+summary(full_model)
+
+```
+
+
+Backwards selection
+
+```{r}
+
+backward_selection <- step(full_model) 
+
+broom::tidy(backward_selection) %>% 
+  DT::datatable(options = list(scrollX = T))
+```
+
+## Model evaluation
+
+
+A common way to evaluate the performance of a classification task is through a confusion matrix as follows:
+
+```{r}
+
+perf <- matrix(c("a", "b", "c", "d"), nrow = 2)
+
+rownames(perf) <- c("Predicted No", "Predicted Yes")
+colnames(perf) <- c("Actual No", "Actual Yes")
+
+knitr::kable(perf)
+
+```
+
+
+We calculate the following performance measures:
+
+- *Sensitivity*: $\frac{d}{c + d}$
+- *Specificity*: $\frac{a}{a + b}$
+- *Positive Predictive Value*: $\frac{d}{b + d}$
+- *Positive Predictive Value*: $\frac{a}{a + c}$
+
+So in our example in words:
+
+- *Sensitivity* is the percentage of people who voted for Bush that the model identifies
+- *Specificity* is the percentage of people who voted for Clinton that the model identifies
+- *Positive Predictive Value* is the percentage of the time that a voter will vote for Bush when the model predicts that
+a voter will vote for Bush
+- *Negative Predictive Value* is the percentage of the time that a voter will vote for Clinton when the model predicts that
+a voter will vote for Clinton
+
+
+
+
+```{r, message=F, warning=F}
+train_df <- train_df %>% 
+  mutate(prediction = predict(backward_selection, train_df, type = "response"))
+
+cut_off <- .5
+
+
+train_df <- train_df %>% 
+  mutate(prediction_class = ifelse(prediction > cut_off, 1, 0))
+
+tab <- table(train_df$prediction_class, train_df$presvote_binary)
+
+colnames(tab) <- c("Voted Clinton", "Voted Bush")
+rownames(tab) <- c("Predicted Clinton", "Predicted Bush")
+
+knitr::kable(tab)
+
+sensitivity <- round(tab[2,2]/(tab[1,2] +tab[2,2]), 3)
+specificity <- round(tab[1,1]/(tab[1,1] +tab[2,1]), 3)
+ppv <- round(tab[2,2]/(tab[2,1] +tab[2,2]), 3)
+npv <- round(tab[1,1]/(tab[1,1] +tab[1,2]), 3)
+
+df <- tibble(sensitivity = sensitivity,
+             specificity = specificity,
+             ppv = ppv,
+             npv = npv)
+
+DT::datatable(df, caption = "Voter Model results on training data (cut-off = .5)")
+
+```
+
+
+We could try a different cut-off value and obtain different results
+
+```{r}
+cut_off <- .7
+
+
+train_df <- train_df %>% 
+  mutate(prediction_class = ifelse(prediction > cut_off, 1, 0))
+
+tab <- table(train_df$prediction_class, train_df$presvote_binary)
+
+colnames(tab) <- c("Voted Clinton", "Voted Bush")
+rownames(tab) <- c("Predicted Clinton", "Predicted Bush")
+
+knitr::kable(tab)
+
+sensitivity <- round(tab[2,2]/(tab[1,2] +tab[2,2]), 3)
+specificity <- round(tab[1,1]/(tab[1,1] +tab[2,1]), 3)
+ppv <- round(tab[2,2]/(tab[2,1] +tab[2,2]), 3)
+npv <- round(tab[1,1]/(tab[1,1] +tab[1,2]), 3)
+
+df <- tibble(sensitivity = sensitivity,
+             specificity = specificity,
+             ppv = ppv,
+             npv = npv)
+
+DT::datatable(df, caption = "Voter Model results on training data(cut-off=.7)")
+```
+
+
+
+We can get different performance by varying the metrics
+
+```{r}
+
+cutoffs <- seq(0.001, 0.999, length.out = 1000)
+
+performance <- list()
+
+for(i in cutoffs) {
+  train_df <- train_df %>% 
+  mutate(prediction_class = factor(ifelse(prediction > i, 1, 0), levels= c(0,1))) %>% 
+   mutate(presvote_binary = factor(presvote_binary, levels = c(0,1)))
+
+tab <- table(train_df$prediction_class, train_df$presvote_binary)
+
+
+sensitivity <- round(tab[2,2]/(tab[1,2] +tab[2,2]), 3)
+specificity <- round(tab[1,1]/(tab[1,1] +tab[2,1]), 3)
+ppv <- round(tab[2,2]/(tab[2,1] +tab[2,2]), 3)
+npv <- round(tab[1,1]/(tab[1,1] +tab[1,2]), 3)
+ovarall_accuracy <- (tab[1,1] + tab[2,2])/sum(tab)
+
+df <- tibble(cutoff = i,
+             ovarall_accuracy = ovarall_accuracy,
+             sensitivity = sensitivity,
+             specificity = specificity,
+             ppv = ppv,
+             npv = npv)
+
+performance[[as.character(i)]] <- df
+}
+
+performance <- do.call(rbind, performance)
+
+performance %>% 
+  ggplot(aes(cutoff, sensitivity, color = "sensitivity")) +
+  geom_line() +
+  geom_line(aes(cutoff, specificity, color = "specificity")) +
+  geom_line(aes(cutoff, ppv,color = "ppv")) +
+  geom_line(aes(cutoff, npv, color = "npv")) +
+  geom_line(aes(cutoff, ovarall_accuracy, color = "ovarall accuracy")) 
+```
+
+
+
+### ROC curve
+
+A curve used extensively in practice is the Receiver Operating Characteristics (ROC) curve. The ROC summarizes performance of the model under all thresholds according to two error metrics; True Positive Rate (Sensitivity) and False Positive Rate (1 - specificity). 
+
+Below is an ROC curve for the model we fit above.
+
+
+```{r}
+library(pROC)
+
+rocobj <- roc(train_df$presvote_binary, train_df$prediction)
+
+g <- ggroc(rocobj)+ 
+    geom_segment(aes(x = 1, xend = 0, y = 0, yend = 1), color="grey", linetype="dashed")
+
+print(rocobj)
+```
+
+
+The overall performance of a classifier, summarized over all possible thresholds, is given by the area under the ROC curve (or AUC). An AUC of .5 indicates a model that does no better than chance. The ROC for a model with a high AUC usually hugs the top left corner of the graph. Our AUC is 0.76, which is somewhere in between a great model and a model that is no better than chance. 
+
+#### Aside on performance metrics
+
+When choosing a threshold, not all error metrics are the same. In our toy example here (predicting who a voter will vote for), the consequences of the model making a mistake are quite low. What if our model was trying to predict patient deterioration in hospital? 
+
+Let's say we defined a classifier that predicts which patients will deteriorate in the next 48 hours and may need a transfer to an ICU. When the model predicts that a patient will deteriorate, it sends an alert message to all doctors and nurses caring for this patient. The clinicians then meet to review the patiet's status and discuss next steps. 
+
+These are the errors we can make
+
+- We can predict a patient will deteriorate, and they don't
+- We can predict that a patient will not deteriorate, and they do
+
+We may say, "We don't want to miss any patients who deteriorate", so we pick a threshold that gives us a very high sensitivity. This can unintended consequences. If our PPV is too low because we selected a high sensitivity threshold, the clinicians may get too many alarms and start to feel burnout. They may also stop trusting the alarms all together.
+
+The other situtation may be even worse. If we ensure that we have a high PPV, then we may "miss" a bunch of patients who deteriorate. The physicians again will stop trusting the algorithm, and you may not intervene on patients you could have saved.
+
+All this to say that
+- Non ML/stats experts generally say, give me a model with high accuracy. As we have seen, accuracy can be defined in several different ways. 
+- At the outset of a machine learning project, lay out all of the error metrics and explain to your collaborators the
+the consequences of each mistake (They may have to explain to you the consequences of each mistake)
+- Once your collaborators understand what is at stake, you can jointly select performance metrics that satisfies whatever criteria you agree to.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

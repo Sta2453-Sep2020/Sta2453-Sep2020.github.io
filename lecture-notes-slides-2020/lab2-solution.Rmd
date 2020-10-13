@@ -1,0 +1,752 @@
+---
+title: "lab2-partial-solutions"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Basic solutions
+
+The following document is a basic guide to the solutions for the second lab with limited exposition. Actual solutions submitted by students should have more explanation and interpretation of results. 
+
+
+## Toronto Bike Share
+
+### Questions
+
+
+Use the 2016 Q3, 2016 Q4, and 2017 Toronto Bikeshare ridership data available [here]( https://open.toronto.ca/dataset/bike-share-toronto-ridership-data/) the questions below.
+
+Station information, including real time data, is available [here](https://open.toronto.ca/dataset/bike-share-toronto/).
+
+A [blog post](https://towardsdatascience.com/exploring-toronto-bike-share-ridership-using-python-3dc87d35cb62) was written on the 2017 data set.
+
+Create either an Rmarkdown or Jupyter notebook to answer the questions below. In all of the questions below interpret your results, and identify limitations.
+
+1. Read through the questions below.
+   i. Create a brief plan of the variables that you plan to use to answer these questions
+   ii.explore the variables using quantitative and visual methods
+   iii. rectify any inconsistencies you find through exploration.
+   
+   
+The plan is to try to find variables associated with trip duration and trip length. The main variables we will look at include date variables (day, week, month, etc...), station information, weather (temperature and precipitation), and member type.    
+   
+
+```{r load_packages, echo=F, warning=F, message=F}
+# load the required libraries ---------------------------------------------
+
+library(tidyverse)
+library(lubridate)
+library(rvest)
+library(httr)
+library(fuzzyjoin)
+
+```
+
+Loading the data from the individual files
+
+
+```{r load_data, warning=F, message=F, eval=F}
+
+
+# load the required libraries ---------------------------------------------
+
+library(tidyverse)
+library(lubridate)
+library(rvest)
+library(httr)
+library(fuzzyjoin)
+
+# read in the data --------------------------------------------------------
+path <- file.path(here::here(), "lab3_data")
+# 2016
+bike_2016_q3 <- read_csv(glue::glue('{path}/bikeshare-ridership-2016-q3.csv'))
+bike_2016_q4 <- read_csv(glue::glue('{path}/bikeshare-ridership-2016-q4.csv'))
+# 2017
+bike_2017_q1 <- read_csv(glue::glue('{path}//Bikeshare Ridership (2017 Q1).csv'))
+bike_2017_q2 <- read_csv(glue::glue('{path}/Bikeshare Ridership (2017 Q2).csv'))
+bike_2017_q3 <- read_csv(glue::glue('{path}/Bikeshare Ridership (2017 Q3).csv'))
+bike_2017_q4 <- read_csv(glue::glue('{path}/Bikeshare Ridership (2017 Q4).csv'))
+
+```
+
+```{r actual_load, echo=F, warning=F, message=F}
+bike <- readr::read_csv(file.path(here::here(), "lab3_data/bike.csv"))
+
+```
+
+
+
+Fixing the timestamps and merging the data together
+
+
+```{r, eval=F}
+
+#   -----------------------------------------------------------------------
+# convert dates -----------------------------------------------------------
+bike_2016_q3 <- bike_2016_q3 %>% 
+  mutate(trip_start_time = mdy_hm(trip_start_time),
+         trip_stop_time = mdy_hm(trip_stop_time))%>% 
+  mutate(trip_start_time = lubridate::with_tz(trip_start_time, tzone = "EST"),
+         trip_stop_time = lubridate::with_tz(trip_stop_time, tzone = "EST"))
+
+bike_2016_q4 <- bike_2016_q4 %>% 
+  mutate(trip_start_time = dmy_hm(trip_start_time),
+         trip_stop_time = dmy_hm(trip_stop_time))%>% 
+  mutate(trip_start_time = lubridate::with_tz(trip_start_time, tzone = "EST"),
+         trip_stop_time = lubridate::with_tz(trip_stop_time, tzone = "EST"))
+
+bike_2017_q1 <- bike_2017_q1 %>% 
+  mutate(trip_start_time = dmy_hm(trip_start_time),
+         trip_stop_time = dmy_hm(trip_stop_time)) %>% 
+  mutate(trip_start_time = lubridate::with_tz(trip_start_time, tzone = "EST"),
+         trip_stop_time = lubridate::with_tz(trip_stop_time, tzone = "EST"))
+
+bike_2017_q2 <- bike_2017_q2 %>% 
+  mutate(trip_start_time = dmy_hm(trip_start_time),
+         trip_stop_time = dmy_hm(trip_stop_time)) %>% 
+  mutate(trip_start_time = lubridate::with_tz(trip_start_time, tzone = "EST"),
+         trip_stop_time = lubridate::with_tz(trip_stop_time, tzone = "EST"))
+
+bike_2017_q3 <- bike_2017_q3 %>% 
+  mutate(trip_start_time = mdy_hm(trip_start_time),
+         trip_stop_time = mdy_hm(trip_stop_time))
+
+bike_2017_q4 <- bike_2017_q4 %>% 
+  mutate(trip_start_time = mdy_hms(trip_start_time),
+         trip_stop_time = mdy_hms(trip_stop_time))
+#   -----------------------------------------------------------------------
+#   -----------------------------------------------------------------------
+
+
+# bind the data back together ---------------------------------------------
+bike <- bike_2016_q3 %>% 
+  bind_rows(bike_2016_q4) %>% 
+  bind_rows(bike_2017_q1) %>% 
+  bind_rows(bike_2017_q2) %>% 
+  bind_rows(bike_2017_q3) %>% 
+  bind_rows(bike_2017_q4)
+
+```
+
+
+Filtering out some bad timestamps and outliers in the trip duration variable
+
+
+```{r filter_timestamps}
+
+# first trip start time
+min(bike$trip_start_time, na.rm = T)
+# first trip end time
+min(bike$trip_stop_time, na.rm = T)
+
+# last trip start time
+max(bike$trip_start_time, na.rm = T)
+# last trip end time
+max(bike$trip_stop_time, na.rm = T)
+
+# filter out improper dates
+nrow(bike)
+bike <- bike %>% 
+  filter(trip_start_time >= ymd_hms('2016-07-01 00:00:00'),
+         trip_stop_time >= ymd_hms('2016-07-01 00:00:00'),
+         trip_start_time < ymd_hms('2018-01-01 00:00:00'),
+         trip_stop_time < ymd_hms('2018-01-01 00:00:00'))
+nrow(bike)
+
+# distribution of trip duration
+bike %>% 
+  ggplot(aes(trip_duration_seconds)) +
+  geom_density()
+
+# log transformed
+bike %>% 
+  ggplot(aes(trip_duration_seconds)) +
+  geom_density() +
+  scale_x_log10()
+
+
+summary(bike$trip_duration_seconds)
+
+# how many less than 1 minute
+sum(bike$trip_duration_seconds <= 60)
+
+# filter out trips less than a minute
+bike <- bike %>% 
+  filter(trip_duration_seconds > 60)
+
+quants <- quantile(bike$trip_duration_seconds, probs = seq(0, 1, .01))
+
+plot(seq(0, 1, .01), quants, type = "l")
+
+print(quants)
+# We are going to remove everything above the 99th percentile (2.2 hours)
+
+bike <- bike %>% 
+  filter(trip_duration_seconds < quants[100])
+
+bike %>% 
+  ggplot(aes(trip_duration_seconds)) +
+  geom_density() +
+  xlab("Trip Duration in seconds")
+
+# log transformed
+bike %>% 
+  ggplot(aes(trip_duration_seconds)) +
+  geom_density() +
+  scale_x_log10() +
+  xlab("log(Trip Duration in seconds)")
+
+
+```
+
+
+
+
+### Basic descriptive statistics
+
+```{r basic_descriptives}
+
+glimpse(bike)
+
+summary(bike)
+
+# basic descriptive statistics
+cat("number of rows:", nrow(bike))
+cat("number of columns:", nrow(bike))
+
+#trips per day over time
+
+bike %>% 
+  count(date = as_date(trip_start_time)) %>% 
+  ggplot(aes(date, n)) +
+  geom_line() +
+  ylab("Number of trips per day")
+
+bike %>% 
+  count(date = as_date(trip_start_time), user_type) %>% 
+  ggplot(aes(date, n, color = user_type)) +
+  geom_line() +
+  ylab("Number of trips per day") +
+  labs(color = "User Type")
+
+```
+
+### Trip duration by starting location
+
+```{r trip_duration_location}
+
+
+station_summary <- bike %>% 
+  group_by(from_station_name) %>% 
+  summarize(n = n(), 
+            median_trip_duration = median(trip_duration_seconds/60),
+            q25_trip_duration = round(quantile(trip_duration_seconds/60, .25), 3),
+            q75_trip_duration = round(quantile(trip_duration_seconds/60, .75), 3))
+
+DT::datatable(station_summary, caption = "Summary of trip durations by station",
+              options = list(scrollX = T))
+
+ station_summary %>%
+   ggplot(aes(fct_reorder(from_station_name,
+                          median_trip_duration, .desc = TRUE),
+              median_trip_duration)) + 
+   geom_point() +
+   coord_flip() +
+   theme(text = element_text(size=5))
+
+
+```
+
+
+
+```{r trip_duration_user, message=F, warning=F}
+
+
+station_summary_user <- bike %>% 
+  group_by(from_station_name, user_type) %>% 
+  summarize(n = n(), 
+            median_trip_duration = median(trip_duration_seconds/60)) %>% 
+  group_by(from_station_name) %>% 
+  summarize(n_casual = round(min(n[user_type == "Casual"]), 3),
+            n_member = round(min(n[user_type == "Member"]), 3),
+            casual_mean = round(min(median_trip_duration[user_type == "Casual"]), 3),
+            member_mean = round(min(median_trip_duration[user_type == "Member"]), 3),
+            difference = casual_mean - member_mean, 
+            n_difference = n_member - n_casual )
+
+DT::datatable(station_summary_user, caption = "Summary of trip durations by station and user",
+              options = list(scrollX = T))
+
+ station_summary_user %>%
+   ggplot(aes(fct_reorder(from_station_name,
+                          difference, .desc = TRUE),
+              difference)) + 
+   geom_point() +
+   coord_flip() +
+   theme(text = element_text(size=5))
+
+
+```
+
+
+Fixing the station names and adding distance between stations
+
+
+```{r get_distance, eval = F}
+
+# download the station id data --------------------------------------------
+
+# different ways of extracting data from an API in R
+
+# extract json
+station_info <- jsonlite::fromJSON('https://tor.publicbikesystem.net/ube/gbfs/v1/en/station_information')
+
+# with GET
+station_info_get <- GET('https://tor.publicbikesystem.net/ube/gbfs/v1/en/station_information')
+station_info_get <- content(station_info_get)
+station_info_get <- station_info_get$data$station # this returns a list object
+
+station_info$data$stations
+
+from_data <- station_info$data$stations %>% 
+  select(from_id = station_id,
+         from_name= name,
+         from_lat = lat, from_lon = lon) %>% 
+  as_tibble()
+
+to_data <- station_info$data$stations %>% 
+  select(to_id = station_id,
+         to_name= name,
+         to_lat = lat, 
+         to_lon = lon) %>% 
+  as_tibble()
+
+# join station info -------------------------------------------------------
+
+###########################################################################
+# FROM STATION
+bike_good <- bike %>% 
+  inner_join(from_data, by = c('from_station_name' = 'from_name'))
+
+bike_bad <- bike %>% 
+  anti_join(from_data, by = c('from_station_name' = 'from_name'))
+
+bike_bad_good <- bike_bad %>%
+  stringdist_inner_join(from_data, by = c('from_station_name' = 'from_name'), 
+                        max_dist = 15, distance_col = "dist") %>% 
+  group_by(trip_id) %>% 
+  arrange(dist) %>% 
+  filter(row_number() == 1) %>% 
+  ungroup()
+
+bike_bad <- bike_bad %>%
+  stringdist_anti_join(from_data, by = c('from_station_name' = 'from_name'),
+                       max_dist = 15, distance_col = "dist")
+
+
+bike <- bike_good %>% 
+  bind_rows(bike_bad_good)
+################################################################################
+
+
+###########################################################################
+# TO STATION
+bike_good <- bike %>% 
+  inner_join(to_data, by = c('to_station_name' = 'to_name'))
+
+bike_bad <- bike %>% 
+  anti_join(to_data, by = c('to_station_name' = 'to_name'))
+
+bike_bad_good <- bike_bad %>%
+  stringdist_inner_join(to_data, by = c('to_station_name' = 'to_name'), 
+                        max_dist = 15, distance_col = "dist_to") %>% 
+  group_by(trip_id) %>% 
+  arrange(dist_to) %>% 
+  filter(row_number() == 1) %>% 
+  ungroup()
+
+bike <- bike_good %>% 
+  bind_rows(bike_bad_good)
+################################################################################
+
+
+
+library(geosphere)
+
+# calculate distance in km
+
+bike <- bike %>% 
+  rowwise() %>% 
+  mutate(distance = distHaversine(c(from_lon,
+                                    from_lat), 
+                                  c(to_lon,
+                                    to_lat))) %>% 
+  ungroup()
+
+```
+
+
+### Exploring distance
+
+The distance traveled by casual users and members doesn't seem to be any different. 
+
+
+```{r explore_distance, warning=F, message=F}
+
+bike %>% 
+  ggplot(aes(distance, fill = user_type)) +
+  geom_density(alpha = .3) +
+  ggtitle("Distribution of Trip Distance")
+
+bike %>% 
+  ggplot(aes(distance, fill = user_type)) +
+  geom_density(alpha = .3) +
+  ggtitle("Distribution of Trip Distance") +
+  xlab("log(distance)") +
+  scale_x_log10()
+
+```
+
+
+### Create date features
+
+```{r date_features}
+
+bike <- bike %>% 
+  mutate(hour_start = hour(trip_start_time),
+         day_start = wday(trip_start_time, label = T),
+         month_start = month(trip_start_time),
+         week = week(trip_start_time))
+
+
+bike %>% 
+  group_by(hour_start, user_type) %>% 
+  summarize(median_duration = median(trip_duration_seconds),
+            q25_duration = quantile(trip_duration_seconds, .25),
+             q75_duration = quantile(trip_duration_seconds, .75)) %>% 
+  ggplot(aes(hour_start, median_duration)) +
+  geom_point() +
+    geom_errorbar(aes(ymin = q25_duration, ymax = q75_duration)) +
+  xlab("Hour of trip start") + 
+    facet_grid(~user_type) +
+  scale_x_continuous(breaks = 0:23)
+  
+
+bike %>% 
+  group_by(month_start, user_type) %>% 
+  summarize(median_duration = median(trip_duration_seconds),
+            q25_duration = quantile(trip_duration_seconds, .25),
+             q75_duration = quantile(trip_duration_seconds, .75)) %>% 
+  ggplot(aes(month_start, median_duration)) +
+  geom_point() +
+    geom_errorbar(aes(ymin = q25_duration, ymax = q75_duration)) +
+  xlab("month of trip start") + 
+    facet_grid(~user_type) +
+  scale_x_continuous(breaks = 0:12)
+
+
+bike %>% 
+  group_by(week, user_type) %>% 
+  summarize(median_duration = median(trip_duration_seconds),
+            q25_duration = quantile(trip_duration_seconds, .25),
+             q75_duration = quantile(trip_duration_seconds, .75)) %>% 
+  ggplot(aes(week, median_duration, color = user_type)) +
+  geom_point() +
+    geom_errorbar(aes(ymin = q25_duration, ymax = q75_duration)) +
+  xlab("week of trip start") + 
+  scale_x_continuous(breaks = 0:53)
+
+
+```
+
+
+
+
+2. Do casual users take shorter trips compared to members? Is it possible to identify if bikes are being used by tourists or residents?
+
+
+```{r question2}
+bike %>% 
+  ggplot(aes(trip_duration_seconds, fill = user_type)) +
+  geom_density(alpha = .2) +
+  scale_x_log10()
+
+bike %>% 
+  group_by(user_type) %>% 
+  summarize(mean_trip_duration = round(mean(trip_duration_seconds/60), 3),
+            sd_trip_duration = round(sd(trip_duration_seconds/60), 3),
+            median_duration = round(median(trip_duration_seconds/60), 3),
+            q25_duration = round(quantile(trip_duration_seconds/60, .25), 3),
+            q75_duration = round(quantile(trip_duration_seconds/60, .75), 3)) %>% 
+  DT::datatable(caption = "Summary of trip duration by user type in minutes")
+
+
+
+```
+
+It looks like members take shorter trips than casual users (median = 18.4  vs 9.78 minutes). From plots above it seems that trip behaviour is a little different between the two groups. We will attempt a regression model to control for a couple of factors.
+
+
+```{r duration_user_model}
+
+# recode station names with low counts to other
+
+station_count <- bike %>% 
+  count(from_station_name, user_type) %>% 
+  filter(n < 3000)
+  
+other_stations <- unique(station_count$from_station_name)
+
+bike <- bike %>% 
+  mutate(station_refactor = ifelse(from_station_name %in% other_stations, "other",
+                                   from_station_name))
+
+user_model <- lm(trip_duration_seconds ~ user_type +
+                   month_start +day_start + station_refactor, data = bike)
+
+coefs <- broom::tidy(user_model)
+
+coefs %>% slice(2) %>% 
+  knitr::kable()
+```
+
+
+
+
+
+
+
+3. Does season or weather affect trip duration or distance?
+
+
+Below are the functions required to scrape weather data from the government of Canada
+website:
+
+```{r weather_functions}
+clean_var_names <- function(x) {
+  
+  clean_x <- tolower(x) %>% 
+    str_replace_all(., "/|\'|°", "") %>% 
+    str_replace_all(., " ", "_")
+  
+  return(clean_x)
+}
+
+
+
+
+
+scrape_weather <- function(station = "51459", 
+                           year = 2017, 
+                           month = 3) {
+  
+  # the url to query
+  query_url <- glue::glue('http://climate.weather.gc.ca/climate_data/daily_data_e.html?StationID={station}&timeframe=2&Year={year}&Month={month}#')
+
+  # read in the table
+  weather_data <- query_url %>% 
+    read_html() %>% 
+    html_table() %>% 
+    .[[1]]
+  
+  # clean up the names of the weather variables
+  names(weather_data) <- clean_var_names(names(weather_data))
+  
+  # create dates and remove summary stats rows (i.e. where date is missing)
+  weather_data <- weather_data %>% 
+    mutate(date = ymd(paste(year, month, day, '-'))) %>% 
+    select(date, mean_temp_definitionc, total_precip_definitionmm) %>% 
+    filter(!is.na(date))
+  
+  # transform weather variables to numeric
+  # replace LegendTT with some small value
+  weather_data <- weather_data %>% 
+    mutate(total_precip = as.numeric(ifelse(total_precip_definitionmm == "LegendTT", 
+                                            "0.01",total_precip_definitionmm)),
+           total_precip = ifelse(is.na(total_precip), 0, total_precip),
+           mean_temp = as.numeric(mean_temp_definitionc)) %>% 
+    select(date, mean_temp, total_precip)
+  
+  return(weather_data)
+  
+}
+
+
+
+```
+
+
+
+We extract the weather for 2016 and 2017 separately and merge them together
+
+
+```{r get_weather, warning=F, message=F}
+# get weather for 2016
+months <- 1:12
+weather2016 <- list()
+for(i in months[7:12]) {
+  weather2016[[i]] <- scrape_weather(month = i, year = 2016)
+}
+
+
+# get weather for 2017
+weather2017 <- list()
+for(i in months) {
+  weather2017[[i]] <- scrape_weather(month = i, year = 2017)
+}
+
+# join lists together
+weather2016 <- do.call(rbind, weather2016)
+weather2017 <- do.call(rbind, weather2017)
+
+weather <- weather2016 %>% 
+  bind_rows(weather2017)
+
+# join the weather data to the bike data
+
+# dim before joining weather data
+dim(bike)
+
+bike <- bike %>% 
+  mutate(date = as_date(trip_start_time)) %>% 
+  left_join(weather, by = "date") %>% 
+  filter(!is.na(mean_temp))
+
+# dim after joining weather data
+dim(bike)
+
+# mean trip duration by different weather
+bike %>%
+  filter(!is.na(mean_temp)) %>% 
+  mutate(mean_temp_cut = cut(mean_temp, 10)) %>% 
+  group_by(mean_temp_cut) %>% 
+  summarize(mean_duration = mean(trip_duration_seconds))
+
+
+
+
+bike %>%
+  filter(!is.na(mean_temp)) %>% 
+  mutate(mean_temp_cut = cut(mean_temp, 10)) %>% 
+  group_by(mean_temp_cut, user_type) %>% 
+  summarize(med = median(trip_duration_seconds),
+            q25 = quantile(trip_duration_seconds, .25),
+            q75 = quantile(trip_duration_seconds, .75)) %>% 
+  ggplot(aes(mean_temp_cut, med)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = q25, ymax = q75)) + coord_flip() +
+  facet_grid(~ user_type)
+
+
+weather_model <- lm(trip_duration_seconds ~ mean_temp  + factor(month_start ), data = bike)
+weather_model_distance <- lm(distance ~ mean_temp  + factor(month_start ), data = bike)
+
+library(pander)
+
+pander( summary(weather_model) ) 
+pander(summary(weather_model_distance))
+
+```
+
+4. Define trip length in two ways, and create feature variables in the data set. What factors affect trip length? Do these factors differ depending on your definition?
+
+
+Trip length has been defined as duration and trip distance. Yes, for one there is little difference in distance by user type. see plots throughout
+
+
+
+5. Use linear regression to build a prediction model of trip length.
+
+
+```{r lm_models, message = F, warning=F}
+
+# set seed for reproducibility 
+set.seed(3399)
+
+###############################################################################
+# recode station name
+station_count <- bike %>% 
+  count(from_station_name, user_type) %>% 
+  filter(n < 2000)
+  
+other_stations <- unique(station_count$from_station_name)
+
+bike <- bike %>% 
+  mutate(station_refactor = ifelse(from_station_name %in% other_stations, 
+                                   "other",
+                                   from_station_name))
+###############################################################################
+
+# split the data into a training and testing set
+split_size <- .3
+n <- nrow(bike)
+
+# randomly sample the training rows
+training_rows <- sample(1:n, size = floor(split_size*n), replace = F)
+
+# the training data
+train_df <- bike %>% 
+  slice(training_rows)
+
+# the testing data
+test_df <- bike %>% 
+  slice(-training_rows)
+
+# a baseline model for comparison
+baseline_model <- lm(log(trip_duration_seconds) ~ 1, data = train_df)
+  
+# a full model with interactions
+full_model <- lm(log(trip_duration_seconds) ~ user_type + 
+                   station_refactor+
+                   station_refactor*user_type+
+                   mean_temp + 
+                   day_start + 
+                   user_type*mean_temp +
+                   total_precip + 
+                   factor(hour_start) +
+                   factor(hour_start)*user_type
+                   , data = train_df)
+
+sum_results <- broom::tidy(full_model)
+
+DT::datatable(sum_results, caption = "Model coefficients")
+
+train_df <- train_df %>% 
+  mutate(prediction_full = exp(predict(full_model, train_df)),
+         prediction_baseline = exp(predict(baseline_model, train_df)))
+
+test_df <- test_df %>% 
+  mutate(prediction_full = exp(predict(full_model, test_df)),
+         prediction_baseline = exp(predict(baseline_model, test_df)))
+
+
+
+
+rmse <- function(actual, predicted) {
+  
+  rmse_val <- sqrt(mean((actual - predicted)^2, na.rm = T))
+}
+
+train_rmse_full <- rmse(train_df$trip_duration_seconds, train_df$prediction_full)
+test_rmse_full <- rmse(test_df$trip_duration_seconds, test_df$prediction_full)
+
+train_rmse_baseline <- rmse(train_df$trip_duration_seconds, train_df$prediction_baseline)
+test_rmse_baseline <- rmse(test_df$trip_duration_seconds, test_df$prediction_baseline)
+
+
+summary_results <- tibble(split = c("train", "test"),
+                          baseline_model = c(train_rmse_baseline,test_rmse_baseline ),
+                          full_model = c(train_rmse_full, test_rmse_full))
+
+DT::datatable(summary_results)
+```
+
+
+
+
+
+
