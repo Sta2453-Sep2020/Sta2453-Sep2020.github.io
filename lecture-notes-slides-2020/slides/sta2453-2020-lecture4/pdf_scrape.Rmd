@@ -1,0 +1,221 @@
+---
+title: "Scraping from pdf files"
+output:
+  html_document:
+  df_print: paged
+---
+
+## Introduction
+
+Often the toughest part of scraping data from the internet is cleaning the raw text/tables. The data can present itself in ways that require learning new skills. In this example, I will scrape data from a sprots website that comes in pdf format. The fundamentals are the same, but it takes some advanced text processing to get the data in a useable form.
+
+## The data 
+
+I will be scraping GPS data from www.worldrowing.com, from the 2017 european rowing championships
+
+Navigating to this webiste http://www.worldrowing.com/events/2017-european-rowing-championships/documents#Eight will display the following page:
+
+
+
+We will use the rvest package to extract the urls that contain the pdf files for the gps data.
+
+```{r, warning=F, message=F}
+library(rvest)
+library(dplyr)
+library(ggplot2)
+
+url <- 'http://www.worldrowing.com/events/2017-european-rowing-championships/documents#Eight'
+
+links <- url %>% read_html() %>% html_nodes('a') %>% html_attr('href') %>% grep('GPS', ., value = T)
+
+head(links, n = 20)
+```
+
+### pdftools
+
+I will use the pdftools R package to read the pdf files. The package can be installed as follows:
+
+```{r, warning=F, message=F}
+#install pdftools
+
+# install.packages('pdftools')
+library(pdftools)
+```
+
+
+Let's begin as before by solving the problem for a single example, and then build functions from there.
+
+```{r, warning=F, message=F}
+
+base_url <- 'http://www.worldrowing.com'
+# the first link
+link1 <- links[1]
+
+# combine the base url with the event url
+event_url <- paste0(base_url, link1)
+event_url
+```
+
+We can read the data using the `pdf_text` function from pdftools
+
+```{r, warning=F, message=F}
+rowing_gps <- pdf_text(event_url)
+# what does the data look like
+head(print(rowing_gps))
+```
+
+The data looks tidy, and is actually just a large text file. I write the file to disk as a text file. When I read it back in, it's easier to process. After exploring the data, we find that the teams competing in the event are located on the 6th line. Here I write the file to disk and extract the team names
+
+```{r, warning=F, message=F}
+
+# get the working directory
+wd <- getwd()
+
+#write the file to the working directory
+file_name <- paste0(wd, "/", "temp.txt")
+write(rowing_gps, file = file_name, sep = "\t")
+
+# teams are located on the 6th line
+teams <- read.table(file_name, skip = 5, nrows = 1)
+```
+
+Next we want to find the line where the data ends. Looking at some of the pdf files, we see that the first line after rowing data lists the internet service. If we search for the line that contains 'INTERNET, we can simply read all of the lines from the beginning of the data (row 10), to that line.
+
+In what follows, I split the data into lines using `strsplit`, then I find the first occurance of the word 'INTERNET' in a line. 
+
+```{r}
+lines <- strsplit(rowing_gps, '\r\n') %>% unlist
+first_internet <- which(grepl('INTERNET', lines))[1]
+first_internet
+```
+
+
+So now I can read in the data from row 10 to row 49.
+
+```{r}
+rowing_df <- read.table(file_name, skip = 9, nrows = first_internet - 10)
+head(rowing_df)
+```
+
+Now we have the data in a form we can work with, but is still not complete. Each team in the data (4 teams) has two columns worth of data, one for speed and one for stroke. We will transform this data into a tidy data frame that contains 5 columns
+
+* event_name (will be the pdf file name)
+* team_name
+* distance
+* speed
+* stroke
+
+That is, we are transforming this data from a wide format to a long format. Below, I create each variable in turn
+
+```{r}
+
+
+teams <- as.character(t(teams))
+team_name <- rep(as.character(teams),each =  nrow(rowing_df))
+event <- rep(link1, length(team_name))
+
+distance <- rep(rowing_df[,1], length(teams))
+rowing_df <- rowing_df[, -1]
+n <- ncol(rowing_df)
+# speed is the odd numbered columns
+speed <- NA
+for(i in seq(1, (n-1),2 )) {
+  speed <- c(speed, rowing_df[,i])
+}
+
+speed <- speed[!is.na(speed)]
+
+stroke <- NA
+for(i in seq(2, n,2 )) {
+  stroke <- c(stroke, rowing_df[,i])
+}
+
+stroke <- stroke[!is.na(stroke)]
+
+final_df <- data.frame(event_name = event, team_name = team_name, 
+                       distance = distance, speed = speed, stroke = stroke)
+
+```
+
+
+We can make a few plots with the data
+
+```{r}
+ggplot(final_df, aes(distance, speed, color = team_name)) + geom_line()
+
+```
+
+
+```{r}
+ggplot(final_df, aes(distance, stroke, color = team_name)) + geom_line()
+```
+
+
+With that in mind, we can now write a loop to write all of the gps files for the tournament and create one large data set
+
+
+```{r}
+result <- vector('list', length = length(links))
+
+for(j in 1:length(links)) {
+  base_url <- 'http://www.worldrowing.com'
+  
+  # the first link
+  link1 <- links[j]
+
+  # combine the base url with the event url
+  event_url <- paste0(base_url, link1)
+  rowing_gps <- pdf_text(event_url)
+  write(rowing_gps, file = file_name, sep = "\t")
+
+  # teams are located on the 6th line
+  teams <- read.table(file_name, skip = 5, nrows = 1)
+  lines <- strsplit(rowing_gps, '\r\n') %>% unlist
+  first_internet <- which(grepl('INTERNET', lines))[1]
+  rowing_df <- read.table(file_name, skip = 9, nrows = first_internet - 10)
+  
+  teams <- as.character(t(teams))
+  team_name <- rep(as.character(teams),each =  nrow(rowing_df))
+  event <- rep(link1, length(team_name))
+
+  distance <- rep(rowing_df[,1], length(teams))
+  rowing_df <- rowing_df[, -1]
+  n <- ncol(rowing_df)
+  # speed is the odd numbered columns 
+  speed <- NA
+  for(i in seq(1, (n-1),2 )) {
+    speed <- c(speed, rowing_df[,i])
+  }
+
+  speed <- speed[!is.na(speed)]
+
+  stroke <- NA
+  for(i in seq(2, n,2 )) {
+    stroke <- c(stroke, rowing_df[,i])
+  }
+  stroke <- stroke[!is.na(stroke)]
+ 
+  final_df <- tryCatch(data.frame(event_name = event, team_name = team_name, 
+                         distance = distance, speed = speed, stroke = stroke), error = function(e) e) 
+  
+  if(sum(grepl('error', class(final_df))) >0 ) next # if there is an error skip
+  
+  result[[j]] <- final_df
+
+  
+}
+```
+
+
+
+Now we combine the data using the do.call function
+
+```{r}
+result <- do.call(rbind,result)
+```
+
+```{r}
+ggplot(result, aes(distance, speed, color = team_name)) + geom_line() + facet_wrap(~event_name)
+```
+
+

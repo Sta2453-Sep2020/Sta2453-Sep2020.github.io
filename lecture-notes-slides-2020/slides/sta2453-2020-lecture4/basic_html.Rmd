@@ -1,0 +1,192 @@
+---
+title: "Basic html notebook"
+output:
+  html_document:
+    df_print: paged
+---
+
+## Introduction
+
+The following R notebook will explore a very basic html file to familiarize ourselves with the rvest package.
+
+We will begin by installing the rvest package. The code below checks to see if the package is already installed. If it isn't then the package is installed and loaded into memory, otherwise, it is simply loaded into memory.
+
+```{r}
+
+if(!("rvest" %in% rownames(installed.packages()))) {
+  install.packages('rvest')
+  library(rvest)
+} else {
+  library(rvest)
+}
+
+```
+
+## Getting help
+
+The code block below will show you how to get help for any R package or function. 
+
+```{r, eval = F}
+# to see all helpfiles for an R package
+help(package = 'rvest')
+
+# to see help for a particular R function
+# ?html_node
+
+# to see all help files associated with a particular word
+??html
+
+# to see examples for a particular function
+# example(read_html)
+```
+
+## The simple html file
+
+The output below displays the html file we will be working with. This was printed using R's print function to display row numbers. The row numbers and quotation marks do not appear in the actual html file. 
+
+```{r, echo = F}
+a <- readLines('basic_example_text.txt')
+print(a)
+```
+
+
+### Read in the html file
+
+The code below reads in the html file and prints the R object structure.
+
+```{r}
+html_file_name <- 'basic_example.html'
+
+# read in the file
+html_data <- read_html(html_file_name)
+
+# the structure of what is read in
+str(html_data)
+
+print(html_data)
+```
+
+We see that R stores this object as a pointer object to the document ('externalptr'). When we print the object we see that there are two nodes at the top level of the document
+
+* head
+* body
+
+Let's see what children these top level nodes have
+
+```{r}
+# print the children for the head node
+html_data %>% html_node('head') %>% xml_children()
+# how many children
+html_data %>% html_node('head') %>% xml_children() %>% length()
+
+
+# print the children for the body node
+html_data %>% html_node('body') %>% xml_children()
+# how many children
+html_data %>% html_node('body') %>% xml_children() %>% length()
+
+
+```
+
+
+The head element has only 2 children, the title of the document and the meta tag. The body element has 6 children. 
+
+### Extracting text from html documents
+
+Let's extract the title of the document using the `html_text` function. We saw above that the title is stored in the Title node, so we extract that element with the `html_node` function, and then print the text it contains with `html_text.
+
+```{r}
+html_data %>% html_node('title') %>% html_text() 
+```
+
+What if we want to print the text contained in the 3 paragraphs of text (lines 9, 10, and 16 in the document). 
+
+```{r}
+html_data %>% html_node('p') %>% html_text() 
+```
+
+What went wrong? The html_node function extracts the first 'p' element. We need to use html_nodes to extract all p elements.
+
+```{r}
+html_data %>% html_nodes('p') %>% html_text() 
+```
+
+### Extracting attributes
+
+HTML elements often have attributes. Attributes contain additional information about the elements. For example
+
+* Color
+* size
+* links (i.e. hrefs)
+* the language of the document
+* tooltip information
+
+Attributes can be extracted from HTML documents with the use of `html_attr` and `html_attrs`. The difference is:
+
+* `html_attr` requires you to specify the attribute you are looking for in a node
+* `html_attrs` returns all of the attributes of a given node
+
+Let's extract the title (i.e. tooltip) attribute from the paragraph nodes
+
+```{r}
+html_data %>% html_nodes('p') %>% html_attr('title')
+```
+
+Notice that the first two paragraph nodes don't have any title attributes associated with them, so NA is returned for their value. If we know ahead of time that the first two paragraph elements are empty, we can extract the third element during our piping by using R's indexing capabilities.
+
+
+```{r}
+html_data %>% html_nodes('p') %>% .[[3]] %>% html_attr('title')
+```
+
+
+Often times you will want to navigate through links found on a webpage. To do this, we need to extract the "href" attribute from the "a" node. First, let's see which attributes are available in the "a" node using `html_attrs`
+
+```{r}
+html_data %>% html_nodes('a')  %>% html_attrs()
+```
+
+In the code below, we extract the href attribute from our link, read the data from that page (cinema clock carleton cinema) and extract the movies that are playing
+
+```{r}
+cinema_url <- 'https://www.cinemaclock.com/ont/toronto/movies/in-theatres'
+cinema_url %>% 
+  read_html %>% 
+  html_nodes('.movietitle a') %>% 
+  html_text() 
+```
+
+One last note before moving on. Scraping raw data from a webpage is often easy. Cleaning the data is the time consuming part. All of the movies listed above have the movie ratings attached at the end. To remove these, we could either explore the HTML, or use regular expressions to the rating codes 
+
+```{r}
+# using gsub to remove the ratings
+cinema_url %>%
+  read_html %>% 
+  html_nodes('.movietitle a') %>% 
+  html_nodes('span[class=rtUS]') %>% 
+  html_text()
+ 
+
+cinema_url %>%
+  read_html %>% 
+  html_nodes('.movietitle a') %>% 
+  html_nodes('span.rtUS') %>% 
+  html_text()
+  
+```
+
+### Extracting HTML tables
+
+We can extract HTML tables from webpages using the `html_table` table function
+
+```{r}
+html_data %>% 
+  html_table()
+```
+
+
+
+
+
+
+

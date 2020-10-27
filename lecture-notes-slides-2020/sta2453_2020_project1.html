@@ -1531,19 +1531,81 @@ div.tocify {
 
 <div id="background" class="section level1">
 <h1>Background</h1>
+<p>This project will involve scraping data from the web, cleaning it and answering some questions. Below I will provide 4 specific examples of websites that can be scraped along with some specific questions you can answer. Please do not feel limited by the examples that I mention here. You can alter the example questions in any way that you like or come up with some suitable alternative (please check with me about the appropriateness of the question).</p>
 </div>
-<div id="question" class="section level1">
-<h1>Question</h1>
+<div id="example-project-ideas" class="section level1">
+<h1>Example project ideas</h1>
+<div id="example-1-pga-tour-money-leaders" class="section level2">
+<h2>Example 1: PGA tour money leaders</h2>
+<p>Golf is typically an individual sport where the objective is to obtain the lowest score compared to competitors. A round of golf is made of 18 holes. On any hole a player must hit the ball from the designated starting area of the hole (the tee), until the player hits the ball into a hole which is found in an area of very short cut grass (the green). The player counts up the number of times they hit the ball to complete all 18 holes and that is their score.</p>
+<p>The Professional Golf Association (PGA) Tour is the highest level of processional golf in the world. Members of the PGA tour compete in weekly tournaments over the course of a year. At the end of each week money is handed out to competitors based on their placing in that week’s event (lowest score wins). At the end of a year the players that have earned the most money receive certain benefits for the following season. <em>The goal of this project is to determine which statistics are important in determining the amount of money a player will earn in a season.</em></p>
+<p>The <a href="pgatour.com">PGA tour website</a> contains 100’s of statistics for each player on the tour going back over a decade. For example, you can go to this link <a href="https://www.pgatour.com/stats.html">https://www.pgatour.com/stats.html</a> to get an overview of the statistics available.</p>
+<p>For this project, you can scrape the end of year money leaders list for several years worth of data (I would suggest at least 3 years) from this link (<a href="https://www.pgatour.com/stats/stat.109.html">https://www.pgatour.com/stats/stat.109.html</a>). You can then extract as many year end statistical categories as you choose and evaluate which are important in determining the year end money leader.</p>
+<p>Examples of basic statistics which may be important include:</p>
+<ul>
+<li>The number of events a player participates in</li>
+<li>Average score per round <a href="https://www.pgatour.com/stats/stat.120.html">https://www.pgatour.com/stats/stat.120.html</a></li>
+<li>The average driving distance a player hits the ball off the tee <a href="https://www.pgatour.com/stats/stat.101.html">https://www.pgatour.com/stats/stat.101.html</a></li>
+<li>The percentage of times a player hits a green in regulation <a href="https://www.pgatour.com/stats/stat.103.html">https://www.pgatour.com/stats/stat.103.html</a></li>
+<li>Sand save percentage <a href="https://www.pgatour.com/stats/stat.111.html">https://www.pgatour.com/stats/stat.111.html</a></li>
+</ul>
+<p>You may also want to look at so called advanced metrics like:</p>
+<ul>
+<li>Strokes gained tee to green <a href="https://www.pgatour.com/stats/stat.02674.html">https://www.pgatour.com/stats/stat.02674.html</a></li>
+<li>Strokes gained on the approach to the green <a href="https://www.pgatour.com/stats/stat.02568.html">https://www.pgatour.com/stats/stat.02568.html</a></li>
+<li>Strokes gained around the green <a href="https://www.pgatour.com/stats/stat.02569.html">https://www.pgatour.com/stats/stat.02569.html</a></li>
+<li>Strokes gained putting <a href="https://www.pgatour.com/stats/stat.02564.html">https://www.pgatour.com/stats/stat.02564.html</a></li>
+</ul>
+</div>
+<div id="example-2-do-nhl-player-call-ups-affect-ahl-games" class="section level2">
+<h2>Example 2: Do NHL player call-ups affect AHL games</h2>
+<p>The National Hockey League (NHL) is the highest level professional hockey in the world. NHL teams are allowed to carry 23 players on their roster of available players. Every team in the NHL has a series of lower level affiliated teams (called the minor leagues), which are typically comprised of younger players working on their skills, and older players who are well beyond their prime. Throughout the course of a season, NHL teams will make use of their lower level affiliate teams by calling up players who are doing well (or for an injury replacement), or they may demote a player who is playing poorly.</p>
+<p>Among the affiliate lower level leagues, the <a href="https://theahl.com/">American Hockey League (AHL)</a> is the closest in player ability to the NHL. It is often called a AAA (“triple A”) minor league. If a player on an NHL team gets injured, then the team will likely recall a player from the AHL. This will likely have an affect on the AHL team since the recalled player is likely one of the better players on the AHL team. AHL teams also have lower level leagues below them (e.g. The East Coast Hockey League or ECHL) which they can use to replace their own injured players or to demote players on playing well.</p>
+<p>The goal of this project is to examine the affect of player transactions on the outcomes of AHL games. Using the <a href="https://theahl.com/stats/daily-schedule">AHL score result website</a> (or any other suitable website), you can scrape game results going back over a decade. Player transactions (players getting injured, recalled, demoted, released, signed, etc…) can be scraped from this section of the website: <a href="https://theahl.com/stats/transactions">https://theahl.com/stats/transactions</a>.</p>
+<p>You will want to begin by scraping the results of games and player transactions over a at least a couple of seasons worth of games. You can then build a model to predict the outcome of games using some simple baseline variables (e.g. how many recent wins, how many recent loses, etc..). You can then add in some custom made features (e.g. number of players recalled to the NHL in the past week, number of players demoted in the past week), to see if this adds any predictive value to the model.</p>
+</div>
+<div id="example-3-indeed-job-salaries" class="section level2">
+<h2>Example 3: Indeed job salaries</h2>
+<p>Use the <a href="https://ca.indeed.com/salaries?from=gnav-homepage">Indeed salary finder website</a> to scrape several job descriptions along with salaries. Then build a predictive model that uses the data predict the salary of a job.</p>
+<p>For example, you could scrape some example salaries and job descriptions for Data Scientists, Statisticians, Data Analysts, Data entry Clerks, etc..</p>
+<p>You could then build some input features for a model that predicts salaries from the job descriptions. This would likely involve some basic natural language processing (which will be covered next term) to build features like: years experience, masters degree required, requires python, etc…</p>
+<p>You wouldn’t be graded on the accuracy of any such model. You would be graded on the process you used to extract the data, clean the data, model the data, and clarity in describing the results.</p>
+</div>
+<div id="example-4-shoppers-drug-mart-and-tim-hortons-store-data" class="section level2">
+<h2>Example 4: Shoppers Drug Mart and Tim Hortons store data</h2>
+<p>Shoppers Drug Mart is a Canadian retail pharmacy with store locations located all across Canada. Tim Hortons is a classic Canadian coffee/fast food restaurant. Both have locations all across Canada and you can use their websites to find available stores.</p>
+<p>The purpose of this project is to scrape data from the <a href="https://stores.shoppersdrugmart.ca/">Shoppers Drug Mart website store locator</a> and the <a href="https://www.timhortons.com/store-locator">Tim Hortons website store locator</a> to answer some questions or write code to develop some of the functionality described below:</p>
+<ul>
+<li>How many stores are located in each provincial capital?
+<ul>
+<li>to do this, build a scraper to extract the population of each provincial capital from wikipedia (or some other site)</li>
+<li>The function should take as input a city name and return the population</li>
+</ul></li>
+<li>Which store has the most stores per capita?</li>
+<li>Which Canadian provincial capital has the most Shoppers Drug Mart/Tim Horton stores open 24 hours per day.</li>
+<li>What other fields are contained in the server side data for each store</li>
+<li>Create a function that if given a location will return the details to the nearest Tim Hortons and Shoppers Drugmart.</li>
+<li>Come up with some other question you can answer with these data</li>
+</ul>
+</div>
+<div id="example-5-come-up-with-your-own-example" class="section level2">
+<h2>Example 5: Come up with your own example</h2>
+<p>If there is some problem your group is interested in pursuing, by all means, please attempt it. Just send me an email to discuss the problem and how you will solve it.</p>
+</div>
+<div id="important-notes" class="section level2">
+<h2>Important notes</h2>
+<p>When scraping data from a website it is important to remember to be kind. Don’t write code that pings website servers, or requests data at high volumes. If you are writing in some loops, remember to pause your requests for 2-3 seconds after each iteration. If the website requests that you do not scrape their data, then don’t.</p>
+</div>
 </div>
 <div id="assignment" class="section level1">
 <h1>Assignment</h1>
 <div id="groups" class="section level2">
 <h2>Groups</h2>
-<p>Students will be randomly divided into groups of two. Each group will hand in a written report and present to the class. Groups are available on Quercus.</p>
+<p>Students will be randomly divided into groups of 3-4 Each group will hand in a written report and present to the class. Groups are available on Quercus. The presentation will be done on December 1st 2020.</p>
 </div>
 <div id="written-report" class="section level2">
 <h2>Written Report</h2>
-<p>The written report is due on Dec. 10.</p>
+<p>The written report is due on Dec. 15.</p>
 <div id="answers-to-some-common-questions-about-the-submitted-report" class="section level3">
 <h3>Answers to Some Common Questions about the Submitted Report</h3>
 <ol style="list-style-type: decimal">
@@ -1552,12 +1614,17 @@ div.tocify {
 <p><strong>Don’t do this:</strong></p>
 <p>The distribution of XX is shown below …</p>
 <pre class="r"><code>library(tidyverse)</code></pre>
-<pre><code>## -- Attaching packages ----------------------------------------------------------------------------------------------------------------------------------------- tidyverse 1.3.0 --</code></pre>
-<pre><code>## v ggplot2 3.2.1     v purrr   0.3.3
-## v tibble  2.1.3     v dplyr   0.8.3
+<pre><code>## Warning: package &#39;tidyverse&#39; was built under R version 3.6.3</code></pre>
+<pre><code>## -- Attaching packages ------------------------------------------------------------------------------------------------------------------ tidyverse 1.3.0 --</code></pre>
+<pre><code>## v ggplot2 3.3.2     v purrr   0.3.3
+## v tibble  3.0.4     v dplyr   1.0.2
 ## v tidyr   1.0.2     v stringr 1.4.0
 ## v readr   1.3.1     v forcats 0.4.0</code></pre>
-<pre><code>## -- Conflicts -------------------------------------------------------------------------------------------------------------------------------------------- tidyverse_conflicts() --
+<pre><code>## Warning: package &#39;ggplot2&#39; was built under R version 3.6.3</code></pre>
+<pre><code>## Warning: package &#39;tibble&#39; was built under R version 3.6.3</code></pre>
+<pre><code>## Warning: package &#39;dplyr&#39; was built under R version 3.6.3</code></pre>
+<pre><code>## Warning: package &#39;stringr&#39; was built under R version 3.6.3</code></pre>
+<pre><code>## -- Conflicts --------------------------------------------------------------------------------------------------------------------- tidyverse_conflicts() --
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()</code></pre>
 <pre class="r"><code>set.seed(1028)

@@ -1,0 +1,210 @@
+---
+title: "Client facing web scraping"
+output:
+  html_document:
+    df_print: paged
+---
+
+# Introduction
+
+Client (browser) facing data is that can easily be scraped by mining the raw HTML text. Client facing is often static and loads at the same time as other information on the webpage. This R notebook will show you how to scrape data from html tables using the rvest package. 
+
+## The problem
+
+We wish to create a data set containing a list of Canadian cities, their population, and their latitude and longitude. We will focus on the 100 most populous Canadian cities.  Thankfully there is a wikipedia page containing a table of the 100 most populous cities.
+
+We begin by loading the rvest and dplyr packages
+
+```{r}
+# load the required packages
+library(rvest)
+library(dplyr)
+```
+
+
+The following [wikipedia page](https://en.wikipedia.org/wiki/List_of_the_100_largest_municipalities_in_Canada_by_population) describes the 100 most populous cities in Canada 
+
+```{r}
+# set the wikipedia url with the 100 most populous cities in Canada
+wiki_url <- 'https://en.wikipedia.org/wiki/List_of_the_100_largest_municipalities_in_Canada_by_population'
+```
+
+
+We can grab all of the html tables on that page using the `html_table` function
+
+```{r}
+ca_table <- wiki_url %>% 
+  read_html() %>% 
+  html_table(fill = T) 
+
+# how many tables
+length(ca_table)
+```
+
+There are `r length(ca_table)` tables in the data. We are only interested in the table at the top of the page. We can extract it using base R indexing operations. 
+
+```{r}
+ca_table <- ca_table[[1]]
+head(ca_table)
+```
+
+We will rename the variables so that they are easier to work with
+
+```{r}
+names(ca_table) <- c('rank', 'municipality', 'province', 'status', 'area', 'growth_rate_11_16', paste0('pop_',seq(2016, 1996, by = -5)))
+head(ca_table)
+```
+
+Now we will convert the population variables from categorical to numeric. Below I show two ways to do this. One with dplyr, the other with base R.
+
+```{r}
+# method 1 using dplyr
+ca_table <- ca_table %>%
+  mutate_at(vars(contains('pop')), 
+            funs(as.numeric(gsub(',', '', .))))
+
+# method 2 with base R
+#ca_table[, grepl('pop', names(ca_table))] <- apply(ca_table[, grepl('pop', names(ca_table))], 2, function(x) as.numeric(gsub(',', '', x)) )
+```
+
+## Extracting links using rvest and the SelectorGadget
+
+To get the latitude and longitude from each of the cities we need to navigate to their respective wikipedia entries. We need to grab the links from each page for this purpose.
+
+Using the CSS selector, we see that the column containing the city links can be accessed with "td:nth-child(2)". We append an a to the end to see the links (i.e. "td:nth-child(2) a").
+
+```{r}
+wiki_links <- wiki_url %>% 
+  read_html %>% 
+  html_nodes('td:nth-child(2) a') %>% 
+  html_attr('href')
+wiki_links <- wiki_links[1:100]
+wiki_links
+```
+
+### Extracting the latitude and longitude from the geomap page
+
+We will build up a for loop that iterates over each of the links above and extracts the latitude and longitude for each city. As is the case in a general workflow, I will start by figuring out how to do this for an individual case, and then write the for loop. The code below shows how to create a link to a city's wikipedia entry using the baseline wikipedia url and the city urls we extracted above.
+
+```{r}
+# first city in the data (Toronto)
+city <- wiki_links[1]
+print(city)
+
+# base url that we will use to append the city links
+base_url <- 'https://en.wikipedia.org'
+
+#city url
+city_url <- paste0(base_url, city)
+print(city_url)
+```
+
+In the top right hand corner of each city's wikipedia entry, we see the latitude and longitude of the city (in degrees), which is actually a link we can click on. These links take us to the following url; 'tools.wmflabs.org'. We wish to extract this link from the city's wiki page and navigate to it. 
+
+The code below navigates to the city's wiki page, extracts all of the links on the page, and then keeps the first link that contains 'geohack.toolforge.org/geohack'. There are two identical links on the page, we only care about the first.
+
+```{r}
+search_pattern <- 'geohack.toolforge.org/geohack'
+
+geo_link <- city_url %>% 
+  read_html() %>% 
+  html_nodes('a') %>% 
+  html_attr('href') %>% 
+  grep(search_pattern, ., value = T) %>% 
+  .[[1]]
+
+# the geo_link
+print(geo_link)
+
+# append https: to this link
+geo_link <- paste0('https:', geo_link)
+
+```
+
+
+We can use the selectorgadget again to see that the latitude and longitude (in decimals) are stored in the following nodes
+
+* latitude in '.latitude
+* longitude in '.longitude'
+
+The code below reads the html from the geo_link url and then extracts the latitude/longitude and converts them to numeric
+
+```{r}
+# read the geo link html
+geo_data <- geo_link %>% 
+  read_html()
+  
+#extract the latitude
+lat <- geo_data %>% html_node('.latitude') %>% html_text  %>% as.numeric()
+print(lat)
+
+long <- geo_data %>% html_node('.longitude') %>% html_text %>% as.numeric()
+print(long)
+```
+
+We can now encapsulate all of our work above into a for loop. We will first create two new variables in our `ca_table` data frame; one for latitude and one for longitude. 
+
+```{r, warning=F}
+
+search_pattern <- 'geohack.toolforge.org/geohack'
+base_url <- 'https://en.wikipedia.org'
+
+# two new variables to store the latitude and longitude
+
+ca_table <- ca_table %>% 
+  mutate(lat = NA,
+         long = NA)
+
+
+for(i in 1:nrow(ca_table)) {
+  
+  city <- wiki_links[i]
+  city_url <- paste0(base_url, city)
+  
+  geo_link <- city_url %>% 
+    read_html() %>% 
+    html_nodes('a') %>% 
+    html_attr('href') 
+    
+  geo_link <-  grep(search_pattern, geo_link, value = T)
+  
+  if(length(geo_link) == 0) {
+    next
+  } else {
+    geo_link <- geo_link[1]
+  }
+    
+  geo_link <- paste0('https:', geo_link)
+  
+  geo_data <- geo_link %>% read_html
+  
+  lat <- geo_data %>% html_node('.latitude') %>% html_text  %>% as.numeric()
+  long <- geo_data %>% html_node('.longitude') %>% html_text %>% as.numeric()
+  
+  ca_table$lat[i] <- lat
+  ca_table$long[i] <- long
+  
+  if(i %% 5 == 0) print(paste0((i/100)*100, "% complete"))
+}
+```
+
+
+```{r}
+head(ca_table)
+```
+
+
+```{r}
+library(ggplot2)
+
+ggplot(ca_table, aes(lat, long, size = pop_2016)) + geom_point()
+```
+
+
+```{r}
+save(ca_table, file = 'ca_table.R')
+```
+
+
+
+

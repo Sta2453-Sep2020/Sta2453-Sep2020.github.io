@@ -15,10 +15,90 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Background
 
-This project will involve scraping and cleaning data from a website/API using either R or Python. A full description of the project will be available at the time of the 
-web scraping lecture. 
+This project will involve scraping data from the web, cleaning it and answering some questions. Below I will provide 4 specific examples of websites that can be scraped along with some specific questions you can answer. Please do not feel limited by the examples that I mention here. You can alter the example questions in any way that you like or come up with some suitable alternative (please check with me about the appropriateness of the question). 
 
-# Question
+
+# Example project ideas
+
+## Example 1: PGA tour money leaders
+
+Golf is typically an individual sport where the objective is to obtain the lowest score compared to competitors. A round of golf is made of 18 holes. On any hole a player must hit the ball from the designated starting area of the hole (the tee), until the player hits the ball into a hole which is found in an area of very short cut grass (the green). The player counts up the number of times they hit the ball to complete all 18 holes and that is their score. 
+
+The Professional Golf Association (PGA) Tour is the highest level of processional golf in the world. Members of the PGA tour compete in weekly tournaments over the course of a year. At the end of each week money is handed out to competitors based on their placing in that week's event (lowest score wins). At the end of a year the players that have earned the most money receive certain benefits for the following season. *The goal of this project is to determine which statistics are important in determining the amount of money a player will earn in a season.* 
+
+The [PGA tour website](pgatour.com) contains 100's of statistics for each player on the tour going back over a decade. For example, you can go to this link [https://www.pgatour.com/stats.html](https://www.pgatour.com/stats.html) to get an overview of the statistics available. 
+
+For this project, you can scrape the end of year money leaders list for several years worth of data (I would suggest at least 3 years) from this link ([https://www.pgatour.com/stats/stat.109.html](https://www.pgatour.com/stats/stat.109.html)). You can then extract as many year end statistical categories as you choose and evaluate which are important in determining the year end money leader. 
+
+Examples of basic statistics which may be important include:
+
+- The number of events a player participates in
+- Average score per round [https://www.pgatour.com/stats/stat.120.html](https://www.pgatour.com/stats/stat.120.html)
+- The average driving distance a player hits the ball off the tee [https://www.pgatour.com/stats/stat.101.html](https://www.pgatour.com/stats/stat.101.html)
+- The percentage of times a player hits a green in regulation [https://www.pgatour.com/stats/stat.103.html](https://www.pgatour.com/stats/stat.103.html)
+- Sand save percentage [https://www.pgatour.com/stats/stat.111.html](https://www.pgatour.com/stats/stat.111.html)
+
+You may also want to look at so called advanced metrics like:
+
+- Strokes gained tee to green [https://www.pgatour.com/stats/stat.02674.html](https://www.pgatour.com/stats/stat.02674.html)
+- Strokes gained on the approach to the green [https://www.pgatour.com/stats/stat.02568.html](https://www.pgatour.com/stats/stat.02568.html)
+- Strokes gained around the green [https://www.pgatour.com/stats/stat.02569.html](https://www.pgatour.com/stats/stat.02569.html)
+- Strokes gained putting [https://www.pgatour.com/stats/stat.02564.html](https://www.pgatour.com/stats/stat.02564.html)
+
+## Example 2: Do NHL player call-ups affect AHL games
+
+The National Hockey League (NHL) is the highest level professional hockey in the world. NHL teams are allowed to carry 23 players on their roster of available players. Every team in the NHL has a series of lower level affiliated teams (called the minor leagues), which are typically comprised of younger players working on their skills, and older players who are well beyond their prime. Throughout the course of a season, NHL teams will make use of their lower level affiliate teams by calling up players who are doing well (or for an injury replacement), or they may demote a player who is playing poorly. 
+
+Among the affiliate lower level leagues, the [American Hockey League (AHL)](https://theahl.com/) is the closest in player ability to the NHL. It is often called a AAA ("triple A") minor league. If a player on an NHL team gets injured, then the team will likely recall a player from the AHL. This will likely have an affect on the AHL team since the recalled player is likely one of the better players on the AHL team. AHL teams also have lower level leagues below them (e.g. The East Coast Hockey League or ECHL) which they can use to replace their own injured players or to demote players on playing well.
+
+The goal of this project is to examine the affect of player transactions on the outcomes of AHL games. Using the [AHL score result website](https://theahl.com/stats/daily-schedule) (or any other suitable website), you can scrape game results going back over a decade. Player transactions (players getting injured, recalled, demoted, released, signed, etc...) can be scraped from this section of the website: [https://theahl.com/stats/transactions](https://theahl.com/stats/transactions).
+
+You will want to begin by scraping the results of games and player transactions over a at least a couple of seasons worth of games. You can then build a model to predict the outcome of games using some simple baseline variables (e.g. how many recent wins, how many recent loses, etc..). You can then add in some custom made features (e.g. number of players recalled to the NHL in the past week, number of players demoted in the past week), to see if this adds any predictive value to the model. 
+
+
+## Example 3: Indeed job salaries
+
+Use the [Indeed salary finder website](https://ca.indeed.com/salaries?from=gnav-homepage) to scrape several job descriptions along with salaries. Then build a predictive model that uses the data predict the salary of a job. 
+
+For example, you could scrape some example salaries and job descriptions for Data Scientists, Statisticians, Data Analysts, Data entry Clerks, etc..
+
+You could then build some input features for a model that predicts salaries from the job descriptions. This would likely involve some basic natural language processing (which will be covered next term) to build features like: years experience, masters degree required, requires python, etc...
+
+You wouldn't be graded on the accuracy of any such model. You would be graded on the process you used to extract the data, clean the data,  model the data, and clarity in describing the results. 
+
+
+
+## Example 4: Shoppers Drug Mart and Tim Hortons store data
+
+Shoppers Drug Mart is a Canadian retail pharmacy with store locations located all across Canada. Tim Hortons is a classic Canadian coffee/fast food restaurant. Both have locations all across Canada and you can use their websites to find available stores. 
+
+The purpose of this project is to scrape data from the [Shoppers Drug Mart website store locator](https://stores.shoppersdrugmart.ca/) and the [Tim Hortons website store locator](https://www.timhortons.com/store-locator) to answer some questions or write code to develop some of the functionality described below:
+
+
+- How many stores are located in each provincial capital?
+  - to do this, build a scraper to extract the population of each provincial capital from wikipedia (or some other site)
+  - The function should take as input a city name and return the population
+- Which store has the most stores per capita?
+- Which Canadian provincial capital has the most Shoppers Drug Mart/Tim Horton stores open 24 hours per day. 
+- What other fields are contained in the server side data for each store
+- Create a function that if given a location will return the details to the nearest Tim Hortons and Shoppers Drugmart.
+- Come up with some other question you can answer with these data
+
+## Example 5: Come up with your own example
+
+If there is some problem your group is interested in pursuing, by all means, please attempt it. Just send me an email to discuss the problem and how you will solve it. 
+
+
+## Important notes
+
+When scraping data from a website it is important to remember to be kind. Don't write code that pings website servers, or requests data at high volumes. If you are writing in some loops, remember to pause your requests for 2-3 seconds after each iteration. If the website requests that you do not scrape their data, then don't. 
+
+
+
+
+
+
+
 
 
 
@@ -26,11 +106,11 @@ web scraping lecture.
 
 ## Groups
 
-Students will be randomly divided into groups of two.  Each group will hand in a written report and present to the class. Groups are available on Quercus.
+Students will be randomly divided into groups of 3-4  Each group will hand in a written report and present to the class. Groups are available on Quercus. The presentation will be done on December 1st 2020. 
 
 ## Written Report
 
-The written report is due on Dec. 10. 
+The written report is due on Dec. 15. 
 
 ### Answers to Some Common Questions about the Submitted Report
 

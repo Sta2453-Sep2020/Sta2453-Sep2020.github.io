@@ -24,6 +24,22 @@ output: html_document
 - [Class 3 - lab](lecture-notes-slides-2020/lab3.html)
 - [Class 3 - NES data](nes_data.csv)
 
+## October 27th
+
+- [Class 4 - Notes](lecture-notes-slides-2020/slides/sta2453-2020-lecture4/rvest_pres.html)
+- [Project #1 description](lecture-notes-slides-2020/sta2453_2020_project1.html)
+
+Tutorials for different scraping techniques:
+
+- [basic scraping](lecture-notes-slides-2020/slides/sta2453-2020-lecture4/basic_html.html)
+- [front end scraping](lecture-notes-slides-2020/slides/sta2453-2020-lecture4/client_facing_rvest.html)
+- [back end scraping](lecture-notes-slides-2020/slides/sta2453-2020-lecture4/server_facing_rvest.html)
+- [pdf scraping](lecture-notes-slides-2020/slides/sta2453-2020-lecture4/pdf_scrape.html)
+- [form filling scraping](lecture-notes-slides-2020/slides/sta2453-2020-lecture4/form_example.html)
+
+
+
+
 
 # Marking Rubrics
 
