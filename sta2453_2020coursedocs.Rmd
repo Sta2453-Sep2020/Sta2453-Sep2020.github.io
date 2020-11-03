@@ -38,8 +38,12 @@ Tutorials for different scraping techniques:
 - [form filling scraping](lecture-notes-slides-2020/slides/sta2453-2020-lecture4/form_example.html)
 
 
+## November 3rd
+- [Working together](lecture-notes-slides-2020/slworking-together.html)
 
+### Useful resources
 
+[Happy Git and Github for the R user](https://happygitwithr.com/)
 
 # Marking Rubrics
 

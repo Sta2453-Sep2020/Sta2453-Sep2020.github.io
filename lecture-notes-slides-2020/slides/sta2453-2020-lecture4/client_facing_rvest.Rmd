@@ -51,7 +51,10 @@ head(ca_table)
 We will rename the variables so that they are easier to work with
 
 ```{r}
-names(ca_table) <- c('rank', 'municipality', 'province', 'status', 'area', 'growth_rate_11_16', paste0('pop_',seq(2016, 1996, by = -5)))
+names(ca_table) <- c('rank', 'municipality', 
+                     'province', 'status',
+                     'area',
+                     'growth_rate_11_16', paste0('pop_',seq(2016, 1996, by = -5)))
 head(ca_table)
 ```
 

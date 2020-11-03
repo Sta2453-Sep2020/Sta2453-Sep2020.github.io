@@ -1,0 +1,14 @@
+default:
+  data_path: /home/data
+  db_name: our_db
+  project_version: 1
+
+production:
+  data_path: server/home/data
+  db_name: prod_db
+  project_version: 1
+
+staging:
+  data_path: server/home/data
+  db_name: staging_db
+  project_version: 1

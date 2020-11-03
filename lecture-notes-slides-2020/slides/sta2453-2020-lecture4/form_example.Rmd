@@ -166,7 +166,8 @@ If we want to, we can navigate to any of the job descriptions using `jump_to()` 
 ```{r}
 
 # go to the page for the first job description
-job1 <- submitted %>% jump_to(jobs_data$links[1])
+job1 <- submitted %>% 
+  jump_to(jobs_data$links[1])
 
 # pull the text of the job descripion
 job1 %>% 
