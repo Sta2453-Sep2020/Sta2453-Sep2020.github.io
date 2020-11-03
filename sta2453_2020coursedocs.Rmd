@@ -39,7 +39,7 @@ Tutorials for different scraping techniques:
 
 
 ## November 3rd
-- [Working together](lecture-notes-slides-2020/slworking-together.html)
+- [Working together](lecture-notes-slides-2020/slides/working-together.html)
 
 ### Useful resources
 
