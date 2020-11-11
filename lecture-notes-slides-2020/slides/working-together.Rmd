@@ -81,10 +81,7 @@ A gitignore file specifies intentionally untracked files that Git should ignore.
 - blank lines are used to separate entries
 - a \# can be used for comments
 - "/" denotes a directory separator
-- An asterisk "*" matches anything except a slash. The character "?" matches any one character except "/". The range notation, e.g. [a-zA-Z], can be used to match one of the characters in a range. 
-
-see [here](https://github.com/github/gitignore/blob/master/R.gitignore) for an R gitignore file.
-see [here](https://github.com/github/gitignore/blob/master/Python.gitignore) for a Python gitignore file.
+- An asterisk "*" matches anything except a slash. The character "?" matches any one character except "/". The range notation, e.g. [a-zA-Z], can be used to match one of the characters in a range.  see [here](https://github.com/github/gitignore/blob/master/R.gitignore) and [here](https://github.com/github/gitignore/blob/master/Python.gitignore) for an R  or Python gitignore files.
 
 ```{bash, eval=F}
 # no .csv files
@@ -215,11 +212,11 @@ There are many approaches to styling code
 
 # Reproducibility
 
-## Dev {data-background="development.png"}
+## Dev {data-background="development.png" data-background-size="800px 600px"}
 
-## environments {data-background="renv.png"}
+## environments {data-background="renv.png" data-background-size="800px 600px"}
 
-## renv
+## renv {#smallfont}
 
 The general workflow when working with renv is:
 
@@ -233,7 +230,7 @@ The general workflow when working with renv is:
 
 5. Call `renv::snapshot()` again to save the state of your project library if your attempts to update R packages were successful, or call `renv::restore()` to revert to the previous state as encoded in the lockfile if your attempts to update packages introduced some new problems.
 
-## config files/environment variables {data-background="config.png"}
+## config files/environment variables {data-background="config.png" data-background-size="800px 600px"}
 
 
 
@@ -241,7 +238,7 @@ The general workflow when working with renv is:
 
 ## Version Control {data-background="version-control-image.gif" data-background-size="800px 800px"}
 
-## Why git {data-background="why-git.png" }
+## Why git {data-background="why-git.png" data-background-size="800px 800px"}
 
 ## Why Git and github?
 
@@ -274,17 +271,17 @@ about.
   - It's highly recommended that you use all lowercase letters
   - Don't pick usernames that are common programming words
 
-## Checking if git is already installed
+## Checking if git is already installed {#smallfont2}
 
 Check to see if it is already installed, run `where git` (windows), `which git` (linux)
 to see where the executable is located. You can run terminal commands in R using `system()`
 
 ```{r, echo=T}
 # Where is git installed
-system("where git")
+print(system("where git"))
 
 # which version of git is installed
-system('git --version')
+print(system('git --version'))
 ```
   
 If these return anything, fantastic news. You already have git successfuly installed. 
@@ -394,7 +391,7 @@ git add -A
 The `-A` is an option which says to add all changes
 
 
-## Commit messages {data-background="commit-messages.png" data-background-size="800px 600px"}
+## Commit messages {data-background="commit-message.png" data-background-size="800px 600px"}
 
 ## Writing good commit messages
 

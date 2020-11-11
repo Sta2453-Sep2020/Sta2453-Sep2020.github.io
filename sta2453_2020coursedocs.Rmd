@@ -40,6 +40,8 @@ Tutorials for different scraping techniques:
 
 ## November 3rd
 - [Working together](lecture-notes-slides-2020/slides/working-together.html)
+- [Working together (pdf version)](lecture-notes-slides-2020/slides/working-together-pdf.pdf)
+- [pull request template](lecture-notes-slides-2020/slides/pull_request_template.md)
 
 ### Useful resources
 

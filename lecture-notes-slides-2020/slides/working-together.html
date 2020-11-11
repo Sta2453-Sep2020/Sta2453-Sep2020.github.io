@@ -1938,9 +1938,8 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <li>blank lines are used to separate entries</li>
 <li>a # can be used for comments</li>
 <li>“/” denotes a directory separator</li>
-<li>An asterisk &quot;*&quot; matches anything except a slash. The character “?” matches any one character except “/”. The range notation, e.g. [a-zA-Z], can be used to match one of the characters in a range.</li>
+<li>An asterisk &quot;*&quot; matches anything except a slash. The character “?” matches any one character except “/”. The range notation, e.g. [a-zA-Z], can be used to match one of the characters in a range. see <a href="https://github.com/github/gitignore/blob/master/R.gitignore">here</a> and <a href="https://github.com/github/gitignore/blob/master/Python.gitignore">here</a> for an R or Python gitignore files.</li>
 </ul>
-<p>see <a href="https://github.com/github/gitignore/blob/master/R.gitignore">here</a> for an R gitignore file. see <a href="https://github.com/github/gitignore/blob/master/Python.gitignore">here</a> for a Python gitignore file.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># no .csv files</span></span>
 <span id="cb1-2"><a href="#cb1-2"></a><span class="ex">*.csv</span></span>
 <span id="cb1-3"><a href="#cb1-3"></a><span class="co">#no R data files</span></span>
@@ -2083,11 +2082,11 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <li><a href="https://www.python.org/dev/peps/pep-0008/">PEP 8 style guide for Python</a></li>
 </ul>
 </section>
-<section><section id="reproducibility" class="title-slide slide level1"><h1>Reproducibility</h1></section><section id="dev" class="slide level2" data-background="development.png">
+<section><section id="reproducibility" class="title-slide slide level1"><h1>Reproducibility</h1></section><section id="dev" class="slide level2" data-background="development.png" data-background-size="800px 600px">
 <h2>Dev</h2>
-</section><section id="environments" class="slide level2" data-background="renv.png">
+</section><section id="environments" class="slide level2" data-background="renv.png" data-background-size="800px 600px">
 <h2>environments</h2>
-</section><section id="renv" class="slide level2">
+</section><section id="smallfont" class="slide level2">
 <h2>renv</h2>
 <p>The general workflow when working with renv is:</p>
 <ol type="1">
@@ -2097,12 +2096,12 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <li><p>Continue working on your project, installing and updating R packages as needed.</p></li>
 <li><p>Call <code>renv::snapshot()</code> again to save the state of your project library if your attempts to update R packages were successful, or call <code>renv::restore()</code> to revert to the previous state as encoded in the lockfile if your attempts to update packages introduced some new problems.</p></li>
 </ol>
-</section><section id="config-filesenvironment-variables" class="slide level2" data-background="config.png">
+</section><section id="config-filesenvironment-variables" class="slide level2" data-background="config.png" data-background-size="800px 600px">
 <h2>config files/environment variables</h2>
 </section></section>
 <section><section id="version-control-with-git-and-github" class="title-slide slide level1"><h1>Version Control with git and github</h1></section><section id="version-control" class="slide level2" data-background="version-control-image.gif" data-background-size="800px 800px">
 <h2>Version Control</h2>
-</section><section id="why-git" class="slide level2" data-background="why-git.png">
+</section><section id="why-git" class="slide level2" data-background="why-git.png" data-background-size="800px 800px">
 <h2>Why git</h2>
 </section><section id="why-git-and-github" class="slide level2">
 <h2>Why Git and github?</h2>
@@ -2137,14 +2136,14 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <li>Don’t pick usernames that are common programming words</li>
 </ul></li>
 </ul>
-</section><section id="checking-if-git-is-already-installed" class="slide level2">
+</section><section id="smallfont2" class="slide level2">
 <h2>Checking if git is already installed</h2>
 <p>Check to see if it is already installed, run <code>where git</code> (windows), <code>which git</code> (linux) to see where the executable is located. You can run terminal commands in R using <code>system()</code></p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># Where is git installed</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="kw">system</span>(<span class="st">&quot;where git&quot;</span>)</span></code></pre></div>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="kw">print</span>(<span class="kw">system</span>(<span class="st">&quot;where git&quot;</span>))</span></code></pre></div>
 <pre><code>## [1] 0</code></pre>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># which version of git is installed</span></span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="kw">system</span>(<span class="st">&#39;git --version&#39;</span>)</span></code></pre></div>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="kw">print</span>(<span class="kw">system</span>(<span class="st">&#39;git --version&#39;</span>))</span></code></pre></div>
 <pre><code>## [1] 0</code></pre>
 <p>If these return anything, fantastic news. You already have git successfuly installed.</p>
 </section><section id="installing-git" class="slide level2">
@@ -2217,7 +2216,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1"></a></span>
 <span id="cb11-2"><a href="#cb11-2"></a><span class="fu">git</span> add -A</span></code></pre></div>
 <p>The <code>-A</code> is an option which says to add all changes</p>
-</section><section id="commit-messages" class="slide level2" data-background="commit-messages.png" data-background-size="800px 600px">
+</section><section id="commit-messages" class="slide level2" data-background="commit-message.png" data-background-size="800px 600px">
 <h2>Commit messages</h2>
 </section><section id="writing-good-commit-messages" class="slide level2">
 <h2>Writing good commit messages</h2>
