@@ -47,6 +47,12 @@ Tutorials for different scraping techniques:
 
 [Happy Git and Github for the R user](https://happygitwithr.com/)
 
+## November 17th
+
+- [Slides](lecture-notes-slides-2020/slides/building your first ML application.pdf)
+- [Github repo](https://github.com/dwhdai/house_price_predictor)
+- [Deployed application](https://david-dai.shinyapps.io/HomeListingPrice/)
+
 # Marking Rubrics
 
 ## Data Analysis Rubric
