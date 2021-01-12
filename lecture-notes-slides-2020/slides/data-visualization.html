@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Data Visualization</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Josh Murray" />
+    <meta name="date" content="2021-01-12" />
+    <script src="libs/header-attrs-2.1/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css\ath-slides.css" type="text/css" />
+    <link rel="stylesheet" href="css\ath-inferno-fonts.css" type="text/css" />
+    <link rel="stylesheet" href="css\animate.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+name: outline
+class: title title-inv-7
+
+# Objectives
+
+--
+
+- What is data visualization?
+
+--
+
+- Exploratory Vs Explanatory plots
+
+--
+
+- Visualizaion Components
+
+--
+
+- Telling Stories with Data
+
+--
+
+- The Grammar of Graphics
+
+--
+
+- Application of the Grammar of Graphics with `ggplot`
+
+--
+
+- Introduction to Project 2 (building a dashboard)
+
+---
+
+name: outline
+class: title title-inv-7
+
+# References
+
+
+- .small[A wonderful class taught by Andrew Wheiss from Georgia State University]
+  - .small[His class material can be accessed on [his website](https://datavizm20.classes.andrewheiss.com/)]
+  - .small[A few of the slides in this lecture borrow directly from his material (I will point out where)]
+  - .small[I highly recommend watching the lectures from his site.] 
+
+- .small[Not to double up, but the resources page on the above course is amazing]
+  - .small[[Find it here](https://datavizm20.classes.andrewheiss.com/resource/visualization/)]
+
+- .small[Jeff Leek from John's Hopkins taught a course last semester on Data Analysis.] 
+  - .small[The course notes from that class are [available online](http://jtleek.com/ads2020/index.html) and are a fantastic resource]
+
+
+---
+
+name: outline
+class: title title-inv-7
+
+# Data Visualization
+
+
+&lt;iframe src="https://giphy.com/embed/KYh1vSXtcdl0RYgLCR" width="480" height="477" frameBorder="0" class="giphy-embed" allowFullScreen&gt;&lt;/iframe&gt;&lt;p&gt;&lt;a href="https://giphy.com/gifs/education-data-naep-KYh1vSXtcdl0RYgLCR"&gt;&lt;/a&gt;&lt;/p&gt;
+
+---
+
+name: outline
+class: title title-inv-7
+
+# What is data visualization?
+
+&gt; Visualization is a way to represent data, an abstraction of
+the real world, in the same way that the written word can be
+used to tell different kinds of stories.
+&gt;
+&gt; -- &lt;cite&gt;Yau, N. Data Points&lt;/cite&gt;
+
+---
+
+class: center middle main-title section-title-4
+
+# Exploratory Vs Explanatory plots
+
+---
+
+name: outline
+class: title title-inv-7
+
+# Exploratory Plots
+
+- Exploratory plots:  During the exploratory phase of an analysis, you will make
+lots of tables and graphical displays to better understand the structure of the
+data along with any data quality issues and initial relationships.
+  - You will make LOTS of exploratory plots. Usually 100s per project
+  - This graphs are usually for your eyes or a select few colleagues
+  - These should be quick and dirty. You shouldn't be worried about output formats (PNG vs SVG),
+  labels, axes, fonts, etc...
+  - Used for gaining insight
+
+---
+
+name: outline
+class: title title-inv-7
+
+
+# Explanatory Plots
+
+- Explanatory plots: These are meant to be shared with your colleagues and importantly decision makers
+  - Decision makers often don't spend as much time reading your reports as you think. 
+  - Explanatory figures should convey a clear message to the reader (quickly!)
+  - You want to produce graphs that help tell a story
+
+---
+
+
+name: outline
+class: title title-inv-7
+
+# Explanatory Plots (cont)
+
+An Explanatory graph has:
+  - clear, large axis labels
+  - color and size carefully used for communication
+  - minimal abbreviations in axis labels and legends shows the data
+  - have figure captions with a declarative summary statement and self-sufficient labeling
+  - highlights take home messages with titles or annotation
+
+---
+
+name: outline
+class: title title-inv-7
+
+# Motivating Example
+
+
+
+
+--
+
+.pull-left-3.small-code[
+
+```r
+head(my_data, 10)
+```
+
+```
+## # A tibble: 10 x 2
+##        x     y
+##    &lt;dbl&gt; &lt;dbl&gt;
+##  1  55.4  97.2
+##  2  51.5  96.0
+##  3  46.2  94.5
+##  4  42.8  91.4
+##  5  40.8  88.3
+##  6  38.7  84.9
+##  7  35.6  79.9
+##  8  33.1  77.6
+##  9  29.0  74.5
+## 10  26.2  71.4
+```
+]
+
+--
+
+.pull-middle-3.small-code[
+
+```r
+mean(my_data$x)
+```
+
+```
+*## [1] 54.26327
+```
+
+```r
+mean(my_data$y)
+```
+
+```
+*## [1] 47.83225
+```
+
+```r
+cor(my_data$x, my_data$y)
+```
+
+```
+*## [1] -0.06447185
+```
+]
+
+--
+
+.pull-right-3[
+&amp;nbsp;
+
+.box-inv-3[Nice Mean!]
+
+&amp;nbsp;
+
+.box-inv-3[Nice Mean!]
+
+&amp;nbsp;
+
+.box-inv-3[No correlation!]
+]
+
+---
+
+name: outline
+class: title title-inv-7
+
+# Yikes
+
+.center[
+&lt;figure&gt;
+  &lt;img src="img/01/DinoSequentialSmaller.gif" alt="Datasaurus Dozen" title="Datasaurus Dozen" width="100%"&gt;
+  &lt;figcaption&gt;&lt;a href="https://www.autodeskresearch.com/publications/samestats" target="_blank"&gt;The Datasaurus Dozen&lt;/a&gt;&lt;/figcaption&gt;
+&lt;/figure&gt;
+]
+
+---
+
+name: outline
+class: title title-inv-7
+
+# Raw data is not enough
+
+
+.box-inv-3.small[Each of these has the same mean, standard deviation, variance, and correlation]
+
+&lt;img src="data-visualization_files/figure-html/plot-full-dozen-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+name: outline
+class: title title-inv-7
+
+# Visualization Components
+
+- Visualization maps data to geometry and colour.
+
+- It works because your brain is wired to find patterns, and
+you can switch back and forth between the visual and the
+numbers it represents.
+
+- Important: You must make sure that the essence of the
+data isn’t lost in that back and forth between visual and
+the value it represents because if you can’t map back to
+the data, the visualization is just a bunch of shapes.
+
+---
+
+name: outline
+class: title title-inv-7
+
+# Mapping data to Geometry
+
+
+
+.pull-left-3[
+
+.box-inv-1[37]
+]
+
+.pull-right-3[
+
+.box-inv-1[75]
+]
+
+How many different representations of the data can you come up with?
+
+---
+class: inverse, center, middle
+background-image: url(comp2.png)
+background-size: contain
+
+???
+Source:
+
+---
+class: inverse, center, middle
+background-image: url(comp1.png)
+background-size: contain
+
+---
+class: inverse, center, middle
+background-image: url(comp3.png)
+background-size: contain
+
+---
+class: inverse, center, middle
+background-image: url(comp4.png)
+background-size: contain
+
+---
+class: inverse, center, middle
+background-image: url(comp13.png)
+background-size: contain
+
+---
+class: inverse, center, middle
+background-image: url(comp14.png)
+background-size: contain
+
+---
+class: inverse, center, middle
+background-image: url(comp15.png)
+background-size: contain
+
+---
+class: inverse, center, middle
+background-image: url(comp16.png)
+background-size: contain
+
+---
+class: inverse, center, middle
+background-image: url(comp17.png)
+background-size: contain
+
+---
+
+name: outline
+class: title title-inv-7
+
+# Telling Stories with Data
+
+--
+
+- Data are represented by numbers and words.
+
+--
+
+- Data is a representation of something in real life.
+
+--
+
+- Statistics and visualization can help tell a story.
+
+--
+
+- It's up to the data scientist, to decide how to tell
+that story.
+
+
+---
+class: inverse, center, middle
+background-image: url(comp8.png)
+background-size: contain
+
+---
+
+name: outline
+class: title title-inv-7
+
+# State of the World
+
+
+
+Consider the following random facts about the world
+
+- Life expectancy at birth is 70 years
+- The literacy rate of youth females ages 15 to 24 is 87
+percent
+- The gross domestic product is approximately $70 trillion.
+
+.box-inv-3[Q: Should you visualize this data?]
+
+---
+class: inverse, center, middle
+background-image: url(comp9.png)
+background-size: contain
+
+
+---
+
+name: outline
+class: title title-inv-7
+
+# Before Presenting a Visualization:
+
+Ask yourself
+
+--
+
+.box-inv-4[What is your message?]
+
+--
+
+.box-inv-4[Who is your audience?]
+
+
+--
+
+.box-inv-4[What does your audience need to know?]
+
+- How much control does the audience have over
+the presentation?
+- How much detail can they get?
+
+---
+
+name: outline
+class: title title-inv-7
+
+# Three groups
+
+
+.box-inv-4[Me, myself, and I]
+
+.box-inv-4[A specific Group]
+
+.box-inv-4[A wide audience]
+
+
+---
+class: inverse, center, middle
+background-image: url(comp10.png)
+background-size: contain
+
+---
+
+name: outline
+class: title title-inv-7
+
+# A specific Audience
+
+0 Your audience should be able to decode your encodings
+so that they can understand the data.
+
+- If your audience is already familiar with the background
+behind your data or has perhaps even worked with it, the
+barriers are lower, but still exist.
+
+- Consider how your audience will examine your work.
+
+---
+
+name: outline
+class: title title-inv-7
+
+# Thought exercise
+
+.box-inv-4[We ask this question at all of our interviews:]
+
+- You have just completed an analysis you were tasked with. You 
+  have been asked to present your findings to 2 different audiences
+  - Some colleagues (data scientists/biostatisticians)
+  - Clinicians and Hospital leadership
+- What are some things you would consider when structuring your figures/displays
+  for the presentations
+
+
+---
+
+# Though Exercise
+
+- The purposes of the meetings are likely different to begin with:
+  - Meeting with colleagues may be to get some input on the work you have done
+    - Are my methods okay? My model fits? My conclusions
+  - Meetings with clinicians/senior leadership are likely to focus less on nitty 
+    gritty details, and more on conclusions. 
+- Colleagues are likely more familiar with certain types of diagnostic plots
+- Clinicians/leadership may need more hand holding
+- Don't forget that you are an expert
+
+---
+class: inverse, center, middle
+background-image: url(comp11.png)
+background-size: contain
+
+---
+
+name: outline
+class: title title-inv-7
+
+# Designing for a wider audience
+
+- As your audience grows so do the challenges, such as
+the range of data literacy, and familiarity with your data’s
+context.
+ - Avoid jargon and be sure you explain complex concepts
+in a way so that people can relate.
+- Usually need to include more labels, legends, and guides
+
+---
+
+name: outline
+class: title title-inv-7
+
+# Designing for a wider audience
+
+- Imagine you are a tourist in a new place.
+- What do you want a tour guide to tell you?
+- It’s your job to point out the direction of interest, provide
+background, and make sure you don’t confuse people.
+
+---
+class: inverse, center, middle
+background-image: url(comp12.png)
+background-size: contain
+
+---
+
+name: grammar-of-graphics
+class: center middle section-title section-title-4 animated fadeIn
+
+# The Grammar of Graphics
+
+???
+
+Source: [Andrew Wheiss](https://datavizm20.classes.andrewheiss.com/)
+
+---
+
+layout: false
+class: bg-full
+background-image: url("img/03/minard.png")
+
+???
+
+Source: [Wikimedia Commons](https://upload.wikimedia.org/wikipedia/commons/2/29/Minard.png)
+
+---
+
+
+# Mapping data to aesthetics
+
+.pull-left.center[
+
+&lt;figure&gt;
+  &lt;img src="img/03/gg-book.jpg" alt="ZZZ" title="ZZZ" width="55%"&gt;
+&lt;/figure&gt;
+
+]
+
+.pull-right[
+
+.box-inv-4.medium[Aesthetic]
+
+.box-4[Visual property of a graph]
+
+.box-4.sp-after[Position, shape, color, etc.]
+
+.box-inv-4.medium[Data]
+
+.box-4[A column in a dataset]
+
+]
+
+---
+
+# Mapping data to aesthetics
+
+&lt;table&gt;
+  &lt;tr&gt;
+    &lt;th class="cell-left"&gt;Data&lt;/th&gt;
+    &lt;th class="cell-left"&gt;Aesthetic&lt;/th&gt;
+    &lt;th class="cell-left"&gt;Graphic/Geometry&lt;/th&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class="cell-left"&gt;Longitude&lt;/td&gt;
+    &lt;td class="cell-left"&gt;Position (x-axis)&amp;emsp;&lt;/td&gt;
+    &lt;td class="cell-left"&gt;Point&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class="cell-left"&gt;Latitude&lt;/td&gt;
+    &lt;td class="cell-left"&gt;Position (y-axis)&lt;/td&gt;
+    &lt;td class="cell-left"&gt;Point&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class="cell-left"&gt;Army size&lt;/td&gt;
+    &lt;td class="cell-left"&gt;Size&lt;/td&gt;
+    &lt;td class="cell-left"&gt;Path&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class="cell-left"&gt;Army direction&amp;emsp;&lt;/td&gt;
+    &lt;td class="cell-left"&gt;Color&lt;/td&gt;
+    &lt;td class="cell-left"&gt;Path&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class="cell-left"&gt;Date&lt;/td&gt;
+    &lt;td class="cell-left"&gt;Position (x-axis)&lt;/td&gt;
+    &lt;td class="cell-left"&gt;Line + text&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class="cell-left"&gt;Temperature&lt;/td&gt;
+    &lt;td class="cell-left"&gt;Position (y-axis)&lt;/td&gt;
+    &lt;td class="cell-left"&gt;Line + text&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+
+---
+
+# Mapping data to aesthetics
+
+&lt;table&gt;
+  &lt;tr&gt;
+    &lt;th class="cell-left"&gt;Data&lt;/th&gt;
+    &lt;th class="cell-left"&gt;&lt;code class="remark-inline-code"&gt;aes()&lt;/code&gt;&lt;/th&gt;
+    &lt;th class="cell-left"&gt;&lt;code class="remark-inline-code"&gt;geom&lt;/code&gt;&lt;/th&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class="cell-left"&gt;Longitude&lt;/td&gt;
+    &lt;td class="cell-left"&gt;&lt;code class="remark-inline-code"&gt;x&lt;/code&gt;&lt;/td&gt;
+    &lt;td class="cell-left"&gt;&lt;code class="remark-inline-code"&gt;geom_point()&lt;/code&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class="cell-left"&gt;Latitude&lt;/td&gt;
+    &lt;td class="cell-left"&gt;&lt;code class="remark-inline-code"&gt;y&lt;/code&gt;&lt;/td&gt;
+    &lt;td class="cell-left"&gt;&lt;code class="remark-inline-code"&gt;geom_point()&lt;/code&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class="cell-left"&gt;Army size&lt;/td&gt;
+    &lt;td class="cell-left"&gt;&lt;code class="remark-inline-code"&gt;size&lt;/code&gt;&lt;/td&gt;
+    &lt;td class="cell-left"&gt;&lt;code class="remark-inline-code"&gt;geom_path()&lt;/code&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class="cell-left"&gt;Army direction&amp;emsp;&lt;/td&gt;
+    &lt;td class="cell-left"&gt;&lt;code class="remark-inline-code"&gt;color&lt;/code&gt;&amp;emsp;&lt;/td&gt;
+    &lt;td class="cell-left"&gt;&lt;code class="remark-inline-code"&gt;geom_path()&lt;/code&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class="cell-left"&gt;Date&lt;/td&gt;
+    &lt;td class="cell-left"&gt;&lt;code class="remark-inline-code"&gt;x&lt;/code&gt;&lt;/td&gt;
+    &lt;td class="cell-left"&gt;&lt;code class="remark-inline-code"&gt;geom_line() + geom_text()&lt;/code&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class="cell-left"&gt;Temperature&lt;/td&gt;
+    &lt;td class="cell-left"&gt;&lt;code class="remark-inline-code"&gt;y&lt;/code&gt;&lt;/td&gt;
+    &lt;td class="cell-left"&gt;&lt;code class="remark-inline-code"&gt;geom_line() + geom_text()&lt;/code&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+
+
+---
+
+# Troup data
+
+
+```
+##   long  lat survivors direction group
+## 1 24.0 54.9    340000         A     1
+## 2 24.5 55.0    340000         A     1
+## 3 25.5 54.5    340000         A     1
+## 4 26.0 54.7    320000         A     1
+## 5 27.0 54.8    300000         A     1
+## 6 28.0 54.9    280000         A     1
+```
+
+
+---
+
+
+
+# Initial Attempt
+
+&lt;img src="data-visualization_files/figure-html/initial_attempt-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+
+--- 
+
+
+# Adding more aesthetics
+
+&lt;img src="data-visualization_files/figure-html/unnamed-chunk-1-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Adding even more aesthetics
+
+&lt;img src="data-visualization_files/figure-html/unnamed-chunk-2-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+---
+
+# The Code
+
+
+```r
+ggplot(troops, aes(x = long, y = lat, group = group,
+                   color = direction, size = survivors)) +
+  geom_path(lineend = "round") + 
+  scale_size(range = c(0.5, 15)) +
+  scale_colour_manual(values = c("#DFC17E", "#252523")) + 
+  labs(x = NULL, y = NULL)
+```
+
+---
+
+# Implementation of the grammer of graphics
+
+.box-inv-4[ggplot2]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9",
+"navigation": {
+"scroll": true
+}
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

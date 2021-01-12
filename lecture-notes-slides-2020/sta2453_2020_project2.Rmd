@@ -1,12 +1,9 @@
 ---
-title: 'Project #1 Data Collection and Analysis'
+title: 'Project #2 Data Visualization'
+date: "`r Sys.Date()`"
 output:
-  html_document:
-    theme: cosmo
-    highlight: textmate
-    toc: true
-    toc_float: true
-    toc_depth: 4
+  rmdformats::readthedown:
+    highlight: kate
 ---
 
 ```{r setup, include=FALSE}
@@ -15,59 +12,186 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Background
 
-TBD
+So, you've completed some fancy analysis and/or built some model for a client. Now what? Years ago, writing a report may have been the final stage of such a project. This is often an underutilization of the information obtained from an analysis. We now have access to many open source (and proprietary tools) that allow us to: 1) share our results more easily to a wider audience, and 2) Allow end users to interact with our results.  
+
+Building compelling visualizations to present data to various audiences is a
+highly valuable skill for data scientists and one that we will work on with this project. Students will be split into groups of 2/3 and will build a functional dashboard along with a 2-3 page descriptive report.  
 
 # Question
 
-TBD
+Since the Covid-19 pandemic began, Ontario public health has been collecting several important data points to help advise decision makers and to better inform the public. Thankfully, many of these data sources have been made fully public. 
+
+Several Covid-19 dashboards have been made by different public health agencies.
+
+### Government of Canada Dashboard
+
+[Government of Canada Covid-19 Dashboard](https://health-infobase.canada.ca/covid-19/dashboard/)
+
+![TPH-dashboard](CANADA-dashboard.PNG)
+
+### Toronto Public Health Dashboard
+
+[Toronto Public Health](https://www.toronto.ca/home/covid-19/covid-19-latest-city-of-toronto-news/covid-19-status-of-cases-in-toronto/)
+
+![TPH-dashboard](TPH-dashboard.PNG)
+
+### New Brunswick Public Health Dashboard
+
+[Province of New Brunswick Covid Dashboard](https://experience.arcgis.com/experience/8eeb9a2052d641c996dba5de8f25a8aa)
+
+![TPH-dashboard](NBPH-dashboard.PNG)
+
+### John Hopkins Dashboard
+
+[John Hopkins Dashboard](https://experience.arcgis.com/experience/8eeb9a2052d641c996dba5de8f25a8aa)
+
+![John Hopkins Dashboard](JH-dashboard.PNG)
+
 
 # Assignment
 
-TBD
+The assignment is to:
+
+1. Build a functional COVID-19 dashboard that could:
+  - Ingest data on a daily basis
+  - Provide a visual display of important features in the data
+2. Write a 2-3 page report describing your dashboard:
+  - The intended audience of the dashboard
+  - Description of the dashboard pipeline (data ingestion, cleaning, display, framework, etc...)
+
+This project will not involve a formal presentation to the class. The deliverables are a 2-3 page report along with a github repository containing the code and dashboard. The README of the dashboard should provide instructions on how to use the repository to generate the dashboard. 
+
+NOTE: I say above that the dashboard should be able to ingest data daily. I don't mean that you should actually productionize your dashboard on some server where it is ingesting data daily. I mean that your dashboard should include the code for that functionality. 
+
+Your group will have several choices to make:
+
+1. The data you will use (more information below)
+2. The intended audience
+3. The technological framework (more below and in next lecture)
+
+
+## The Data
+
+The data you use and the intended audience is fairly open ended. If you are having any trouble coming up with something, or just want to make sure you are on the right track, please check in with me. 
+
+### Data resources
+
+
+#### John Hopkins Github Repository
+
+The John Hopkins github repository is an excellent reference for all of the available data. 
+
+[John Hopkins data](https://github.com/CSSEGISandData/COVID-19)
+
+#### Government of Ontario Covid-19 Case Data
+The Ontario Government, provides fairly straightforward access to their data
+
+[Government of Ontario Covid-19 case data](https://covid-19.ontario.ca/data)
+
+#### Open Data Toronto Covid-19 cases
+
+Open Data Toronto, provides very easy access to the data especially for developers. 
+
+[Open Data Toronto Covid 19 Cases](https://open.toronto.ca/dataset/covid-19-cases-in-toronto/)
+
+```{r, echo=T, warning=F, message=F}
+	
+library(opendatatoronto)
+library(dplyr)
+ 
+# get package
+package <- show_package("64b54586-6180-4485-83eb-81e8fae3b8fe")
+package
+ 
+# get all resources for this package
+resources <- list_package_resources("64b54586-6180-4485-83eb-81e8fae3b8fe")
+ 
+# identify datastore resources; by default, Toronto Open Data sets datastore resource format to CSV for non-geospatial and GeoJSON for geospatial resources
+datastore_resources <- filter(resources, tolower(format) %in% c('csv', 'geojson'))
+ 
+# load the first datastore resource as a sample
+data <- filter(datastore_resources, row_number()==1) %>% get_resource()
+
+DT::datatable(head(data), options = list(scrollX=T))
+
+```
+
+
+## Audience
+
+You can also select the intended audience of your dashboard. Some examples might include
+
+1. The General Ontario public
+  - How many cases in different locations of ontario? Areas with high case counts
+2. Ontario decision makers
+  - In addition to info from (1), hospital utilization
+3. The General Canadian Population
+  - Case counts by province, provinces with high transmission rates
+4. The general world population
+  - Case counts by country, countries with high transmission rates
+
+Your report should describe your intended audience. That is, who are you trying to inform, what important information are you trying to relay, and how could they use it?
+
+## The Technological Framework
+
+The framework consists of the tools you use to ingest, clean and display the data. The choice is entirely up to you, however I would ask that you refrain from using point and click frameworks (i.e. Tableau, PowerBI). Below I provide a few examples (I will cover a few of these in class):
+
+### R and Flexdashboard
+
+The [flexdashboard](https://rmarkdown.rstudio.com/flexdashboard/) R package provides a very simple way to make professional dashboards using simple Rmarkdown. 
+
+![Flexdashboard example](flex.PNG)
+
+Flexdashboard allows you to quickly build dashboards, but at the expense of more limited flexibility. Limitations include, strict layout rules and limited reactivity. For more reactive dashboards with R, you can use:
+
+### R and Shiny
+
+Shiny is an R framework for building fully interactive web applications. Apps can be fully customized but requires more effort in learning the language. I will cover shiny 
+
+### R and Shiny dashboard
+
+Shinydashboard is an R shiny package specifically designed for creating dashboards. I will cover flexdashboard, Shiny, and shinydashboard in the next lecture.
+
+## Python and Dash
+
+The python alternative to building a dashboard is the [dash plotly package](https://dash.plotly.com/). Dash also has a learning curve to it, but is capable of building beautiful fully interactive dashboards.  
+
+[Dash library](dash.PNG)
+
+### Javascript frameworks
+
+In addition frameworks with R and Python, you could use any javascript library to build a browser based dashboard. Here are a couple of interesting tutorials:
+
+- [Building a realtime analytics DASHBOARD with Node.js and Mongodb](https://morioh.com/p/43bcbd81a287)
+- [Building a Covid-19 dashboard with nodejs](https://dev.to/puf17640/building-a-covid19-dashboard-nodejs-4g4)
+
+The downside of using a javascript framework is needing to build a backend database to interact with. 
 
 ## Groups
 
-Students will be randomly divided into groups of three/two.  Each group will hand in a written report and present to the class. Groups are available on Quercus.
+Students will be randomly divided into groups of three/two.  Each group will hand in a 2-3 page written report along with the github repository used to build their dashboard. 
 
 ## Written Report
 
-The written report is due on December 8th. 
+The written report for this project will be a 2-3 page write-up. The write-up should describe:
 
-### Answers to Some Common Questions about the Submitted Report
+- The intended audience for your dashboard
+- The Data you used to make the dashboard
+- The reason you selected the visualizations you included
+- How an intended user could use the dashboard
+- The technological framework you used (i.e. R and flexdashboard)
+- What did you learn, any future directions you could take the project if
+you had more time. 
 
-1. It's not necessary for R/Python code chunks to appear in the report (in [R Markdown](https://bookdown.org/yihui/rmarkdown/) use the chunk options `echo=FALSE`, `warning = FALSE`, `message = FALSE` and in Jupyter use the command line tool `nbconvert` [^1]) unless there is some part of the code that will contribute to describing what you have done in the data analysis. Don't submit a report with warning messages from a library you loaded in your report.  For example,
-
-__Don't do this:__
-
-The distribution of XX is shown below ...
-
-```{r, fig.height=3, fig.width=3}
-library(tidyverse)
-set.seed(1028)
-data.frame(x =  rnorm(100)) %>% ggplot(aes(x)) + geom_histogram(colour = "white", fill = "darkblue")
-```
-
-__Do this:__
-
-The distribution of XX is shown below ...
-
-```{r, warning=FALSE, message=FALSE, echo=FALSE, fig.height=3, fig.width=3}
-library(tidyverse)
-set.seed(1028)
-data.frame(x =  rnorm(100)) %>% ggplot(aes(x)) + geom_histogram(colour = "white", fill = "darkblue")
-```
+The report does not need to include any code. 
+The written report and dashboard repository is due on February 23rd. 
 
 
-Also, you will be submitting your R Markdown/Jupyter Notebook file so I can see all the gory details. This leads to ...
+## How will I be evaluated?
 
-[^1]: For example, to convert foo.ipynb to an html document **without code cells** the command line syntax for nbconvert is: `jupyter nbconvert --TemplateExporter.exclude_input=True foo.ipynb`.  For more information see the documentation [here](https://nbconvert.readthedocs.io/en/latest/install.html).
+Good question. For this project the dashboard and github repository will be worth 70% of the grade, with the remaining 30% going to the written report. 
 
-2. What should be in the report?  A high level description of what you have done.  This leads to …
-
-3. Who is the intended audience for the report and what do you mean by a “high level description”?  The intended audience is an educated person that has taken at least one basic statistics course, but might be a bit rusty on the details.  For example, your supervisor at work completed an MBA ten years ago and took a few statistics courses, but the details are a bit hazy.
-
-
-### How will my writing be evaluated?
+### Writing evaluation
 
 Your writing will be evaluated for clarity and conciseness. 
 
@@ -75,56 +199,40 @@ Your writing will be evaluated for clarity and conciseness.
 There should be an appropriate title, adequate summary, and complete information including names and dates.
 
 2. Introduction [1-5]
-The purpose of the research should be clearly stated and the scope of what is considered in the report should be clear.
+Clearly state the goal of your dashboard along with the intended audience. 
 
-3. Methods [1-5]
-The role of each method should be clearly stated. The description of the analyses should be clear and unambiguous so that another statistician or data scientist could easily re-construct it. The methods should be described accurately.
+3. Data and methods [1-10]
+Clearly describe the data pipline for your project. How are you extracting and cleaning the data. Specify important decisions you made along the way.
 
-4. Results [1-5]
-There should be appropriate tables and graphs. The results should be clearly stated in the context of the problem. The size and direction of significant results should be given. The results must be accurately stated. The research question should be adequately answered.
+4. Dashboard framework and visuals [1-10]
+
+Describe the dashboard framework you chose and why. Describe how the dashboard interact with the data and how a user can interact with the dashboard. Describe the visuals you chose to use and why. 
+
 
 5. Conclusion / Discussion [1-5]
-The results should be clearly and completely summarized. This section should also include discussion of limitations and/or concerns and/or suggestions for future consideration as appropriate.
 
-6. General Considerations [1-5]
-The ideas should be presented in logical order, with well-organized sections, no grammatical, spelling, or punctuation errors, an appropriate level of technical detail, and be clear and easy to follow.
+Discuss the results of your dashboard. Are you satisfied with your end product? What did you learn along the way and what would you do if you had more time. 
 
 
-## Class Presentation
+## Code and visuals
 
-Presentations will take place on December 1st.  The time allotted for each group is 10 minutes plus 5 minutes for discussion. 
-
-### General Presentation Guidelines
-
-You will need to remind us about the project, but only tell us what we really need to know. We are curious about the results, and how your group presents the results, but they are not the only purpose of this presentation. So, what should you include?  We’re interested in what you learned in the context of your project that has made you a better applied statistician/data scientist. 
-
-You may want to address some of the following: 
-
-- What made the project difficult/easy? 
-- What did you learn about data collection? 
-- What did you learn about statistical communication? 
-- What did you learn about statistical methods? 
-- What useful rules-of-thumb did you learn? 
-- What kind of creative thinking was needed to turn the data or research questions into something that you could analyze? 
-- From the beginning of the course until now, what has changed in how you view statistical work? 
-
-### How your presentations will be evaluated?
-
-#### Content [60%] 
-- Is there evidence that you have thought deeply and insightfully about your project and what you have learned from it? 
-- Did you use appropriate statistical methods to answer the questions? 
-- Is the content interesting and relevant? 
-
-#### Clarity [30%]
-- Could the points of your presentation be easily understood by your classmates? 
-- Are you organized? 
-- By listening to your presentation, have your classmates had the opportunity to also learn what you learned? 
-
-#### Delivery [10%]
-- Was everything that you said easy to hear? 
-- Was your presentation style engaging?
+The code and dashboard itself are worth a combined 70%. This is further broken down so that the dashboard is worth 45 of the 70 and the code/github repo is worth 25 of the 70. 
 
 
+### Code evaluation
+
+The github repository should include a README file which describes how to use the dashboard to either create or view the dashboard along with a description of the analytical pipeline:
+
+- Where and how you access/clean the data
+- The framework for the dashboard
+- How the data is ingested into the dashboard
+
+The general grading rubric from the assignments will be used to assess your code. If you have any questions, please reach out. 
 
 
+### Evaluation of visuals
 
+- After reading your report to understand the intent and audience, I should be able to look at your visuals
+  without further assistance.
+- Graphs should have clear labels, axis titles, and legends (if necessary)
+- The overall layout should make sense. Be sure to not make the dashboard too cluttered

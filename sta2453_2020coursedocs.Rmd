@@ -53,6 +53,18 @@ Tutorials for different scraping techniques:
 - [Github repo](https://github.com/dwhdai/house_price_predictor)
 - [Deployed application](https://david-dai.shinyapps.io/HomeListingPrice/)
 
+## January 12th
+
+- [Slides](lecture-notes-slides-2020/slides/data-visualization.html)
+- [ggplot tutorial](lecture-notes-slides-2020/slides/ggplot-tutorial.html)
+
+- References:
+  - [Andrew Wheiss' class](https://datavizm20.classes.andrewheiss.com/)
+  - [Jeff Leek's class](https://jhuadvdatasci.substack.com/)
+  - [Nathan Yau's book](https://www.amazon.ca/Data-Points-Visualization-Means-Something/dp/111846219X)
+
+
+
 # Marking Rubrics
 
 ## Data Analysis Rubric
