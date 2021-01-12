@@ -12,9 +12,9 @@ navbar:
     - text: Projects
       menu:
         - text: Project 1 - Data Collection and Analysis
-          href: lecture-notes-slides-2020/sta2453_20202_project1.html
+          href: lecture-notes-slides-2020/sta2453_2020_project1.html
         - text: Project 2 - Data Visualization
-          href: lecture-notes-slides-2020/sta2453_20202_project2.html
+          href: lecture-notes-slides-2020/sta2453_2020_project2.html
 output:
   html_document:
     theme: cosmo
