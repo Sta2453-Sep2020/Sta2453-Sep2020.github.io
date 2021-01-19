@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Communicating through the web</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Josh Murray" />
+    <meta name="date" content="2021-01-19" />
+    <script src="libs/header-attrs-2.1/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css\ath-slides.css" type="text/css" />
+    <link rel="stylesheet" href="css\ath-inferno-fonts.css" type="text/css" />
+    <link rel="stylesheet" href="css\animate.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+name: agenda
+class: title title-7
+
+# Agenda
+
+--
+
+- Building simple websites
+  - Manually 
+  - With the blogdown package
+
+--
+
+- Building dashboards with `flexdashboard`
+
+--
+
+- Building dashboards with `Shiny`
+
+---
+
+name: websites
+class: title title-7
+
+# Building Websites
+
+ .box-inv-6[Why]
+
+--
+
+.box-4[Websites provide an interactive way for people explore your work]
+
+--
+
+.box-5[Can share html slides/apps/resumes without having to transfer files]
+
+--
+
+.box-4[It's easy to create a website with R markdown]
+
+--
+
+.box-3[Can host a static website on github for free!]
+
+
+---
+
+name: markdown
+class: title title-7
+
+# Websites with R and github
+
+- Websites built with R markdown require at a minimum 2 files:
+
+--
+  
+
+.left-code[
+- `_site.yml`: Metadata about the website
+```yaml
+name: "my-website"
+navbar:
+  title: "My Website"
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "About"
+      href: about.html
+```
+]
+
+
+
+.right-code[
+- `index.Rmd`: Metadata about the website
+
+```bash
+
+---
+title: "My Website"
+---
+    
+Hello, World! Welcome to my site.
+```
+]
+
+
+
+---
+
+
+# Bootswatch Themes 
+
+.pull-left[
+![](themes1.PNG)
+]
+
+.pull-right[
+![](themes2.PNG)
+]
+
+
+---
+
+class: title title-7
+
+# Github pages
+
+- You can publish your website at github pages (for free)
+- Create your repository as `YOUR_GH_NAME.github.io`
+
+---
+
+name: markdown2
+class: section-title-7 middle
+
+# Basic Website Tutorial
+
+
+---
+
+name: blogdown
+class: section-title-7 middle
+
+# Building websites with blogdown
+
+---
+name:blogdown2
+class: title title-7
+
+# What is Hugo and `blogdown`?
+
+- [Hugo](https://gohugo.io/about/what-is-hugo/) is a static website generator.
+
+- A static site consists of HTML files (often with external dependencies),
+
+- There is no dynamic computing on the server when a page is requested. 
+
+- The `blogdown` package was designed to allow users to build beautiful
+static webistes with R and [Hugo](https://gohugo.io/about/what-is-hugo/)
+
+
+---
+name: blogdown3
+class: title title-7
+
+# What is needed
+
+- Start a new project
+
+- Select a Hugo theme (every blogdown website must include a theme)
+
+
+```r
+# Install the blogdown package
+remotes::install_github('rstudio/blogdown')
+remotes::install_github('yihui/servr')
+
+# install hugo
+blogdown::install_hugo(theme = 'wowchemy/starter-academic')
+```
+
+
+
+
+---
+name: blogdown3
+class: section-title-7 middle
+
+# Building Dashboards with R
+
+---
+
+name:dashboard1
+class: title title-7
+
+# Dashboards with R
+
+--
+
+- here are many options for building professional grade dashboards in R
+
+--
+
+- Two most popular options
+
+--
+
+.pull-left[
+.box-3[flexdashboard]
+]
+
+.pull-right[
+.box-3[shiny]
+]
+# What is needed
+
+---
+
+name:dashboard1
+class: title title-7
+
+# Flexdashboard
+
+.pull-left[
+
+- Flexdashboard is an Rmarkdown based package for building static html dashboards
+in R
+- Some interactivity can be added via `shiny` runtime
+- Although there are some annoying layout restrictions, it is still quite 
+flexible to meet most needs
+
+]
+
+.pull-right[
+![](flexdashboard.png)
+]
+
+
+---
+
+name: blogdown3
+class: section-title-7 middle
+
+# Shinydashboard
+
+---
+class: title title-7
+
+# Components of a shiny app
+
+.box-3[A Shiny App is composed of two functions]
+&lt;br&gt;
+.pull-left[.box-4[`ui()`, The front end of the app]]
+.pull-right[.box-4[`server()`, The backend of the app]]
+&lt;br&gt;
+&lt;br&gt;
+.box-5[Once both components are written a call to `shinyApp(ui, server)` will run the
+app]
+
+---
+class: title title-7
+
+# The front end
+
+- The `dashboardPage()` sets the basic layout of a shiny dashboard app
+
+```r
+dashboardPage(         # the dashboard page
+  dashboardHeader(),   # The header of the app
+  dashboardSidebar(),  # the sidebar 
+  dashboardBody()      # The body of the app
+)
+```
+
+---
+class: title title-7
+
+
+# Building the dashboardpage
+
+The `dashboardPage` can be built up in pieces:
+
+```r
+header &lt;- dashboardHeader()
+
+sidebar &lt;- dashboardSidebar()
+
+body &lt;- dashboardBody()
+
+dashboardPage(header, sidebar, body)
+```
+
+
+---
+class: title title-7
+
+# Sidebar
+
+The sidebar is used for navigating through different secions of the app, or
+for supplying inputs
+
+- When the user clicks on one of the menu items, it switches content in the main body
+
+---
+class: title title-7
+
+# Body
+
+- The body of the dashboard is where you put your main content.
+
+- Dashboards usually have some structure to them
+
+- We use the `box()` as the building block for dashboards. They can contain
+any content
+
+
+---
+class: title title-7
+
+# The front end
+
+- Besides being used to build the beautiful layout of your app/dashboard, the
+front end is used to design inputs that will be sent to your backend functions.
+
+- Inputs all have a similar form, for example:
+
+```r
+numericInput(inputId = 'my_input', label = "Enter a number',
+    value = 0, min = 0, max = 10, step =1 )
+
+```
+
+```r
+textInput(inputId = 'my_txt_input', label = "Enter some Text:',
+    value = "Default Value)
+
+```
+
+
+
+---
+class: title title-7
+
+# The server side
+
+- The server side of shiny apps is used for building
+reactive content
+
+- That is, when someone clicks a button, or enters some data (e.g. previous slide),
+then it can be accessed in the server function as an `input`
+
+- We then build components for the front end using `render_` functions.
+
+- For example, `renderPlot()`, `renderPrint()`, ``renderTable()`, 
+`renderPlotly()`, etc..
+
+
+name: blogdown3
+class: section-title-7 middle
+
+# Shinydashboard Tutorial
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9",
+"navigation": {
+"scroll": true
+}
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

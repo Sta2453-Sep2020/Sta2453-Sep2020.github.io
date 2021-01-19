@@ -127,6 +127,13 @@ figcaption {
   float: left;
 }
 
+.right-code {
+  color: #777;
+  width: 48%;
+  height: 92%;
+  float: right;
+}
+
 .right-plot {
   width: 50%;
   float: right;
@@ -137,6 +144,12 @@ figcaption {
 .left-code .remark-inline-code {
   font-size: 0.5em;
 }
+
+.right-code .remark-code,
+.right-code .remark-inline-code {
+  font-size: 0.5em;
+}
+
 
 .small-code .remark-code,
 .small-code .remark-inline-code {

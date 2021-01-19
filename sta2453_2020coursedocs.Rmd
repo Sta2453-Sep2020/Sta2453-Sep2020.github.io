@@ -64,6 +64,17 @@ Tutorials for different scraping techniques:
   - [Nathan Yau's book](https://www.amazon.ca/Data-Points-Visualization-Means-Something/dp/111846219X)
 
 
+## January 19th
+
+- [Slides](lecture-notes-slides-2020/slides/building-communication-material.html)
+
+- References
+  - [Blog post on building website with rmarkdown](https://robertmitchellv.com/blog-building-site-with-rmarkdown.html)
+  - [Blogdown book](https://bookdown.org/yihui/blogdown/)
+  - [Hugo Themes](https://themes.gohugo.io/)
+  - [flexdashboard](https://rmarkdown.rstudio.com/flexdashboard/)
+  - [Mastering Shiny free book](https://mastering-shiny.org/)
+  - [Rstudio global conference](https://rstudio.com/conference/)
 
 # Marking Rubrics
 
