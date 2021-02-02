@@ -1,0 +1,372 @@
+---
+title: "Communicating through the web"
+author: "Josh Murray"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    lib_dir: "libs"
+    chakra: "libs/remark-latest.min.js"
+    css: ["default", "css/ath-slides.css", "css/ath-inferno-fonts.css", "css/animate.css"]
+    seal: false
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: "16:9"
+      navigation:
+        scroll: true
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, 
+                      fig.retina = 3, fig.align = "center")
+```
+
+```{r packages-data, include=FALSE}
+library(dplyr)
+library(ggplot2)
+```
+
+name: agenda
+class: title title-7
+
+# Agenda
+
+--
+
+- Building simple websites
+  - Manually 
+  - With the blogdown package
+
+--
+
+- Building dashboards with `flexdashboard`
+
+--
+
+- Building dashboards with `Shiny`
+
+---
+
+name: websites
+class: title title-7
+
+# Building Websites
+
+ .box-inv-6[Why]
+
+--
+
+.box-4[Websites provide an interactive way for people explore your work]
+
+--
+
+.box-5[Can share html slides/apps/resumes without having to transfer files]
+
+--
+
+.box-4[It's easy to create a website with R markdown]
+
+--
+
+.box-3[Can host a static website on github for free!]
+
+
+---
+
+name: markdown
+class: title title-7
+
+# Websites with R and github
+
+- Websites built with R markdown require at a minimum 2 files:
+
+--
+  
+
+.left-code[
+- `_site.yml`: Metadata about the website
+```yaml
+name: "my-website"
+navbar:
+  title: "My Website"
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "About"
+      href: about.html
+```
+]
+
+
+
+.right-code[
+- `index.Rmd`: Metadata about the website
+```{bash, eval=F}
+
+---
+title: "My Website"
+---
+    
+Hello, World! Welcome to my site.
+```
+]
+
+
+
+---
+
+
+# Bootswatch Themes 
+
+.pull-left[
+![](themes1.PNG)
+]
+
+.pull-right[
+![](themes2.PNG)
+]
+
+
+---
+
+class: title title-7
+
+# Github pages
+
+- You can publish your website at github pages (for free)
+- Create your repository as `YOUR_GH_NAME.github.io`
+
+---
+
+name: markdown2
+class: section-title-7 middle
+
+# Basic Website Tutorial
+
+
+---
+
+name: blogdown
+class: section-title-7 middle
+
+# Building websites with blogdown
+
+---
+name:blogdown2
+class: title title-7
+
+# What is Hugo and `blogdown`?
+
+- [Hugo](https://gohugo.io/about/what-is-hugo/) is a static website generator.
+
+- A static site consists of HTML files (often with external dependencies),
+
+- There is no dynamic computing on the server when a page is requested. 
+
+- The `blogdown` package was designed to allow users to build beautiful
+static webistes with R and [Hugo](https://gohugo.io/about/what-is-hugo/)
+
+
+---
+name: blogdown3
+class: title title-7
+
+# What is needed
+
+- Start a new project
+
+- Select a Hugo theme (every blogdown website must include a theme)
+
+```{r, eval=F}
+# Install the blogdown package
+remotes::install_github('rstudio/blogdown')
+remotes::install_github('yihui/servr')
+
+# install hugo
+blogdown::install_hugo(theme = 'wowchemy/starter-academic')
+
+```
+
+
+
+
+---
+name: blogdown3
+class: section-title-7 middle
+
+# Building Dashboards with R
+
+---
+
+name:dashboard1
+class: title title-7
+
+# Dashboards with R
+
+--
+
+- here are many options for building professional grade dashboards in R
+
+--
+
+- Two most popular options
+
+--
+
+.pull-left[
+.box-3[flexdashboard]
+]
+
+.pull-right[
+.box-3[shiny]
+]
+# What is needed
+
+---
+
+name:dashboard1
+class: title title-7
+
+# Flexdashboard
+
+.pull-left[
+
+- Flexdashboard is an Rmarkdown based package for building static html dashboards
+in R
+- Some interactivity can be added via `shiny` runtime
+- Although there are some annoying layout restrictions, it is still quite 
+flexible to meet most needs
+
+]
+
+.pull-right[
+![](flexdashboard.png)
+]
+
+
+---
+
+name: blogdown3
+class: section-title-7 middle
+
+# Shinydashboard
+
+---
+class: title title-7
+
+# Components of a shiny app
+
+.box-3[A Shiny App is composed of two functions]
+<br>
+.pull-left[.box-4[`ui()`, The front end of the app]]
+.pull-right[.box-4[`server()`, The backend of the app]]
+<br>
+<br>
+.box-5[Once both components are written a call to `shinyApp(ui, server)` will run the
+app]
+
+---
+class: title title-7
+
+# The front end
+
+- The `dashboardPage()` sets the basic layout of a shiny dashboard app
+
+```r
+dashboardPage(         # the dashboard page
+  dashboardHeader(),   # The header of the app
+  dashboardSidebar(),  # the sidebar 
+  dashboardBody()      # The body of the app
+)
+```
+
+---
+class: title title-7
+
+
+# Building the dashboardpage
+
+The `dashboardPage` can be built up in pieces:
+
+```r
+header <- dashboardHeader()
+
+sidebar <- dashboardSidebar()
+
+body <- dashboardBody()
+
+dashboardPage(header, sidebar, body)
+```
+
+
+---
+class: title title-7
+
+# Sidebar
+
+The sidebar is used for navigating through different secions of the app, or
+for supplying inputs
+
+- When the user clicks on one of the menu items, it switches content in the main body
+
+---
+class: title title-7
+
+# Body
+
+- The body of the dashboard is where you put your main content.
+
+- Dashboards usually have some structure to them
+
+- We use the `box()` as the building block for dashboards. They can contain
+any content
+
+
+---
+class: title title-7
+
+# The front end
+
+- Besides being used to build the beautiful layout of your app/dashboard, the
+front end is used to design inputs that will be sent to your backend functions.
+
+- Inputs all have a similar form, for example:
+
+```r
+numericInput(inputId = 'my_input', label = "Enter a number',
+    value = 0, min = 0, max = 10, step =1 )
+
+```
+
+```r
+textInput(inputId = 'my_txt_input', label = "Enter some Text:',
+    value = "Default Value)
+
+```
+
+
+
+---
+class: title title-7
+
+# The server side
+
+- The server side of shiny apps is used for building
+reactive content
+
+- That is, when someone clicks a button, or enters some data (e.g. previous slide),
+then it can be accessed in the server function as an `input`
+
+- We then build components for the front end using `render_` functions.
+
+- For example, `renderPlot()`, `renderPrint()`, ``renderTable()`, 
+`renderPlotly()`, etc..
+
+
+name: blogdown3
+class: section-title-7 middle
+
+# Shinydashboard Tutorial

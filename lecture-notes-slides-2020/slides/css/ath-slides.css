@@ -43,8 +43,17 @@ Typography
   font-size: 0.8em;
 }
 
+.really-small {
+  font-size: 0.7em;
+}
+
+
 .tiny {
   font-size: 0.5em;
+}
+
+.tiny-code {
+  font-size: 0.45em;
 }
 
 .light {

@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Communicating through the web</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Josh Murray" />
+    <meta name="date" content="2021-02-01" />
+    <script src="libs/header-attrs-2.6.6/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/ath-slides.css" type="text/css" />
+    <link rel="stylesheet" href="css/ath-inferno-fonts.css" type="text/css" />
+    <link rel="stylesheet" href="css/animate.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+name: agenda
+class: title title-7
+
+# Agenda
+
+--
+
+
+- Building reactive applications with `shiny`
+  - Specifically dashboards with `shinydashboard`
+
+--
+
+- Building dashboards with dash plotly. 
+
+---
+
+
+name: references
+class: title title-7
+
+# References
+
+- [Mastering Shiny](https://mastering-shiny.org/) Free book 
+
+- [The shiny tutorial series on Rstudio](https://shiny.rstudio.com/tutorial/) 
+
+- [The plotly dash website](https://plotly.com/dash/)
+
+---
+
+name: blogdown3
+class: section-title-7 middle
+
+# shiny
+
+---
+class: title title-7
+
+# Components of a shiny app
+
+.box-3[A Shiny App is composed of two functions]
+&lt;br&gt;
+.pull-left[.box-4[`ui()`, The front end of the app]]
+.pull-right[.box-4[`server()`, The backend of the app]]
+&lt;br&gt;
+&lt;br&gt;
+.box-5[Once both components are written a call to `shinyApp(ui, server)` will run the
+app]
+
+
+---
+class: title title-7
+
+# The front end (sidebar panel)
+
+.small[
+```r
+ui &lt;- fluidPage(
+
+  titlePanel("Hello Shiny!"),
+
+  sidebarLayout(
+
+    sidebarPanel(
+      sliderInput("obs", "Number of observations:",  
+                  min = 1, max = 1000, value = 500)
+    ),
+
+    mainPanel(
+      plotOutput("distPlot")
+    )
+  )
+)
+```
+]
+
+---
+class: title title-7
+
+# Grid layout
+
+.small[
+```r
+ui &lt;- fluidPage(
+
+  titlePanel("Hello Shiny!"),
+
+  fluidRow(
+  
+    column(4,
+      wellPanel(
+        sliderInput("obs", "Number of observations:",  
+                    min = 1, max = 1000, value = 500)
+      )       
+    ),
+
+    column(8,
+      plotOutput("distPlot")
+    )
+  )
+)
+```
+]
+
+
+---
+
+class:title title-7
+
+# Tabsets
+
+.small[
+```r
+ui &lt;- fluidPage(
+
+  titlePanel("Tabsets"),
+
+  sidebarLayout(
+    
+    sidebarPanel(
+      # Inputs excluded for brevity
+    ),
+  
+    mainPanel(
+      tabsetPanel(
+        tabPanel("Plot", plotOutput("plot")), 
+        tabPanel("Summary", verbatimTextOutput("summary")), 
+        tabPanel("Table", tableOutput("table"))
+      )
+    )
+  )
+)
+```
+]
+
+---
+
+class: title title-7
+
+# Navbars
+
+.small[
+```r
+ui &lt;- fluidPage(
+  
+  titlePanel("Application Title"),
+  
+  navlistPanel(
+    "Header A",
+    tabPanel("Component 1"),
+    tabPanel("Component 2"),
+    "Header B",
+    tabPanel("Component 3"),
+    tabPanel("Component 4"),
+    "-----",
+    tabPanel("Component 5")
+  )
+)
+```
+]
+
+
+---
+class: title title-7
+
+# The front end
+
+- The `dashboardPage()` sets the basic layout of a shiny dashboard app
+
+```r
+dashboardPage(         # the dashboard page
+  dashboardHeader(),   # The header of the app
+  dashboardSidebar(),  # the sidebar 
+  dashboardBody()      # The body of the app
+)
+```
+
+---
+class: title title-7
+
+
+# Building the dashboardpage
+
+The `dashboardPage` can be built up in pieces:
+
+```r
+header &lt;- dashboardHeader()
+
+sidebar &lt;- dashboardSidebar()
+
+body &lt;- dashboardBody()
+
+dashboardPage(header, sidebar, body)
+```
+
+
+---
+class: title title-7
+
+# Sidebar
+
+The sidebar is used for navigating through different secions of the app, or
+for supplying inputs
+
+- When the user clicks on one of the menu items, it switches content in the main body
+
+---
+class: title title-7
+
+# Body
+
+- The body of the dashboard is where you put your main content.
+
+- Dashboards usually have some structure to them
+
+- We use the `box()` as the building block for dashboards. They can contain
+any content
+
+
+---
+class: title title-7
+
+# Inputs
+
+- Besides being used to build the beautiful layout of your app/dashboard, the
+front end is used to design inputs that will be sent to your backend functions.
+
+- Inputs all have a similar form, for example:
+
+```r
+numericInput(inputId = 'my_input', label = "Enter a number',
+    value = 0, min = 0, max = 10, step =1 )
+
+```
+
+```r
+textInput(inputId = 'my_txt_input', label = "Enter some Text:',
+    value = "Default Value)
+
+```
+
+---
+
+class: title title-7
+
+# Common inputs
+
+- `numericInput` for numeric inputs
+- `textInput` for text inputs
+- `selectInput` for making 1 or more selections from a series of choices
+- `checkboxInput` for checking one or more checkboxes (returns a bool)
+- `sliderInput` numeric inputs presented on a sliding scale
+- `dateRangeInput` for selected a start and end date
+- `passwordInput` for passwords
+
+
+---
+class: title title-7
+
+# The server side
+
+- The server side of shiny apps is used for building
+reactive content
+
+- That is, when someone clicks a button, or enters some data (e.g. previous slide),
+then it can be accessed in the server function as an `input`
+
+- We then build components for the front end using `render_` functions.
+
+- For example, `renderPlot()`, `renderPrint()`, ``renderTable()`, 
+`renderPlotly()`, etc..
+
+---
+
+name: blogdown3
+class: section-title-7 middle
+
+# Shiny and Shinydashboard Tutorial
+
+---
+
+name: blogdown3
+class: section-title-7 middle
+
+
+
+# Dash
+
+
+
+---
+
+name:dash-intro
+class: title title-7
+
+# What is dash
+
+.pull-left[
+
+- A framework for building reactive applications with
+a focus on visualizations
+
+- The core of Dash is made of 3 technologies
+  - Flask, React.js and Plotly.js
+  
+- Dash makes them work together so you don't worry about the details
+]
+
+.pull-right[
+
+![](Plotly_Dash_logo.png)
+]
+
+---
+
+class: title title-7
+
+# Components of dash
+
+Dash applications consist of two components:
+
+&lt;br&gt;
+&lt;br&gt;
+
+.pull-left[
+.box-3[The Layout component through HTML tags]
+]
+
+.pull-right[
+.box-3[The Interactivity component through Callbacks]
+]
+
+---
+
+class: title title-7
+
+# The Layout
+
+.box-7[
+
+My Dashboard
+
+.pull-left[
+
+.box-3[
+My  inputs
+]
+]
+
+.pull-right[
+
+.box-6[
+My fancy Graphs
+]
+]
+
+.box-5[
+
+My really interesting table
+]
+
+
+]
+
+- Components are provided via the `dash_core_components` (visuals) and `dash_html_components` (HTML tags) libraries
+
+---
+
+class: title title-7 sm
+
+# HTML components
+
+- `dash_html_components` has a component for for every HTML tag
+
+.really-small[
+
+
+```python
+
+# import libraries
+import dash 
+import dash_core_components as dcc
+import dash_html_components as html
+
+# create an app
+app = dash.Dash(__name__)
+
+app.layout = html.Div(children=[
+
+# The layout of the app
+
+])
+```
+
+]
+see the Dash [HTML component section of the dash documentation](https://dash.plotly.com/dash-html-components) 
+for more info
+
+---
+
+class: title title-7
+
+# Dash Core Components
+
+The core components library gives app builders the ability to add in interactive components
+to the user interface:
+
+.pull-left.small[
+- `dcc.Graph`: including interactive figures
+- `dcc.Dropdown`: dropdown selection menu
+- `dcc.Slider`: slider inputs
+- `dcc.Markdown`: writing markdown
+- `dcc.Input`: entering inputs
+]
+
+.pull-right[
+
+.box-3[
+
+&lt;br&gt;
+These are equivalent to the `shiny` inputs we looked at (`sliderInput`, `numericInput`, `textInput`)
+
+&lt;br&gt;
+
+]
+]
+
+---
+
+class: title title-7
+
+# Callbacks
+
+- We describe the design and inputs of our application with `app.layout()`
+
+- Callbacks are Python functions that are called when we change the property of
+an input component. 
+
+- This is equivalent to the `server()` functionality in shiny. 
+
+---
+
+class: title title-7
+
+# Callbacks
+
+.tiny[
+```python
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
+from dash.dependencies import Input, Output
+
+app = dash.Dash(__name__)
+
+app.layout = html.Div([
+    html.H6("Change the value in the text box to see callbacks in action!"),
+    html.Div(["Input: ",
+              dcc.Input(id='my-input', value='initial value', type='text')]),
+    html.Br(),
+    html.Div(id='my-output'),
+])
+
+
+@app.callback(
+    Output(component_id='my-output', component_property='children'),
+    Input(component_id='my-input', component_property='value')
+)
+def update_output_div(input_value):
+    return 'Output: {}'.format(input_value)
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+```
+]
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9",
+"navigation": {
+"scroll": true
+}
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

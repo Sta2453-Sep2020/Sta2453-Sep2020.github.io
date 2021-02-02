@@ -1,0 +1,509 @@
+---
+title: "Communicating through the web"
+author: "Josh Murray"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    lib_dir: "libs"
+    chakra: "libs/remark-latest.min.js"
+    css: ["default", "css/ath-slides.css", "css/ath-inferno-fonts.css", "css/animate.css"]
+    seal: false
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: "16:9"
+      navigation:
+        scroll: true
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, 
+                      fig.retina = 3, fig.align = "center")
+```
+
+```{r packages-data, include=FALSE}
+library(dplyr)
+library(ggplot2)
+```
+
+name: agenda
+class: title title-7
+
+# Agenda
+
+--
+
+
+- Building reactive applications with `shiny`
+  - Specifically dashboards with `shinydashboard`
+
+--
+
+- Building dashboards with dash plotly. 
+
+---
+
+
+name: references
+class: title title-7
+
+# References
+
+- [Mastering Shiny](https://mastering-shiny.org/) Free book 
+
+- [The shiny tutorial series on Rstudio](https://shiny.rstudio.com/tutorial/) 
+
+- [The plotly dash website](https://plotly.com/dash/)
+
+---
+
+name: blogdown3
+class: section-title-7 middle
+
+# shiny
+
+---
+class: title title-7
+
+# Components of a shiny app
+
+.box-3[A Shiny App is composed of two functions]
+<br>
+.pull-left[.box-4[`ui()`, The front end of the app]]
+.pull-right[.box-4[`server()`, The backend of the app]]
+<br>
+<br>
+.box-5[Once both components are written a call to `shinyApp(ui, server)` will run the
+app]
+
+
+---
+class: title title-7
+
+# The front end (sidebar panel)
+
+.small[
+```r
+ui <- fluidPage(
+
+  titlePanel("Hello Shiny!"),
+
+  sidebarLayout(
+
+    sidebarPanel(
+      sliderInput("obs", "Number of observations:",  
+                  min = 1, max = 1000, value = 500)
+    ),
+
+    mainPanel(
+      plotOutput("distPlot")
+    )
+  )
+)
+```
+]
+
+---
+class: title title-7
+
+# Grid layout
+
+.small[
+```r
+ui <- fluidPage(
+
+  titlePanel("Hello Shiny!"),
+
+  fluidRow(
+  
+    column(4,
+      wellPanel(
+        sliderInput("obs", "Number of observations:",  
+                    min = 1, max = 1000, value = 500)
+      )       
+    ),
+
+    column(8,
+      plotOutput("distPlot")
+    )
+  )
+)
+```
+]
+
+
+---
+
+class:title title-7
+
+# Tabsets
+
+.small[
+```r
+ui <- fluidPage(
+
+  titlePanel("Tabsets"),
+
+  sidebarLayout(
+    
+    sidebarPanel(
+      # Inputs excluded for brevity
+    ),
+  
+    mainPanel(
+      tabsetPanel(
+        tabPanel("Plot", plotOutput("plot")), 
+        tabPanel("Summary", verbatimTextOutput("summary")), 
+        tabPanel("Table", tableOutput("table"))
+      )
+    )
+  )
+)
+```
+]
+
+---
+
+class: title title-7
+
+# Navbars
+
+.small[
+```r
+ui <- fluidPage(
+  
+  titlePanel("Application Title"),
+  
+  navlistPanel(
+    "Header A",
+    tabPanel("Component 1"),
+    tabPanel("Component 2"),
+    "Header B",
+    tabPanel("Component 3"),
+    tabPanel("Component 4"),
+    "-----",
+    tabPanel("Component 5")
+  )
+)
+```
+]
+
+
+---
+class: title title-7
+
+# The front end
+
+- The `dashboardPage()` sets the basic layout of a shiny dashboard app
+
+```r
+dashboardPage(         # the dashboard page
+  dashboardHeader(),   # The header of the app
+  dashboardSidebar(),  # the sidebar 
+  dashboardBody()      # The body of the app
+)
+```
+
+---
+class: title title-7
+
+
+# Building the dashboardpage
+
+The `dashboardPage` can be built up in pieces:
+
+```r
+header <- dashboardHeader()
+
+sidebar <- dashboardSidebar()
+
+body <- dashboardBody()
+
+dashboardPage(header, sidebar, body)
+```
+
+
+---
+class: title title-7
+
+# Sidebar
+
+The sidebar is used for navigating through different secions of the app, or
+for supplying inputs
+
+- When the user clicks on one of the menu items, it switches content in the main body
+
+---
+class: title title-7
+
+# Body
+
+- The body of the dashboard is where you put your main content.
+
+- Dashboards usually have some structure to them
+
+- We use the `box()` as the building block for dashboards. They can contain
+any content
+
+
+---
+class: title title-7
+
+# Inputs
+
+- Besides being used to build the beautiful layout of your app/dashboard, the
+front end is used to design inputs that will be sent to your backend functions.
+
+- Inputs all have a similar form, for example:
+
+```r
+numericInput(inputId = 'my_input', label = "Enter a number',
+    value = 0, min = 0, max = 10, step =1 )
+
+```
+
+```r
+textInput(inputId = 'my_txt_input', label = "Enter some Text:',
+    value = "Default Value)
+
+```
+
+---
+
+class: title title-7
+
+# Common inputs
+
+- `numericInput` for numeric inputs
+- `textInput` for text inputs
+- `selectInput` for making 1 or more selections from a series of choices
+- `checkboxInput` for checking one or more checkboxes (returns a bool)
+- `sliderInput` numeric inputs presented on a sliding scale
+- `dateRangeInput` for selected a start and end date
+- `passwordInput` for passwords
+
+
+---
+class: title title-7
+
+# The server side
+
+- The server side of shiny apps is used for building
+reactive content
+
+- That is, when someone clicks a button, or enters some data (e.g. previous slide),
+then it can be accessed in the server function as an `input`
+
+- We then build components for the front end using `render_` functions.
+
+- For example, `renderPlot()`, `renderPrint()`, ``renderTable()`, 
+`renderPlotly()`, etc..
+
+---
+
+name: blogdown3
+class: section-title-7 middle
+
+# Shiny and Shinydashboard Tutorial
+
+---
+
+name: blogdown3
+class: section-title-7 middle
+
+
+
+# Dash
+
+
+
+---
+
+name:dash-intro
+class: title title-7
+
+# What is dash
+
+.pull-left[
+
+- A framework for building reactive applications with
+a focus on visualizations
+
+- The core of Dash is made of 3 technologies
+  - Flask, React.js and Plotly.js
+  
+- Dash makes them work together so you don't worry about the details
+]
+
+.pull-right[
+
+![](Plotly_Dash_logo.png)
+]
+
+---
+
+class: title title-7
+
+# Components of dash
+
+Dash applications consist of two components:
+
+<br>
+<br>
+
+.pull-left[
+.box-3[The Layout component through HTML tags]
+]
+
+.pull-right[
+.box-3[The Interactivity component through Callbacks]
+]
+
+---
+
+class: title title-7
+
+# The Layout
+
+.box-7[
+
+My Dashboard
+
+.pull-left[
+
+.box-3[
+My  inputs
+]
+]
+
+.pull-right[
+
+.box-6[
+My fancy Graphs
+]
+]
+
+.box-5[
+
+My really interesting table
+]
+
+
+]
+
+- Components are provided via the `dash_core_components` (visuals) and `dash_html_components` (HTML tags) libraries
+
+---
+
+class: title title-7 sm
+
+# HTML components
+
+- `dash_html_components` has a component for for every HTML tag
+
+.really-small[
+
+
+```python
+
+# import libraries
+import dash 
+import dash_core_components as dcc
+import dash_html_components as html
+
+# create an app
+app = dash.Dash(__name__)
+
+app.layout = html.Div(children=[
+
+# The layout of the app
+
+])
+```
+
+]
+see the Dash [HTML component section of the dash documentation](https://dash.plotly.com/dash-html-components) 
+for more info
+
+---
+
+class: title title-7
+
+# Dash Core Components
+
+The core components library gives app builders the ability to add in interactive components
+to the user interface:
+
+.pull-left.small[
+- `dcc.Graph`: including interactive figures
+- `dcc.Dropdown`: dropdown selection menu
+- `dcc.Slider`: slider inputs
+- `dcc.Markdown`: writing markdown
+- `dcc.Input`: entering inputs
+]
+
+.pull-right[
+
+.box-3[
+
+<br>
+These are equivalent to the `shiny` inputs we looked at (`sliderInput`, `numericInput`, `textInput`)
+
+<br>
+
+]
+]
+
+---
+
+class: title title-7
+
+# Callbacks
+
+- We describe the design and inputs of our application with `app.layout()`
+
+- Callbacks are Python functions that are called when we change the property of
+an input component. 
+
+- This is equivalent to the `server()` functionality in shiny. 
+
+---
+
+class: title title-7
+
+# Callbacks
+
+.tiny[
+```python
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
+from dash.dependencies import Input, Output
+
+app = dash.Dash(__name__)
+
+app.layout = html.Div([
+    html.H6("Change the value in the text box to see callbacks in action!"),
+    html.Div(["Input: ",
+              dcc.Input(id='my-input', value='initial value', type='text')]),
+    html.Br(),
+    html.Div(id='my-output'),
+])
+
+
+@app.callback(
+    Output(component_id='my-output', component_property='children'),
+    Input(component_id='my-input', component_property='value')
+)
+def update_output_div(input_value):
+    return 'Output: {}'.format(input_value)
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+```
+]
+
+
