@@ -76,6 +76,19 @@ Tutorials for different scraping techniques:
   - [Mastering Shiny free book](https://mastering-shiny.org/)
   - [Rstudio global conference](https://rstudio.com/conference/)
 
+
+## February 9th
+
+- [Slides](lecture-notes-slides-2020/slides/shiny-dash-slides.html)
+
+- References
+  - [Mastering Shiny Book](https://mastering-shiny.org/)
+  - [Shiny documentation](https://shiny.rstudio.com/)
+  - [Dash](https://dash.plotly.com/)
+  - [Plotly Documentation](https://plotly.com/python/plotly-fundamentals/)
+
+
+
 # Marking Rubrics
 
 ## Data Analysis Rubric
