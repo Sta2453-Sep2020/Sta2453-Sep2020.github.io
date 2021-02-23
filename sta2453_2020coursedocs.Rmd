@@ -87,6 +87,11 @@ Tutorials for different scraping techniques:
   - [Dash](https://dash.plotly.com/)
   - [Plotly Documentation](https://plotly.com/python/plotly-fundamentals/)
 
+## February 22nd
+
+Applied Natural Language processing 
+
+- [Slides](lecture-notes-slides-2020/slides/Applied NLP in healthcare - STA2453.pdf)
 
 
 # Marking Rubrics
