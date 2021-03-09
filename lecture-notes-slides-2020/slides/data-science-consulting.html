@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Communicating through the web</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Josh Murray" />
+    <meta name="date" content="2021-03-09" />
+    <script src="libs/header-attrs-2.6.6/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/ath-slides.css" type="text/css" />
+    <link rel="stylesheet" href="css/ath-inferno-fonts.css" type="text/css" />
+    <link rel="stylesheet" href="css/animate.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+name: agenda
+class: title title-7
+
+# Data Science Consultation
+
+--
+
+For today's class, we are going to explore the consulting
+process from a data science prospective:
+
+
+
+- Beginning a new project
+
+- Working with a client
+
+- Deliverables
+
+- Additional skills/methodologies to be aware of (an aside)
+
+- Ethics!
+
+---
+
+class: title title-7
+
+# But why?
+
+- It's an under appreciated part of the job
+
+- The hardest part of the job
+
+- Skills that separate you from other data scientists
+
+- If, you're good at it, can offer a rewarding and
+  flexible career alternative
+  
+---
+
+class: cell-left title title-7
+
+# The process
+
+The data science consulting process "usually" follows these steps
+
+.small[
+
+.box-inv-4[
+Step 1. An initial meeting.  Very important!
+
+]
+
+
+.box-inv-2[
+Step 2. A followed up meeting where methodology is 
+   discussed and contract is agreed to
+
+]
+
+.box-inv-5[
+Steps 3 to N-1: . Work time! Usually some follow up meetings/intermittent
+   communication
+
+]
+
+.box-5[
+Step N. "Work" is delivered! 
+]
+]
+
+
+---
+
+
+
+class: title title-7
+
+# Initial Meeting
+
+.pull-left[
+Formal meeting with the client to discuss:
+
+- The project
+
+- Deliverables
+
+- Your role and the role of your collaborators
+
+- Expectations!
+]
+
+.right-plot[
+![](meeting.jpg)
+]
+
+---
+
+class: section-title-7 middle
+
+# Initial Meeting: The project
+
+---
+
+class: title title-7
+
+# The project
+
+You are often presented with some problem in English. You need to collaborate with the client to massage those words into:
+
+What does this client need?
+
+.box-2[
+Your client almost certainly is coming to you with little to no idea of what you do, or the solutions you can come up with. 
+]
+
+.small[
+Do they need a model? A dashboard? An answer to a question
+  - e.g. We did the following ad campaign. Did it work?
+  - more hopeful: we want to implement an ad campaign. Help
+  us figure out if it is successful
+  
+]
+
+---
+
+class: title title-7
+
+# The project (con't)
+
+.small[
+If it seems like they need an  analysis/report, you must massage those words into a problem that can be quantitatively answered
+]
+
+.box-3[
+You need to be able to see the problem and how it fits in the big picture
+]
+
+.small[
+Start to understand the universe your problem lives in:
+
+
+- What are the underlying politics of this institution/company, how much support does the problem have from management, What are the variables, how are they measured, how are they inter related,
+  how is the data collected (or how will it be collected), how is the data stored, what is the tech stack, who manages that. How will a solution fit into the workflow, etc, etc, etc, etc.... 
+
+
+]
+
+---
+
+class: title title-7
+
+# The project (con't)
+
+Perhaps an analytical solution isn't required! Perhaps they need some change management/process improvement project is required.
+
+.center[
+![](mess.jpg)
+]
+
+
+---
+
+
+class: title title-7
+
+# Example
+
+Radiology Department says:
+
+&lt;blockquote&gt;
+&lt;p&gt;"We want a real time dashboard so we can monitor incoming image requests to reduce wait times and backlogs"&lt;/p&gt; &lt;/blockquote&gt;
+ .right[&lt;footer&gt;— Dr. CT Skan&lt;/footer&gt;]
+
+
+.box-2[What are some initial questions you might ask Dr. Skan?]
+
+---
+
+class: title title-7
+
+# Example
+
+.small[
+- What is current workflow for an image (from request to completion)?
+- How is the data captured? Is it in realtime?
+- Are the relevant timestamps captured in one database? Is the database easy to access? Any privacy concerns? Can I access the data remotely?
+- What is a backlog? How often are there backlogs? What are the consequences of a delayed image?
+- What are the metrics and benchmarks around image wait times. Do these benchmarks vary by image type?
+- Is the workflow different for different image types
+- Let's say we create a dashboard, where is it going to live? On a TV screen?
+- What tech is available to serve this dashboard
+- Who is going to look at the dashboard? Will it fit in their workflow?
+- Are there any other solutions? What about hiring an image workflow manager?
+]
+
+---
+
+class: title title-7
+
+# Deliverables
+
+.small[
+Once you've targetted a potential solution, you need to agree on what you will deliver. Here are some common examples:
+
+- A report, a report/code, a report/code/cleaned data
+- A predictive model, a predictive model/report, a predictive model/report/code/model API
+- A dashboard, a dashboard/data pipeline, a dashboard
+- Mentoring/supervising other employees through the project
+- A suggested methodological approach
+
+.box-3[Deliverables should be related to the end goal of the project]
+
+.danger[
+Do not waste Time on things unrelated to the deliverables.
+
+]
+]
+
+---
+
+class: title title-7
+
+# Your role
+
+.pull-left[
+
+
+Clearly align your role in the project. There are 3 common components
+
+1. Your responsibilities
+
+2. The amount of authority you have
+
+3. How you participate in decision making
+
+]
+
+.right-plot[
+![](mask1.jpg)
+]
+
+---
+
+class: title title-7
+
+# The role of others
+
+Similar problems can arise if you don't clearly understand the role of others
+you will be working with. 
+
+1. What are their responsibilities
+2. What is their authority
+3. How do they participate in the decision making
+
+Understanding your role and how it fits with others will help create clear communication. 
+
+---
+
+class: section-title-7 middle
+
+# Defining Expectations
+
+---
+
+class: title title-7
+
+# Communication
+
+How will communication be handled:
+.pull-left[
+- Email/slack/google communication channels
+- Communication frequency
+- Meeting schedules
+]
+
+.right-plot[
+![](communication.jpg)
+]
+---
+
+class: title title-7
+
+# Deadlines
+
+.pull-left[
+![](deadlines.jpg)
+]
+.pull-right[
+- Clearly articulate when the deliverables are due
+- Is there any flexibility to the deadlines?
+- Will you be able to meet the deadlines with your current workload?
+- .danger[Be honest with yourself]
+]
+
+---
+
+class: title title-7
+
+# Solution contraints!
+
+.box-5[Can you use a fancy pants model, or does your solutin need to live in 
+a SQL database?]
+
+&lt;br&gt;
+
+.box-6[Are you free to choose a statistical/ML model you deem appropriate]
+
+&lt;br&gt;
+
+.box-4[Is your work going to be vetted?]
+
+
+---
+
+class: title title-7
+
+# When are you done?
+
+You would think this is straighforward!
+
+- Maybe your model/code breaks for some reason shortly after you deliver it
+- Maybe they want you to fine tune your work
+- Maybe they want you to do a further presentation after you have submitted your final work
+
+.box-4[Work this stuff out before you begin!]
+
+---
+
+class: title title-7
+
+# Who owns your work?
+
+.pull-left[
+- Can you use what you have built for a client on a later project?
+]
+
+.right-plot[
+![](lock.jpg)
+]
+
+---
+
+class: title title-7
+
+# Money Matters
+
+.pull-left[
+- Charge by the project
+
+- Charge by the hour
+
+- Pros and cons to each
+
+- How much should you charge
+.small[
+  - To me, it depends. Who is the client?
+  - A former colleague, a friend, a student, a non-profit, a pharma company
+]
+]
+.right-plot[
+![](money.jpg)
+]
+
+---
+
+class: title title-7
+
+# First Meeting Summary
+
+.small[
+Sounds like a lot doesn't it! Don't worry, not every single detail is worked out in the initial meeting. By the end of the meeting you should:
+
+- Have a great understanding of the project (it's goals, deliverables, techinical limitiations, expectations, etc..)
+- An full understanding of your role and the role of others
+]
+
+After the meeting you will decide if you want to take on the project. 
+
+Spend time digesting resources, coming up with a plan/approach, deciding if have time/interest in the project
+
+
+
+---
+
+---
+
+class: section-title-7 middle
+
+# Important Skills of a Consultant
+
+
+---
+
+class: title title-7
+
+# Additional Skills
+
+.small[
+.pull-left[
+.center[
+Soft Skills
+]
+- Emotional Intelligence
+- Big picture thinking
+- communication  technical concepts to experts
+- Communicate technical concepts to non-experts
+- Flexibility
+- Time management/organization
+- Deal with stress/tight deadlines
+- Good team player!!!
+
+]
+
+.pull-right[
+.center[
+Technical Skills
+]
+- Study Design
+
+- Sample Size calculation
+
+- Organization
+
+]]
+
+
+
+---
+
+class: section-title-6 middle
+
+# Soft Skills
+
+---
+class: title title-7
+# Emotional Intelligence
+
+.pull-left[
+- You are going to work with a lot people with varying personal characteristics/situations
+- Knowing how to work with people with different personalities is a major skill
+- Advice: listen
+]
+
+.right-plot[
+![](emotion.jpg)
+]
+---
+
+
+class: title title-7
+
+# Communicating with non-experts
+
+- We all receive deep training in theoretical/applied methods
+- Not so much on how to translate this knowledge to people who
+  didn't receive our training
+- We've discussed some skills already:
+  - Interpreting coefficients and tests
+  - Clear graphical displays including proper labels
+- Other tips:
+  - Use plain english
+  - .danger[Use analogies/examples that relate directly to the project]
+  - Actively practice! It's a skill and can be learned
+
+--- 
+
+class: title title-7
+
+# Final soft skills thoughts
+
+.box-7[
+Practice Practice Practice
+]
+
+- Take videos if possible of your interactions with clients.
+- Be actively engaged and interested in the people you work with
+
+.box-5[
+Be Patient, be respectful, be realistic
+]
+
+
+---
+
+class: section-title-7 middle
+
+# Other technical skills
+
+---
+
+class: title title-7
+
+# Sample Size (Not just for research!)
+
+.center[
+How is data collected?
+]
+
+.pull-left[
+.center[
+Observational
+]
+
+.small[
+- Often Routinely collected
+- Research studies with no controlled intervention
+- Little to no control over the process
+- e.g. census data, sales data, system data (e.g.)
+]
+
+]
+
+.pull-right[
+.center[
+Experimental
+]
+
+.small[
+- An intervention is introduced to some process
+- More control over the collection process
+- e.g. Randomized Controlled trials
+]
+]
+
+.small[
+Collecting experimental data is expensive! A natural question is, how
+much do we need to collect to determine if some effect exists. 
+]
+
+--- 
+
+class:title title-7
+
+# Applications of sample size calculation
+
+We usually think of sample size calculations in the context of research
+
+- How many patients do I need to determine if my vaccine is effective or not
+- How many schools to I need to enroll to determine if my anti bullying 
+  intervention reduces bullying incidents. 
+
+
+You may think to yourself, well I am not a researcher, or, I only interested
+in machine learning, 
+
+
+---
+
+class: section-title-7 middle
+
+# Not so fast
+
+---
+
+class: title title-7
+
+# sample size for data science
+
+If you are fortunate enough to have any of your algorithms implemented as an
+intervention, you are going to have to design a study to evaluate its effectiveness. Here are a few examples
+
+- Does our model predicting patient death perform better than clinicians
+  at predicting death
+- Did the implementation of the above model help decrease unexpected death
+- Did our ML algorithm for targeted adds increase sales
+
+---
+
+class: title title-7
+
+# But why
+
+
+.box-4[
+Data collection is expensive. Why waste money
+]
+
+&lt;br&gt;
+
+.box-5[
+You often need to test an effect size of interest. Too much data
+can find small effect sizes as statistically significant
+]
+&lt;br&gt;
+.box-6[
+Carefully planned studies are always better
+]
+
+---
+
+class: title title-7
+
+# So what are we doing
+
+- We are interested in some effect
+
+- We carefully design an experiment to measure an effect size of interest
+  - e.g. a 20% decrease in mortality
+
+- We collect a "big enough" set of data relative to the study's goals so that
+  we can find a statistically significant result
+  
+- What is big enough?
+
+---
+
+class: title title-7
+
+There are many approaches:
+
+.box-6[One of the most popular approaches to sample-size determination involves studying the power of a test
+of hypothesis.]
+
+The power approach
+
+---
+
+class: title title-7
+
+# Easy as 1,2,3 and then 4,5
+
+1. Specify a hypothesis test on a parameter `\(\theta\)` (along with the underlying probability model for the data)
+
+2. Specify the significance level `\(\alpha\)` of the test
+
+3. Specify an *effect size* `\(\tilde{\theta}\)` that reflects an alternative of scientific interest
+
+4.  Obtain historical values or estimates of other parameters needed to compute the power function of the
+test.
+
+5. Specify a target value `\(\tilde{\pi}\)` of the power of the test when  `\(\theta = \tilde{\theta}\)`
+
+---
+
+class: title title-7
+
+# Sample size power
+
+We specify the full model as:
+
+$$
+\pi\left(\theta, n, \alpha, \dots\right)
+$$
+
+`\(n\)` above is the sample size. The required sample size is the smallest integer `\(n\)` such that
+
+$$
+\pi\left(\tilde{\theta}, n, \alpha, \dots\right) \ge \tilde{\pi}
+$$
+
+---
+
+class: title title-7
+
+# Example
+
+.small[
+
+
+Suppose we want to test an add campaign that will increase the average purchase price from a website. The response variable is Average money spent in dollars. The ad campaign is intended to increase spending, so we set up a one sided test:
+]
+
+`$$H_0: \mu_{\text{add}} = \mu_{\text{no add}}$$`
+`$$H_1: \mu_{\text{add}} = \mu_{\text{no add}}$$`
+
+Where `\(\mu_{\text{add}}\)` is the average money spent for consumers receiving the add, and `\(\mu_{\text{no add}}\)` is the average money spent for people not receiving the add.
+
+
+---
+
+class: title title-7
+
+# Example
+
+.small[
+
+
+
+Here, `\(\theta = \mu_{\text{add}} -\mu_{\text{no add}}\)`
+
+So we can write
+
+$$
+H_0: \theta= 0
+$$
+$$
+H_1: \theta &gt; 0
+$$
+
+We want to detect an average increase of 15 dollars per visit with 80% power, i.e `\(\tilde{\pi}=.80\)` and significance level `\(\alpha\)`=0.05. We also know from historical data that that the standard deviation of purchases is $20.
+
+We will use a 2 sample t-test. 
+]
+
+---
+
+class: title title-7
+
+# Example Calculation
+
+
+```r
+library(pwr)
+diff = 15; sd = 20
+pwr.t.test(n=NULL, d = diff/sd, sig.level=.05, power = 0.8,
+           type="two", alternative="greater")
+```
+
+```
+## 
+##      Two-sample t test power calculation 
+## 
+##               n = 22.69033
+##               d = 0.75
+##       sig.level = 0.05
+##           power = 0.8
+##     alternative = greater
+## 
+## NOTE: n is number in *each* group
+```
+
+---
+
+class: section-title-7 middle
+
+# Easy Right?
+
+---
+
+class: title title-7
+
+# Eliciting Choices in Consulting
+
+- Why power of .8? It's pretty standard in the literature. You
+  can choose a higher power if you want a greater likelihood of
+  detecting the effect size, but will need a higher effect
+
+- The significance level of .05 is also fairly standard, but you may want 
+  a smaller error rate when the stakes are higher. 
+  
+- We will look at eliciting the other pieces of info here
+  - The difference of 15
+  - The standard deviation of 20
+
+.center[seems easy right]
+
+---
+
+class: title title-7
+
+# Effect Sizes
+
+- This is not up to you!
+
+- The problem is that clients often have no idea how to pick something
+
+&lt;blockquote&gt;"What effect size would you like to detect?"&lt;/blockquote&gt;
+.right[ You, a data scientist]
+
+&lt;blockquote&gt;"Any difference is important!!"&lt;/blockquote&gt;
+.right[ a client, not a data scientist]
+
+---
+
+class: title title-7
+
+# Better Effect Sizes
+
+.small[
+Try opening with
+
+&lt;blockquote&gt;"What do you expect/hope to see"&lt;/blockquote&gt;
+
+This will give an upper bound. Then narrow in
+
+&lt;blockquote&gt;"Would an effect of half this size be important?"&lt;/blockquote&gt;
+
+Be aware that halfing an effect size will roughly quadruple the sample size. 
+
+You can conduct a few sample sizes to display what is possible
+&lt;blockquote&gt;"With 25 observations, you’ll
+have a 50% chance of detecting a difference of 9.4 dollars, and a 90% chance of detecting a difference of 16.8 dollars"&lt;/blockquote&gt;
+]
+
+---
+
+class: title title-7
+
+# Better Effect Sizes
+
+You can also try eliciting relative differences:
+
+&lt;blockquote&gt;"Would a 30% increase in sales be of interest"&lt;/blockquote&gt;
+
+Or appealing to higher ups
+
+&lt;blockquote&gt;"What increase in sales has pleased your boss in the past"&lt;/blockquote&gt;
+
+There is always a trade-off, because a higher sample size means a higher price tag on the study. 
+
+---
+
+class: title title-7
+
+# Variance
+
+.small[
+- Often the hardest parameter to nail down. 
+
+- In our example we had historical data to use. Many times you won't have that.
+
+- In these cases you will want to either:
+  - Appeal to the client's experience
+  - Look through the literature
+  - Run a small pilot study
+
+- Be careful when using other data sources, since they often come from studies on different sample populations.
+
+- In any case, compare the variances you get in the actual study vs
+the ones you used to calculate the sample size
+]
+
+---
+
+class: title title-7
+
+# Sometimes you have no choice!
+
+.small[
+Your client might say:
+
+&lt;blockquote&gt;"We have enough money to collect data for 2 months."&lt;/blockquote&gt;
+
+Or maybe (but hopefully not)
+
+&lt;blockquote&gt;"We've done this a lot. We never need more than 100 people. "&lt;/blockquote&gt;
+
+&lt;blockquote&gt;"Our math nerd CEO says that 50 people is enough so that's what we are doing. "&lt;/blockquote&gt;
+
+What do you do in this case? Well, `\(n\)` is only one value in the equation. 
+You can estimate the power to detect an effect of interest, or 
+look at the kinds of effects you can determine under a certain power.
+
+
+]
+
+---
+
+class: title title-7
+
+# Not all calculations are the same
+
+.small[
+- The consequences of conducting a survey, vs a mechanical test, vs
+  a medical experiment are all different. 
+  
+- Available time may be an important factor. Maybe a client wants
+  to beat a competitor to market, or collecting agricultural data
+  which may only be available seasonally. 
+
+- In determining a sample-size you should discuss the consequences of making a mistake. 
+  - What if you under estimate the sample size?
+  - Are any ethical issues extremely important. 
+  - What about non response rates?
+- Be in constant communication with the client at this stage. Any change in design can have catastrophic consequences. 
+
+]
+
+---
+
+class: section-title-7 middle
+
+# Aside complete
+
+
+
+
+
+---
+
+class:title title-7
+
+# Some thoughts on building a client base
+
+What has worked for me:
+
+- Word of mouth. If you work on enough projects, someone will ask if 
+  you can help out with something on the side
+
+- Get to know other consultants. Talk to them. The statistical society
+  of Canada often holds sessions at their annual meetings
+  
+- Have a website and a blog. Let people know they can contact you. 
+
+
+---
+
+
+class:title title-7
+
+# Summary thoughts on Consulting
+
+.box-1[Be Patient]
+
+.box-1[Don't be afraid to not have an answer]
+
+.box-2[You can't know everything]
+
+.box-3[You're going to make mistakes]
+
+.box-4[Hnag in there and keep working at it. You will get better]
+
+
+---
+
+class: title title-7 
+
+# Guidance on Interviews
+
+.pull-left[
+
+.center[Typical Flow (.really-small[In my experience])]
+
+- .color-1[A coding or technical test]
+
+- .color-4[Maybe a short phone interview]
+
+- .color-2[A full team interview]
+  - .color-2[Questions about yourself and knowledge]
+  - .color-2[A small case study]
+]
+
+.right-plot[
+![](interview.jpg)
+]
+
+---
+
+class: title title-7 
+
+# What do I look for
+
+.pull-left[
+- From the coding/technical test
+  - Style/completeness
+  - .danger[Red Flags]
+
+- From the phone interview
+  - A general sense of personality and fit
+  - .danger[Red flags]
+
+]
+
+.pull-right[
+.center[From the Interview]
+- Confidence (.really-small[You can be nervous])
+- Enthusiasm
+- .color-1[Team player]
+- .color-1[Communication]
+- .danger[Succinctness]
+- Can link answers to experience
+
+]
+---
+
+---
+
+class: title title-7 
+
+# Types of questions
+
+.pull-left[
+.small[
+- Personality
+  - Tell us about you
+  - Strongest Qualities/Weakest qualities
+  - What do you look for in a workplace
+  - How do you deal with conflict
+
+- Interests
+  - Why do you want to be here
+  - What do you do for fun
+  ]
+]
+
+.pull-right[
+.small[
+- Technical
+  - Tell me about the types of data you work with/How you work with data
+  - Explain your fav algorithm like I'm your no-math-friend
+  - Example projects!
+  - Look at the job requirements
+    - Try to think of examples
+- Case study
+    - Here is some data, what questions 
+     would you ask. What would you do.
+     Is your model any good
+]
+
+]
+
+---
+
+class: title title-7 
+
+# General guidance
+
+.middle[
+.box-7[Give lots of examples]
+
+.box-7[Be brief but answer the questions]
+
+.box-7[Passion and enthusiasm shine through]
+
+.box-7[Attitude and smooth flowing interview go a long way]
+]
+
+
+
+
+
+
+
+
+
+---
+
+class: title title-7 
+
+# Class Project 3
+
+Simulated Consultation session
+- You will meet for 20-25 minutes to go over a hypothetical problem 
+  that you have been hired to solve. 
+
+You will be split into groups of 2 (with one group of 3). 
+
+- You will submit a 2-3 page summary outlining:
+  - Your proposed approach to solving the problem
+  - A list of questions you will ask the client at the next meeting
+
+
+
+
+
+
+
+
+
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark-latest.min.js"></script>
+<script src="macros.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9",
+"navigation": {
+"scroll": true
+}
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

@@ -93,6 +93,11 @@ Applied Natural Language processing
 
 - [Slides](lecture-notes-slides-2020/slides/Applied NLP in healthcare - STA2453.pdf)
 
+## March 8th
+
+Data Science Consulting
+
+- [Slides](lecture-notes-slides-2020/slides/data-science-consulting.html)
 
 # Marking Rubrics
 
