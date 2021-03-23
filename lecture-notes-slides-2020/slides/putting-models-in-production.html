@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Putting Models in Production</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Josh Murray" />
+    <meta name="date" content="2021-03-23" />
+    <script src="libs/header-attrs-2.6.6/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/ath-slides.css" type="text/css" />
+    <link rel="stylesheet" href="css/ath-inferno-fonts.css" type="text/css" />
+    <link rel="stylesheet" href="css/animate.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+
+class: title title-7
+
+# Agenda
+
+
+Today's class is going to focus on putting 
+models into production, specifically with the R language
+
+--
+
+- Project 3
+
+- Putting models in Production 
+
+- building API's
+
+- Docker
+
+- Heroku
+
+---
+
+class: title title-7
+
+# Project 3
+
+- Mock Consultation Session - 40% of the grade
+
+- 5 page write-up - 60% of the grade. 
+
+
+
+---
+
+class: title title-7
+
+# Project 3 Mock Consultation
+
+You will meet with myself and a colleague. They will introduce you do a problem or two that they need your help with. You will have 10-15 minutes to work with us to understand the problem better. You can ask any questions that you like.
+
+There will be 2 problems presented to your group. 
+
+---
+
+class: title title-7
+
+# Mock Consultation Grading
+
+Your team will be graded on the following
+.small[
+- Professionalism (25%)
+  -Listen to the client. Don't speak over the client. Be curtious 
+- Communication (25%)
+  - Does the client understand your questions and anything you are proposing
+  - TIP: restate things in your own words to see if the client agrees
+- Are you able to get at what the client trully wants/needs (25%)
+  - By the end of the meeting it should be clear what the client is asking of you and what you will be delivering
+- Gain insight into the data the client has available (25%)
+  - Do you understand what data sources are available?
+  - How much data?
+  - Are there any key variables
+  - What is the unit of analysis?
+
+]
+
+---
+
+
+class: title title-7
+
+# Project 3 Write-up
+
+
+.small[
+
+I am going to provide you with a sample of data related to the problem. It won't be a complete dataset intended to be analyzed. The purpose is to guide questions for the next meeting. You will have 2 weeks after the session to hand in a 5 page write-up which has the following sections
+
+
+- Session Review (25%): What did you think of the mock session? What do you think went well? What do you think could have gone better? 
+- Preparing for next session (25%): What additional information do you need? What additional questions do you have after looking at the sample data? 
+- Proposed Analysis (35%): What is your plan of attack to solve the problem. What methodological approach will you take?
+- Deliverables and timeline(15%): What will you be delivering to the client, and how long do you estimate it will take?
+
+]
+
+---
+
+class: title title-7
+
+# Next Steps
+
+- Groups will be posted to Quercus. 
+- Reach out to me to book your session. First Come First Serve
+  - Available dates: Thursday April 1st
+  - Tuesday April 6th
+  - Wednesday APril 7th
+
+---
+
+class: title title-7
+
+# Written Reflection
+
+Due by April 20th
+
+- A 2-3 page reflection of the course. 
+  - What did you learn through lectures and projects?
+  - Will you be able to apply any of what you learned on the job?
+  - What do you wish you learned. What would you add or remove
+    from any of our lectures
+
+
+
+---
+
+class: title title-7
+
+# API's and You 
+
+What is an API?
+
+--
+
+.box-4[Application Program Interface]
+
+&lt;br&gt;
+&lt;br&gt;
+
+--
+
+Okay... So what is an API?
+
+---
+
+class: title title-7
+
+# API's 
+
+.pull-left-3[
+&lt;svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 36 36" stroke="currentColor"&gt;
+  &lt;path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /&gt;
+&lt;/svg&gt;
+]
+.pull-middle-3[
+&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="currentColor"&gt;
+  &lt;path fill-rule="evenodd" d="M17.778 8.222c-4.296-4.296-11.26-4.296-15.556 0A1 1 0 01.808 6.808c5.076-5.077 13.308-5.077 18.384 0a1 1 0 01-1.414 1.414zM14.95 11.05a7 7 0 00-9.9 0 1 1 0 01-1.414-1.414 9 9 0 0112.728 0 1 1 0 01-1.414 1.414zM12.12 13.88a3 3 0 00-4.242 0 1 1 0 01-1.415-1.415 5 5 0 017.072 0 1 1 0 01-1.415 1.415zM9 16a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1z" clip-rule="evenodd" /&gt;
+&lt;/svg&gt;
+]
+
+.pull-right-3[
+&lt;svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 36 36" stroke="currentColor"&gt;
+  &lt;path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /&gt;
+&lt;/svg&gt;
+]
+
+A simple way to transfer information from one computer to another through the internet
+
+
+---
+
+class: title title-7
+
+# API's
+
+When we talk about API's we often mean RESTful API's
+
+- RESTful APIs use HTTP protocol to communicate
+- e.g. a web broswer
+
+When you access a website, a request is made to the server, which in turn
+responds with the HTML/css/images required to display the information you requested
+
+.box-4[We want our API's to return predictions/data, not HTML]
+
+---
+
+class: title title-7
+
+# API's
+
+We've seen API's in this class before. Most notably in our web scraping class when we extracted local weather forecasts. Specifically, we
+
+- Called the weather station API with our lat and long coordinates
+- This returned a series of station IDs in our immediate vacinity
+- We then sent a request to the weather forecast API using the toronto
+  weather station ID
+- This returned weather forecasts for the next 14 days. The data was in 
+a JSON format
+
+---
+
+class: title title-7
+
+# Example API usage
+
+Call to weather Station API
+
+```r
+weather_stations &lt;- httr::GET("https://www.theweathernetwork.com/ca/api/maps/regional/9/45.06216/-81.37759/42.26744/-77.49893")
+```
+
+Call to weather forecast API
+
+```r
+station_forecasts &lt;- httr::GET("https://www.theweathernetwork.com/api/data/caon10824/cm/ci?ts=1552")
+```
+
+
+---
+
+class: title title-7
+
+# HTTP API's
+
+We will be concerning ourselves with Hypertext Transfer Protocol (HTTP) APIs. With HTTP APIs, you define a set of endpoints that accept particular inputs. HTTP APIs have become the predominant language by which software communicates.
+
+We can use the `plumber` package in R to create APIs. This allows people and applications (who may not even know what R is) to make use of our models and predictions.
+
+---
+
+class: title title-7
+
+# Simple plumber example
+
+.left-code[
+
+```r
+library(ggplot2)
+data &lt;- mtcars
+
+mtcars %&gt;% 
+  ggplot(aes(wt, mpg)) + 
+  geom_point() +
+  geom_smooth(method="lm")
+```
+]
+.plot-right[
+&lt;img src="putting-models-in-production_files/figure-html/unnamed-chunk-4-1.png" width="504" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+class: title title-7
+
+# Simple plumber example
+
+
+We can create a simple model
+
+
+
+And pass a new value for prediction
+
+
+```r
+new_weight_value &lt;- as.numeric(2.5)
+prediction_dataframe &lt;- data.frame(wt = new_weight_value)
+predict(model, prediction_dataframe)
+```
+
+```
+##        1 
+## 23.92395
+```
+
+
+---
+
+class: title title-7
+
+# Simple plumber example
+
+Right now if we want a different prediction from the model, we have to 
+alter the code to have a different input value. We can instead create an API with `plumber` that uses a GET endpoint with a new input. Our endpoint must
+
+1. Have access to the prediction model
+2. have one parameter; the new weight value
+3. convert the value to numeric
+4. create a new data.frame to store this value. 
+5. pass the data.frame and our model to the `predict()` function
+
+
+---
+
+class: title title-7
+
+# Simple plumber example
+
+
+.small[
+
+```r
+# make the model
+data &lt;- mtcars
+
+model &lt;- lm(mpg ~ wt, data = data)
+
+#* @get /predict_mpg
+get_predict_length &lt;- function(weight){
+    # convert the input to a number
+    wt &lt;- as.numeric(weight)
+    # create the prediction data frame
+    input_data &lt;- data.frame(wt=as.numeric(wt))
+    # create the prediction
+    predict(model,input_data)
+}
+```
+]
+
+---
+
+class: title title-7
+
+# Simple plumber example
+
+Now we can use plumber have our R code to accept HTTP requests and run 
+our R code. For that we must
+
+1. install plumber: `install.packages('plumber')`
+2. import plumber: `library(plumber)`
+3. show plumber our endpoints: `api &lt;- plumb('rest_controller.R')`
+4. Start the API service on port 80: `api$run(port=80, host="0.0.0.0")`
+5. point the browser to the correct endpoint
+
+
+---
+
+class: middle section-title-7
+
+# Demonstrate Simple Example
+
+
+---
+
+class:title title-7
+
+# Serializers
+
+When we send a response from R to an API client, we have
+to "serialize" the object into some format that the client can
+understand.
+
+.pull-left[
+.box-1[.csv]
+
+.box-2[JSON]
+
+.box-3[png image]
+
+.box-4[HTML]
+]
+.pull-right[
+.box-1[yaml]
+
+.box-2[pdf]
+
+.box-3[jpeg image]
+
+.box-4[HTML widgets]
+]
+
+
+---
+
+class: title title-7
+
+# Endpoints
+
+Endpoints are the terminal step in the process of serving a request.
+
+- `@get`
+- `@put`
+- `@post`
+- `@delete`
+- `@head`
+
+---
+
+class:title title-7
+
+# Endpoints
+
+An endpoint can have multiple verbs
+
+
+```r
+#* @get /cars
+#* @post /cars
+#* @put /cars
+function(){
+  ...
+}
+```
+
+
+---
+
+class: section-title-7 middle
+
+# Serializer Tutorial
+
+---
+
+class: section-title-7 middle
+
+# Deployment
+
+
+
+
+---
+
+class:title title-7
+
+# Hosting Options
+
+We've created a working API and it is currently running on our local computer.
+
+This is great for local development, but not great for sharing. 
+
+If we want others to use our work, we need to host our API somehwere.
+
+--
+.large[
+.box-7[Okay, where?]
+]
+
+
+---
+
+class: title title-7
+
+# Hosting Options
+
+.small[
+- [RStudio Connect](https://rstudio.com/products/connect/)
+  - an enterprise publishing platform from RStudio. Deploy APIs at
+  the push of a button. But you gotta pay for the priviledge 
+- [DigitalOcean](https://www.digitalocean.com/?refcode=add0b50f54c4&amp;utm_campaign=Referral_Invite&amp;utm_medium=Referral_Program&amp;utm_source=CopyPaste)
+  - An easy-to-use Cloud Computing provider. Can easily spin up machines at a low cost (a few dollars a month)
+- [Amazon Web Service](http://aws.amazon.com/)
+  - Lots of control on the specs of machines you spin up. Can be quite intimidating to new users. Can use free tiers for a year
+- [Docker](https://www.docker.com/)
+  - Build containers on top of Linux. Can be deployed to any of the services above, or on local machine
+- [Heroku](www.heroku.com)
+  - Platform as a service. Very straightforward to deploy, and has a good free tier.
+]
+
+---
+
+class: title title-7
+
+# Hosting Options
+
+
+.large[
+.box-7[We will use Heroku and Docker]
+]
+
+---
+
+class: title title-7
+
+# What is docker?
+
+Docker was created to make it easier to create, deploy, and run applications by using containers.
+
+Containers are light weight virtual machines, in that they don't require
+an entire operating system. They share resources with the host system they are installed on.
+
+With docker, you make a single document (a `Dockerfile`) that specifies how to set up the computer you want to run your application on.
+
+---
+
+class: title title-7
+
+# Containers and Images
+
+You may hear the terms Docker Image and Docker Container.
+
+A `Docker Image` is like a shapshot of a computer in an instant in time. e.g. Linux Ubuntu 16.04 with such and such software.
+
+A `Docker container` is an instance of an image. That is, taking an image and running it.
+
+
+---
+
+class: title title-7
+
+# Docker 
+
+Docker is great. Not too hard to get up and running. To get started:
+
+- [Download and install Docker Hub](https://www.docker.com/products/docker-desktop)
+  - Note that you will require administrative rights on your computer
+- Create a Dockerfile which will:
+  - Start a computer with Linux
+  - Install R and our required libraries on the computer
+  - Transfer our R scripts to the computer
+  
+  
+---
+
+class:title title-7
+
+# Rocker
+
+A lot of people use Docker and make the useful images available for download. 
+
+[The Rocker Project](https://github.com/rocker-org/rocker) provides a series
+of ready made R Linux images. 
+
+- `r-ver` (for specific versions of R, up to 3.6)
+- `r-base` for the current version of R
+- `shiny` for an image with shiny server
+- `tidyverse` for an image with the tidyverse already installed
+- `rstudio` for an image with Rstudio server installed
+
+
+---
+
+class:title title-7
+
+# PaaS vs IaaS
+
+A PaaS is an opinionated hosting option that handles much of
+the initial configuration and scaling needed for a website. Popular
+
+An IaaS by contrast provides total flexibility is typically cheaper, but it requires a high
+degree of knowledge and effort to properly set up
+
+- PaaS examples: AWS Elastic Beanstalk, `Heroku`, Windows Azure (mostly used as PaaS), Force.com, OpenShift, Apache Stratos, Magento Commerce Cloud.
+
+- IaaS examples: AWS EC2, Rackspace, Google Compute Engine (GCE), Digital Ocean, Magento 1 Enterprise Edition*
+
+
+---
+
+class:title title-7
+
+# Heroku
+
+.left-code[
+Heroku is a mature PaaS with a good community and free tier. There are plenty of add on options like: e.g. databases, email services, etc...
+]
+
+.right-plot[
+![](heroku.png)
+]
+
+---
+
+class:title title-7
+
+# Heroku
+
+Steps in creating a Heroku app
+
+1. Navigate to the root folder of the project
+2. Create a new app (i.e. heroku create some-app-name)
+3. Push container to Heroku heroku container:push web -a some-app-name . If the container hasn’t been built yet, this will automatically build it.
+4. Release container with heroku container:release web --app some-app-name
+
+
+---
+
+class: section-title-7 middle
+
+# Demo
+
+---
+
+class: title title-7
+
+# So now what?
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+Congratulations, the model is in production. So now what?
+
+
+---
+
+class: title title-7
+
+# Time to monitor
+
+You will need to closely monitor your inputs and outputs
+
+
+- Do your model predictions in production match what you 
+saw during model training and testing?
+  - plot statistics over time (e.g. quantiles and variances)
+- Do the same with your model inputs
+  - Sample statistics over time.
+- Set up regular meetings to look at these things
+- We've found it helpful to set up a dashboard with plots and tables
+  - Good news: It's a lot of work the first time, but the code can be reused
+
+
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark-latest.min.js"></script>
+<script src="macros.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9",
+"navigation": {
+"scroll": true
+}
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

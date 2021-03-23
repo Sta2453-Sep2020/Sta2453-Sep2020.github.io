@@ -99,6 +99,18 @@ Data Science Consulting
 
 - [Slides](lecture-notes-slides-2020/slides/data-science-consulting.html)
 
+## March 23rd
+
+Putting Models in production
+
+- [Slides](lecture-notes-slides-2020/slides/putting-models-in-production.html)
+- References:
+  - [R in production](https://putrinprod.com/)
+  - [The Rocker Project](https://github.com/rocker-org/rocker)
+  - [Heroku](https://www.heroku.com/)
+
+
+
 # Marking Rubrics
 
 ## Data Analysis Rubric

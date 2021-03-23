@@ -1,0 +1,58 @@
+---
+title: "Putting Models in Production"
+author: "Josh Murray"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    lib_dir: "libs"
+    chakra: "libs/remark-latest.min.js"
+    css: ["default", "css/ath-slides.css", "css/ath-inferno-fonts.css", "css/animate.css"]
+    seal: false
+    nature: 
+      beforeInit: "macros.js"
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: "16:9"
+      navigation:
+        scroll: true
+        
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, 
+                      fig.retina = 3, fig.align = "center")
+```
+
+```{r packages-data, include=FALSE}
+library(dplyr)
+library(ggplot2)
+```
+
+name: agenda
+class: title title-7
+
+# Agenda
+
+--
+
+For today's class, we are going to explore the consulting
+process from a data science prospective:
+
+
+
+- Project 3
+
+- Putting models in Production 
+
+- building API's
+
+- Monitoring models in production
+
+---
+
+class: title title-7
+
+# But why?
