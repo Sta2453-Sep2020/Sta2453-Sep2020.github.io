@@ -16,7 +16,7 @@ Throughout this course we have completed some fancy analyses, and worked hard on
 
 As data scientists we are often brought into a project during its design stage (hopefully!). Potential clients/collaborators come to us from a variety of technical (or non-technical) backgrounds looking for help. Depending on their level of expertise, they may only have a vague idea of the types of exciting skills and abilities you bring to the table. They've often been told, "Maybe you should talk to a statistician". This will innevitably lead to an initial meeting with you, the expert data scientist, to discuss their project, its goals, and how you can help. 
 
-The primary goal of this project is to gain some experience in one of these early meetings. We will do this through a mock consultation session. This will be a 20-30 minute meeting where a mock client (me and/or a colleague) will sit with you, describe their company and a couple of issues they need help with. 
+The primary goal of this project is to gain some experience in one of these early meetings. We will do this through a mock consultation session. This will be a 20-25 minute meeting where a mock client (me and/or a colleague) will sit with you, describe their company and a couple of issues they need help with. 
 
 It will be your aim to try to distill what the client needs and how you can help. You will need to ask questions to understand their problems, available data sources, and any restrictions on potential solutions. Please refer to the lecture on consulting for the types of questions you may want to ask.
 
@@ -61,7 +61,7 @@ The client has sent you the following email asking for help:
 
 ## Deliverables
 
-You have been divided into groups of 2, and one group of 3. Grades will be given based on your mock consultation (40%), and a short 5 page writeup (60%). The consultation sessions will take place between April 1st and April 8th. The write-up will be due in 2 weeks after the consultation session.
+You have been divided into groups of 2, and one group of 3. Grades will be given based on your mock consultation (40%), and a short 5 page write-up (60%). The consultation sessions will take place between April 1st and April 8th. The write-up will be due in 2 weeks after the consultation session.
 
 ### The mock consultation session
 
