@@ -1,12 +1,9 @@
 ---
-title: 'Project #3'
+title: 'Project #3 Mock Consultation'
+date: "`r Sys.Date()`"
 output:
-  html_document:
-    theme: cosmo
-    highlight: textmate
-    toc: true
-    toc_float: true
-    toc_depth: 4
+  rmdformats::readthedown:
+    highlight: kate
 ---
 
 ```{r setup, include=FALSE}
@@ -15,114 +12,86 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Background
 
-TBD
+Throughout this course we have completed some fancy analyses, and worked hard on presenting those results verbally (project #1) and through visualizations (project #2). For this project, we are going work on an unheralded but equally important skill:  consulting with a client/collaborator at the outset of a project.
 
-# Question
+As data scientists we are often brought into a project during its design stage (hopefully!). Potential clients/collaborators come to us from a variety of technical (or non-technical) backgrounds looking for help. Depending on their level of expertise, they may only have a vague idea of the types of exciting skills and abilities you bring to the table. They've often been told, "Maybe you should talk to a statistician". This will innevitably lead to an initial meeting with you, the expert data scientist, to discuss their project, its goals, and how you can help. 
 
-TBD
+The primary goal of this project is to gain some experience in one of these early meetings. We will do this through a mock consultation session. This will be a 20-30 minute meeting where a mock client (me and/or a colleague) will sit with you, describe their company and a couple of issues they need help with. 
 
-# Assignment
+It will be your aim to try to distill what the client needs and how you can help. You will need to ask questions to understand their problems, available data sources, and any restrictions on potential solutions. Please refer to the lecture on consulting for the types of questions you may want to ask.
 
-TBD
+## The Problem
 
-## Groups
+The client has sent you the following email asking for help:
 
-Students will be randomly divided into groups of three/two.  Each group will hand in a written report and present to the class. Groups are available on Quercus.
-
-## Written Report
-
-The written report is due on December 8th. 
-
-### Answers to Some Common Questions about the Submitted Report
-
-1. It's not necessary for R/Python code chunks to appear in the report (in [R Markdown](https://bookdown.org/yihui/rmarkdown/) use the chunk options `echo=FALSE`, `warning = FALSE`, `message = FALSE` and in Jupyter use the command line tool `nbconvert` [^1]) unless there is some part of the code that will contribute to describing what you have done in the data analysis. Don't submit a report with warning messages from a library you loaded in your report.  For example,
-
-__Don't do this:__
-
-The distribution of XX is shown below ...
-
-```{r, fig.height=3, fig.width=3}
-library(tidyverse)
-set.seed(1028)
-data.frame(x =  rnorm(100)) %>% ggplot(aes(x)) + geom_histogram(colour = "white", fill = "darkblue")
-```
-
-__Do this:__
-
-The distribution of XX is shown below ...
-
-```{r, warning=FALSE, message=FALSE, echo=FALSE, fig.height=3, fig.width=3}
-library(tidyverse)
-set.seed(1028)
-data.frame(x =  rnorm(100)) %>% ggplot(aes(x)) + geom_histogram(colour = "white", fill = "darkblue")
-```
-
-
-Also, you will be submitting your R Markdown/Jupyter Notebook file so I can see all the gory details. This leads to ...
-
-[^1]: For example, to convert foo.ipynb to an html document **without code cells** the command line syntax for nbconvert is: `jupyter nbconvert --TemplateExporter.exclude_input=True foo.ipynb`.  For more information see the documentation [here](https://nbconvert.readthedocs.io/en/latest/install.html).
-
-2. What should be in the report?  A high level description of what you have done.  This leads to …
-
-3. Who is the intended audience for the report and what do you mean by a “high level description”?  The intended audience is an educated person that has taken at least one basic statistics course, but might be a bit rusty on the details.  For example, your supervisor at work completed an MBA ten years ago and took a few statistics courses, but the details are a bit hazy.
+> Dear Math Person,
+>
+> Thank you so much for agreeing to meet with me next week. Prior 
+> to our  meeting I wanted to give you a little background
+> on my company and the problem we are working on. 
+>
+> WhatNow provides our customers with pre-packaged date nights, 
+> where each item on the date's itinerary is revealed shortly
+> before it begins. The people participating in one of our
+> date nights is looking for adventure, and is excited by
+> the mystery of our date packages.
+>
+> Our dates are made up of a series of mini events. For example a 
+> wine tasting, followed by a dinner at a restaurant, 
+> followed by an art class. 
+>
+> We have been running our service for the past 2 months
+> collecting data on customer demographics as well
+> as a survey after using one of our dates. We are interested
+> in trying to predict which date package a potential 
+> customer would enjoy. 
+>
+> We are also trying to determine if our customers enjoy
+> the mystery portion of the date night (i.e. not knowing
+> anything about the date until it happens) vs. one person 
+> knowing the itinerary while their date is blinded, vs
+> all people on the date knowing the itinerary ahead of time.
+> We have tried running several of our dates under these scenarios
+> and would like to know which one is best. 
+>
+> Thanks again for agreeing to help out.
+>
+> Sandeep
 
 
-### How will my writing be evaluated?
+## Deliverables
 
-Your writing will be evaluated for clarity and conciseness. 
+You have been divided into groups of 2, and one group of 3. Grades will be given based on your mock consultation (40%), and a short 5 page writeup (60%). The consultation sessions will take place between April 1st and April 8th. The write-up will be due in 2 weeks after the consultation session.
 
-1. Title [1-5]
-There should be an appropriate title, adequate summary, and complete information including names and dates.
+### The mock consultation session
 
-2. Introduction [1-5]
-The purpose of the research should be clearly stated and the scope of what is considered in the report should be clear.
+You will meet for 20-25 minutes to get more information about
+the project and to ask any clarifying questions you might have. Your mock consultation grade will be broken up as follows: 
 
-3. Methods [1-5]
-The role of each method should be clearly stated. The description of the analyses should be clear and unambiguous so that another statistician or data scientist could easily re-construct it. The methods should be described accurately.
+- Professionalism (25%)
+  -Listen to the client. Don't speak over the client. Be curtious 
+- Communication (25%)
+  - Does the client understand your questions and anything you are proposing
+  - TIP: restate things in your own words to see if the client agrees
+- Are you able to get at what the client trully wants/needs (25%)
+  - By the end of the meeting it should be clear what the client is asking of you and what you will be delivering
+- Gain insight into the data the client has available (25%)
+  - Do you understand what data sources are available?
+  - How much data?
+  - Are there any key variables
+  - What is the unit of analysis?
 
-4. Results [1-5]
-There should be appropriate tables and graphs. The results should be clearly stated in the context of the problem. The size and direction of significant results should be given. The results must be accurately stated. The research question should be adequately answered.
-
-5. Conclusion / Discussion [1-5]
-The results should be clearly and completely summarized. This section should also include discussion of limitations and/or concerns and/or suggestions for future consideration as appropriate.
-
-6. General Considerations [1-5]
-The ideas should be presented in logical order, with well-organized sections, no grammatical, spelling, or punctuation errors, an appropriate level of technical detail, and be clear and easy to follow.
 
 
-## Class Presentation
+# The Write-up
 
-Presentations will take place on December 1st.  The time allotted for each group is 10 minutes plus 5 minutes for discussion. 
+After the consultation session, I am going to provide you with a sample of data related to the problem. It won't be a complete dataset intended to be analyzed. The purpose is to guide questions for the next meeting. You will have 2 weeks after the session to hand in a 5 page write-up which has the following sections
 
-### General Presentation Guidelines
 
-You will need to remind us about the project, but only tell us what we really need to know. We are curious about the results, and how your group presents the results, but they are not the only purpose of this presentation. So, what should you include?  We’re interested in what you learned in the context of your project that has made you a better applied statistician/data scientist. 
-
-You may want to address some of the following: 
-
-- What made the project difficult/easy? 
-- What did you learn about data collection? 
-- What did you learn about statistical communication? 
-- What did you learn about statistical methods? 
-- What useful rules-of-thumb did you learn? 
-- What kind of creative thinking was needed to turn the data or research questions into something that you could analyze? 
-- From the beginning of the course until now, what has changed in how you view statistical work? 
-
-### How your presentations will be evaluated?
-
-#### Content [60%] 
-- Is there evidence that you have thought deeply and insightfully about your project and what you have learned from it? 
-- Did you use appropriate statistical methods to answer the questions? 
-- Is the content interesting and relevant? 
-
-#### Clarity [30%]
-- Could the points of your presentation be easily understood by your classmates? 
-- Are you organized? 
-- By listening to your presentation, have your classmates had the opportunity to also learn what you learned? 
-
-#### Delivery [10%]
-- Was everything that you said easy to hear? 
-- Was your presentation style engaging?
+- Session Review (25%): What did you think of the mock session? What do you think went well? What do you think could have gone better? 
+- Preparing for next session (25%): What additional information do you need? What additional questions do you have after looking at the sample data? 
+- Proposed Analysis (35%): What is your plan of attack to solve the problem. What methodological approach will you take?
+- Deliverables and timeline(15%): What will you be delivering to the client, and how long do you estimate it will take?
 
 
 
